@@ -1462,7 +1462,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {withdrawFinish === 0 ? "Cancel" : "Close"}
                         </Button>
                       </li>
                     </ul>
