@@ -142,10 +142,11 @@ const TransactionHistory = () => {
           obj.datetemp = new Date(obj.close_time);
           obj.amount1 = obj.amount;
           obj.amount2 = obj.amount * obj.average_price;
+          obj.balance2 = 0;
           for (const key in  obj.transactions) {
               const element = obj.transactions[key];
-              obj.balance2 = element.post_balance;
-              break;
+              if (element.post_balance > obj.balance2)
+                obj.balance2 = element.post_balance;
           }
           obj.type = obj.product_id;
 
