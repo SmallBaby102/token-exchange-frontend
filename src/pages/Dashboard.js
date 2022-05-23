@@ -110,6 +110,7 @@ const Dashboard = () => {
     deposit: false,
     sell: false,
     sellConfirm: false,
+    withdrawConfirm: false,
   });
   const [errorsSell, setErrorsSell] = useState({
     status: false,
@@ -161,10 +162,13 @@ const Dashboard = () => {
   })
   const [sellId, setSellId] = useState("")
   const onFormCancel = () => {
-    setModal({ withdraw: false }, { deposit: false }, { sell: false}, {sellConfirm: false});
+    setModal({ withdraw: false }, { deposit: false }, { sell: false}, {sellConfirm: false}, {withdrawConfirm: false});
   };
   const onSellConfirmFormCancel = () => {
     setModal({sellConfirm: false, sell: true});
+  };
+  const onWithdrawConfirmFormCancel = () => {
+    setModal({withdrawConfirm: false, withdraw: true});
   };
     // submit function to update a new item
     const onDepositSubmit = (sData) => {
@@ -194,6 +198,14 @@ const Dashboard = () => {
         })
         return;
       }
+      setModal({...modal, ...{ withdrawConfirm : true}});
+      
+    };
+    const onWithdrawConfirmSubmit = () => {
+      if(loading)
+          return;
+      setModal({...modal, ...{withdrawConfirm : false}});
+     
       const secureApi = getAuthenticatedApi();
       let data = {
         exchange: "PLUSQO",
@@ -1440,7 +1452,6 @@ const Dashboard = () => {
                       <li>
                         <Button color="primary" size="md" type="submit">
                             {loading ? <Spinner size="sm" color="light" /> : "Withdraw"}
-
                         </Button>
                       </li>}
                       <li>
@@ -1641,7 +1652,7 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Are you sure to sell {formData.amount_sell} {formData.product}</h5>
+              <h5 className="title">Are you sure to sell {formData.amount_sell} {formData.product}?</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onSellConfirmSubmit)}>
                   <Col md="12">
@@ -1663,6 +1674,53 @@ const Dashboard = () => {
                           onClick={(ev) => {
                             ev.preventDefault();
                             onSellConfirmFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
+                </Form>
+              </div>
+            </div>
+          </ModalBody>
+        </Modal>
+        <Modal isOpen={modal.withdrawConfirm} toggle={() => setModal({ withdrawConfirm: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+          <ModalBody>
+            <a
+              href="#cancel"
+              onClick={(ev) => {
+                ev.preventDefault();
+                onWithdrawConfirmFormCancel();
+              }}
+              className="close"
+            >
+              <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <div className="mt-4">
+                <Form className="row gy-4" onSubmit={handleSubmit(onWithdrawConfirmSubmit)}>
+                  <Col md="12">
+                    <FormGroup>
+                      <div>
+                      </div>
+                    </FormGroup>
+                  </Col>
+                 <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Confirm
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onWithdrawConfirmFormCancel();
                           }}
                           className="link link-light"
                         >

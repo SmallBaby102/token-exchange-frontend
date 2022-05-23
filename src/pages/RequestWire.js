@@ -13,9 +13,11 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
   Badge,
+  Form,
   FormGroup,
   Label,
-  Popover,
+  Modal,
+  ModalBody,
   PopoverBody,
   PopoverHeader,
   Spinner,
@@ -31,6 +33,7 @@ import {
   Button,
   Col,
   PreviewCard,
+  Icon,
   Row,
   RSelect,
 } from '../components/Component';
@@ -60,7 +63,9 @@ const RequestWire = () => {
   const [fees, setFees] = useState(320);
   const user_id = localStorage.getItem("user_id");
   const [usditem, setUsditem] = useState({})
-  
+  const [modal, setModal] = useState({
+    wireConfirm: false,
+  });
   const accounts = useSelector(state => state.user.accounts);
   let accouts_arr = Object.keys(accounts).map((key) => [Number(key), accounts[key]]);
   const [errorsStr, setErrorsStr] = useState({
@@ -119,7 +124,9 @@ const RequestWire = () => {
     account_type    : [{value: "Individual", label: "Individual"}, {value: "Corporate", label: "Corporate"}],
     occupation  : [{value: "CEO", label: "CEO"}, {value: "Director", label: "Director"}, {value: "Employee", label: "Employee"}, {value: "Housewife", label: "Housewife"}, {value: "Student", label: "Student"}, {value: "Other", label: "Other"}],
   };
-
+const onWireConfirmFormCancel = () => {
+  setModal({...modal, wireConfirm: false})
+}
   const handleFormSubmit = (submitFormData) => {
     console.log("ss", submitFormData)
     console.log("ll", loading)
@@ -220,11 +227,14 @@ const RequestWire = () => {
       })
       return;
     }
-    setLoading(true); 
-    setErrorsWire({
-      status: false,
-      message: "Amount must be under total amount"
-    })
+    setFormData({...formData, beneficiary_country: submitFormData.beneficiary_country, bank_country: submitFormData.bank_country, intermediarybank_country: submitFormData.intermediarybank_country})
+   setModal({...modal, wireConfirm: true})
+    
+  };
+  const onWireConfirmSubmit = () => {
+    setModal({...modal, wireConfirm: false})
+    if (loading)
+    return;
     let configdata = {
       exchange: "CONFIGURATOR_PLUSQO",
       username: CONFIGURATOR_USERNAME,
@@ -248,7 +258,7 @@ const RequestWire = () => {
           comment:"Sell_operation", 
           currency:"USD"
         }
-        let data = {...formData, status: "0", beneficiary_country: submitFormData.beneficiary_country, bank_country: submitFormData.bank_country, intermediarybank_country: submitFormData.intermediarybank_country};
+        let data = {...formData, status: "0"};
         let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
         let sellData = {
           papFlag: true,
@@ -1384,7 +1394,26 @@ const RequestWire = () => {
                       value={formData.amount}
                       className="form-control "
                       placeholder="0.00 USD"
-                      onChange={(e) =>{ if(e.target.value.match(/^[0-9]*\.?[0-9]*$/) || e.target.value === "") setFormData({ ...formData, amount: e.target.value })} }
+                      onChange={(e) => { 
+                          if(e.target.value.match(/^[0-9]*\.?[0-9]*$/) || e.target.value === "") 
+                                setFormData({ ...formData, amount: e.target.value }) 
+                          if (e.target.value < minimumAmount){
+                              setErrorsWire({
+                                status:true,
+                                message: `Amount must be over ${minimumAmount}`
+                              })
+                          } else if (e.target.value > availableAmount) {
+                            setErrorsWire({
+                              status: true,
+                              message: "Amount must be under total amount"
+                            })
+                          } else {
+                            setErrorsWire({
+                              status: false
+                            })
+                          }
+                        }
+                      }
                       name = "amount"
                       // ref={register({
                       //   required: "This field is required", validate: (value) =>{ if (value < 10000) return "Amount must be over 10000"; if (value > availableAmount) return "Amount must be under total amount"; }
@@ -1434,6 +1463,53 @@ const RequestWire = () => {
           </form>
         </div>
       </Block>
+      <Modal isOpen={modal.wireConfirm} toggle={() => setModal({ wireConfirm: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+          <ModalBody>
+            <a
+              href="#cancel"
+              onClick={(ev) => {
+                ev.preventDefault();
+                onWireConfirmFormCancel();
+              }}
+              className="close"
+            >
+              <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure to request wire {formData.amount} USD?</h5>
+              <div className="mt-4">
+                <Form className="row gy-4" onSubmit={handleSubmit(onWireConfirmSubmit)}>
+                  <Col md="12">
+                    <FormGroup>
+                      <div>
+                      </div>
+                    </FormGroup>
+                  </Col>
+                 <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Confirm
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onWireConfirmFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
+                </Form>
+              </div>
+            </div>
+          </ModalBody>
+        </Modal>
     </React.Fragment>
   );
 };

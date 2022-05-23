@@ -90,6 +90,7 @@ const MyWallet = () => {
     deposit: false,
     sell: false,
     sellConfirm: false,
+    withdrawConfirm: false,
   });
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(projectData);
@@ -170,97 +171,111 @@ const MyWallet = () => {
 
   // function to close the modal
   const onFormCancel = () => {
-    setModal({ withdraw: false }, { deposit: false }, { sell: false}, {sellConfirm: false});
+    setModal({ withdraw: false }, { deposit: false }, { sell: false}, {sellConfirm: false}, {withdrawConfirm: false});
   };
   const onSellConfirmFormCancel = () => {
     setModal({sellConfirm: false, sell: true});
   };
-
+  const onWithdrawConfirmFormCancel = () => {
+    setModal({withdrawConfirm: false, withdraw: true});
+  };
   // submit function to update a new item
   const onDepositSubmit = (sData) => {
     setModal({ deposit: false });
   };
   const onWithdrawSubmit = () => {
-      if(loading)
-          return;
-      if (formData.amount_withdraw < 0.0025) {
+    if(loading)
+        return;
+    if (formData.amount_withdraw < minimumWithdrawAmount[formData.product.toLowerCase()]) {
         setErrorsWithdraw({
           status: true,
-          message: "Amount must be over 0.0025"
+          message: "Amount must be over minimum withdraw one"
         })
         return;
-      } 
-      if (formData.amount_withdraw > availableWithdrawAmount) {
-        setErrorsWithdraw({
-          status: true,
-          message: "Amount must be under the available number"
-        })
+    } 
+    if (formData.amount_withdraw > availableWithdrawAmount) {
+      setErrorsWithdraw({
+        status: true,
+        message: "Amount must be under the available one"
+      })
+      return;
+    }
+    if (formData.address_withdraw === "") {
+      setErrorsWithdrawAddr({
+        status: true,
+        message: "Address is required"
+      })
+      return;
+    }
+    setModal({...modal, ...{ withdrawConfirm : true}});
+    
+  };
+  const onWithdrawConfirmSubmit = () => {
+    if(loading)
         return;
-      }
-      if (formData.address_withdraw === "") {
-        setErrorsWithdrawAddr({
-          status: true,
-          message: "Address is required"
-        })
-        return;
-      }
+    setModal({...modal, ...{withdrawConfirm : false}});
+   
+    const secureApi = getAuthenticatedApi();
+    let data = {
+      exchange: "PLUSQO",
+      product: formData.product,
+      amount:  formData.amount_withdraw,
+      address: formData.address_withdraw,
+      // code: '',
+      // network: "Stellar"
+    }
+    // dispatch(setChecking(true));
+ 
+    setLoading(true)
+    secureApi.post(`/wallet/withdraw/create`, data).then(res => {
+        if (res && res.data && res.data.success) {
+          secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
+            setLoading(false)
+            if (response.data.success) {
+              setWithdrawFinish(1);
 
-      const secureApi = getAuthenticatedApi();
-      let data = {
-        exchange: "PLUSQO",
-        product: formData.product,
-        amount:  formData.amount_withdraw,
-        address: formData.address_withdraw,
-      }
-      // dispatch(setChecking(true));
-      setLoading(true);
-      secureApi.post(`/wallet/withdraw/create`, data).then(res => {
-          if (res && res.data && res.data.success) {
-            secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {              
-              setLoading(false)
-              if (response.data.success) {
-                setWithdrawFinish(1);
-                toast.success("Successfully Withdrawed");
-                // setModal({ withdraw: false });
-                // dispatch(setChecking(false));
-                setLoading(false)
-                let exchange_access_token =localStorage.getItem("exchange_access_token")
-                if (exchange_access_token !== null && exchange_access_token !== "") {
-                  Http.getAccounts(exchange_access_token)
-                  .then((response) => {
-                      if (response.message === "Unauthorized"){
-                        history.push("auth-login");
-                        dispatch(setChecking(false));
-                        return;
-                      }
-                      setModal({ sell: false });
-                      dispatch(setAccounts(response));
-                    })
-                }else{
-                  // history.push("auth-login")
-                }
-                let withdrawInfo = {
-                    ...data,
-                    email: email,
-                };
-                myApi.post("/withdraw", withdrawInfo)
-                .then( res => {
-                  
-                })
-                .catch()
-              } else {
-                setWithdrawFinish(2);
-                dispatch(setChecking(false))
-                toast.error("Server not response");
+              toast.success("Successfully Withdrawed");
+              // setModal({ withdraw: false });
+              dispatch(setChecking(false))
+              let exchange_access_token =localStorage.getItem("exchange_access_token")
+              if (exchange_access_token !== null && exchange_access_token !== "") {
+                Http.getAccounts(exchange_access_token)
+                .then((response) => {
+                    if (response.message === "Unauthorized"){
+                      history.push("auth-login");
+                      dispatch(setChecking(false));
+                      return;
+                    }
+                    // setModal({ sell: false });
+                    setLoading(false);
+                    dispatch(setAccounts(response));
+                  })
+              }else{
+                // history.push("auth-login")
               }
-            })
-          }
-      }).catch(err => {
-        setWithdrawFinish(2);
+              let withdrawInfo = {
+                  ...data,
+                  email: email,
+              };
+              myApi.post("/withdraw", withdrawInfo)
+              .then( res => {
+                
+              })
+              .catch()
+            } else {
+              setWithdrawFinish(2);
+              toast.error("Server not response");
+            }
+            dispatch(setChecking(false))
+
+          })
+        }
+    }).catch(err => {
+      setWithdrawFinish(2);
+      toast.error(err.response.data.message);
         setLoading(false)
-          toast.error(err.response.data.message);
-          console.log('error: ', err);
-      });
+        console.log('error: ', err);
+    });
   };
   const onSellSubmit = () => {
     if(loading)
@@ -1317,9 +1332,9 @@ const MyWallet = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                     { withdrawFinish === 0 &&
                       <li>
-                        <Button color="primary" size="md" type="submit">
-                          Withdraw
-                        </Button>
+                            <Button color="primary" size="md" type="submit">
+                              {loading ? <Spinner size="sm" color="light" /> : "Withdraw"}
+                          </Button>
                       </li>}
                       <li>
                         <Button
@@ -1529,7 +1544,7 @@ const MyWallet = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Are you sure to sell {formData.amount_sell} {formData.product}</h5>
+              <h5 className="title">Are you sure to sell {formData.amount_sell} {formData.product}?</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onSellConfirmSubmit)}>
                   <Col md="12">
@@ -1551,6 +1566,53 @@ const MyWallet = () => {
                           onClick={(ev) => {
                             ev.preventDefault();
                             onSellConfirmFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
+                </Form>
+              </div>
+            </div>
+          </ModalBody>
+        </Modal>
+        <Modal isOpen={modal.withdrawConfirm} toggle={() => setModal({ withdrawConfirm: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+          <ModalBody>
+            <a
+              href="#cancel"
+              onClick={(ev) => {
+                ev.preventDefault();
+                onWithdrawConfirmFormCancel();
+              }}
+              className="close"
+            >
+              <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <div className="mt-4">
+                <Form className="row gy-4" onSubmit={handleSubmit(onWithdrawConfirmSubmit)}>
+                  <Col md="12">
+                    <FormGroup>
+                      <div>
+                      </div>
+                    </FormGroup>
+                  </Col>
+                 <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="submit">
+                          Confirm
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onWithdrawConfirmFormCancel();
                           }}
                           className="link link-light"
                         >
