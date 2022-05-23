@@ -345,7 +345,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Passport Id number</span>
+              <span className="h6 fw-light">Id number</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.id_number}</span>
@@ -421,10 +421,9 @@ const uploadData = (e) => {
             <Col className="ml-3 mt-2">
                 The following documents are required for individual verification.
               <br/><br/>
-              * ID (passport or valid drivers license or Residence Permit or Government-issued ID Card)<br/>
-              * Residential Address / Proof of Address (Utility bill or Bank statement within 90)
-              <br/><br/>
-              All documents must be in English and must be issued by a public institution.
+              1. ID (passport or valid drivers license or residence permit or government-issued ID Card)<br/>
+              <br/>
+                *In some cases, we may request additional confirmation documents.
             </Col>
           </Row>
           <Row>
@@ -572,20 +571,11 @@ const uploadData = (e) => {
           <Col className="ml-3 mt-2">
           The following documents are required for corporate verification.
           <br/><br/>
-          ＊Certificate of Incorporation <br/>
-          ＊Shareholder Registry <br/>
-          ＊Director Registry <br/>
-          ＊Proof of Address of company (Utility bill or Bank statement within 90 days) <br/>
-          ＊Memorandum / Articles of Incorporation / Association/Registration 
+          1. Certificate of Incorporation <br/>
           <br/><br/>
-          In addition, verification of all individuals and corporations holding 25% or more of the shares is required.
-          <br/><br/>
-          The individuals verification documents are as follows.
-          <br/><br/>
-          * ID (passport or valid drivers license or Residence Permit or Government-issued ID Card) <br/>
-          * Residential Address/Proof of Address (Utility bill or Bank statement within 90) <br/>
-          <br/> <br/>
-          All documents must be in English and must be issued by a public institution. <br/>
+          2. Director's ID(passport or valid drivers license or residence permit or government-issued ID card)
+          <br/>
+          *In some cases, we may request additional confirmation documents. <br/>
           </Col>
       </Row>
       <Row>

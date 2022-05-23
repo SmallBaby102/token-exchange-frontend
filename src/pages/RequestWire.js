@@ -72,7 +72,6 @@ const RequestWire = () => {
     bank_name : {status: false, message: "You have entered an unavailable character" },
     bank_city : {status: false, message: "You have entered an unavailable character" },
     bankpostal_code : {status: false, message: "You have entered an unavailable character" },
-    bank_region : {status: false, message: "You have entered an unavailable character" },
     swift_code : {status: false, message: "Only alphabet characters are allowed for Swift code" },
     reference_code : {status: false, message: "Only alphabet characters are allowed for Swift code" },
     intermediarybank_address : {status: false, message: "Only alphabet characters are allowed for Intermediary Bank address" },
@@ -100,7 +99,7 @@ const RequestWire = () => {
     bank_country: "",
     bankstreet_address: "",
     // bank_city: "",
-    bank_region: "",
+    // bank_region: "",
     bankpostal_code: "",
     swift_code: "",
     reference_code: "",
@@ -123,6 +122,7 @@ const RequestWire = () => {
 
   const handleFormSubmit = (submitFormData) => {
     console.log("ss", submitFormData)
+    console.log("ll", loading)
     if (loading)
     return;
     if (formData.beneficiary_name === "") {
@@ -161,12 +161,12 @@ const RequestWire = () => {
       });
       return;
     }
-    if (formData.bank_region === "") {
-      setErrorsStr({
-        ...errorsStr, bank_region: {status: true, message: "This field is required"}
-      });
-      return;
-    }
+    // if (formData.bank_region === "") {
+    //   setErrorsStr({
+    //     ...errorsStr, bank_region: {status: true, message: "This field is required"}
+    //   });
+    //   return;
+    // }
     if (formData.bankpostal_code === "") {
       setErrorsStr({
         ...errorsStr, bankpostal_code: {status: true, message: "This field is required"}
@@ -425,7 +425,7 @@ const RequestWire = () => {
                   <div className="form-control-wrap">
                       <input className="form-control " value={formData.beneficiary_name} 
                        onChange = { e => {
-                       if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                       if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                          setFormData({...formData, beneficiary_name: e.target.value}); 
                          if (e.target.value === "")  
                          setErrorsStr({
@@ -664,7 +664,7 @@ const RequestWire = () => {
                     <input className="form-control "   
                      value={formData.beneficiary_street} 
                      onChange = { e => {
-                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                         setFormData({...formData, beneficiary_street: e.target.value}); 
                         if (e.target.value === "")  
                         setErrorsStr({
@@ -692,7 +692,7 @@ const RequestWire = () => {
                       <input className="form-control "  
                         value={formData.beneficiary_postal_code} 
                         onChange = { e => {
-                          if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                          if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                             setFormData({...formData, beneficiary_postal_code: e.target.value}); 
                             if (e.target.value === "")  
                             setErrorsStr({
@@ -719,7 +719,7 @@ const RequestWire = () => {
                     <input className="form-control " 
                         value={formData.bank_name} 
                         onChange = { e => {
-                          if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                          if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                             setFormData({...formData, bank_name: e.target.value}); 
                             if (e.target.value === "")  
                             setErrorsStr({
@@ -746,7 +746,7 @@ const RequestWire = () => {
                     <input className="form-control " 
                       value={formData.bankaccount_number} 
                       onChange = { e => {
-                        if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                        if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                           setFormData({...formData, bankaccount_number: e.target.value}); 
                           if (e.target.value === "")  
                           setErrorsStr({
@@ -970,7 +970,7 @@ const RequestWire = () => {
                     <input className="form-control "
                      value={formData.bankstreet_address} 
                      onChange = { e => {
-                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                         setFormData({...formData, bankstreet_address: e.target.value}); 
                         if (e.target.value === "")  
                         setErrorsStr({
@@ -998,7 +998,7 @@ const RequestWire = () => {
                     <input className="form-control "  
                      value={formData.bankpostal_code} 
                      onChange = { e => {
-                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                         setFormData({...formData, bankpostal_code: e.target.value}); 
                         if (e.target.value === "")  
                         setErrorsStr({
@@ -1026,7 +1026,7 @@ const RequestWire = () => {
                     <input className="form-control "  
                      value={formData.swift_code} 
                      onChange = { e => {
-                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                         setFormData({...formData, swift_code: e.target.value}); 
                         if (e.target.value === "")  
                         setErrorsStr({
@@ -1053,7 +1053,7 @@ const RequestWire = () => {
                   <div className="form-control-wrap">
                     <input className="form-control " name="reference_code"
                       onChange = { e => {
-                        if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                        if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                           setFormData({...formData, reference_code: e.target.value}); 
                            setErrorsStr({...errorsStr, reference_code: {status:false}})
                         } else 
@@ -1075,7 +1075,7 @@ const RequestWire = () => {
                       <input className="form-control "  
                       value={formData.intermediarybank_name} 
                       onChange = { e => {
-                        if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                        if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                           setFormData({...formData, intermediarybank_name: e.target.value}); 
                           if (e.target.value === "")  
                           setErrorsStr({
@@ -1102,7 +1102,7 @@ const RequestWire = () => {
                     <input className="form-control " 
                     value={formData.intermediarybank_number} 
                     onChange = { e => {
-                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                         setFormData({...formData, intermediarybank_number: e.target.value}); 
                         if (e.target.value === "")  
                         setErrorsStr({
@@ -1328,7 +1328,7 @@ const RequestWire = () => {
                     <input className="form-control "  
                     value={formData.intermediarybank_address} 
                     onChange = { e => {
-                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                      if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                         setFormData({...formData, intermediarybank_address: e.target.value}); 
                         if (e.target.value === "")  
                         setErrorsStr({
@@ -1357,7 +1357,7 @@ const RequestWire = () => {
                       <input className="form-control " 
                         value={formData.intermediarybank_swiftcode} 
                         onChange = { e => {
-                          if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:?]+$/) !== null || e.target.value === "" ) {
+                          if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                             setFormData({...formData, intermediarybank_swiftcode: e.target.value}); 
                             if (e.target.value === "")  
                             setErrorsStr({

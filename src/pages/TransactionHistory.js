@@ -114,7 +114,6 @@ const TransactionHistory = () => {
         dispatch(setChecking(true));
         await secureApi.get(`/trade/orders/closed`).then(res => {
           if (res) {
-              console.log("history: ", res.data);
               let transactions = res.data.items;
               transactions.forEach(obj => {
                 if (obj.side === "sell")
@@ -136,6 +135,21 @@ const TransactionHistory = () => {
               temp = transactions.filter(obj =>  obj.entity_type === "SELL" && obj.status === "COMPLETED" && (obj.product_id === "BTC" || obj.product_id === "USDT" || obj.product_id === "ETH"))
             }
         })
+        let dataForUsd = temp;
+        dataForUsd.forEach(obj => {
+          obj.status = "Crypto SELL";
+          obj.date = dateFormatterAlt(new Date(obj.close_time), true);
+          obj.datetemp = new Date(obj.close_time);
+          obj.amount1 = obj.amount;
+          obj.amount2 = obj.amount * obj.average_price;
+          for (const key in  obj.transactions) {
+              const element = obj.transactions[key];
+              obj.balance2 = element.post_balance;
+              break;
+          }
+          obj.type = obj.product_id;
+
+        })
         await secureApi.get(`/wallet/transaction/history?exchange=${exchange}&type=${type}`).then(res => {
           if (res) {
             let transactions = res.data.transactions;
@@ -152,44 +166,71 @@ const TransactionHistory = () => {
             console.log('error: ', err);
             dispatch(setChecking(false));
         });
-        dispatch(setChecking(false));
-        temp = temp.sort((a, b) => {
-          return a.timestamp < b.timestamp? 1 : -1
-        })
-        setData(temp); 
-        setOrderData(temp);
+       
+      
         // get report data from local db
         const myApi = myServerApi();
         await myApi.get(`/report/${email}`).then(res => {
           if (res) {
             let reports = res.data.data;
-            reports.forEach(element => {
+             reports.forEach(element => {
               if (element.status === "SELL"){
                 element.status =  "Crypto SELL";
-                // element.detail = `Sell ${element.amount1} ${element.type}`;
+                element.datetemp = new Date(element.date);
+              // element.detail = `Sell ${element.amount1} ${element.type}`;
               }
               if (element.status === "WIRE"){
                 element.status =  "Wire";
+                element.datetemp = new Date(element.date);
                 // element.detail = `WireID is <Link>WID${element.id}</Link>`;
               }
               if (element.status === "FAIL"){
                 element.status =  "Back";
+                element.datetemp = new Date(element.date);
                 // element.detail = `WID${element.id} was failed`;
               }
 
               
             });
+           
             reports = reports.sort((a, b) => {
               return a.date < b.date? 1 : -1
             })
-            setOrderDataUsd(reports);
-            
+            let tempForUsd = [...dataForUsd, ...reports];
+            tempForUsd = tempForUsd.sort((a, b) => {
+              return a.datetemp < b.datetemp? 1 : -1 
+            })
+            console.log("usd", tempForUsd)
+            setOrderDataUsd(tempForUsd);
+            reports.forEach(element => {
+              if (element.status === "Crypto SELL"){
+                element.product_id = element.type;
+                element.entity_type = "SELL";
+                element.amount = element.amount1;
+                element.timestamp = element.date;
+                // element.detail = `Sell ${element.amount1} ${element.type}`;
+              } 
+              
+            });
+            let usdt_reports = reports.filter(elm => {
+              return elm.entity_type === "SELL";
+            })
+            temp = [...temp, ...usdt_reports];
           }
         }).catch(err => {
             console.log('error: ', err);
         });
-       
-  }, []);
+        temp.forEach(element => {
+          element.datetemp = new Date(element.timestamp);
+          element.timestamp = dateFormatterAlt(new Date(element.timestamp), true)
+        });
+        temp = temp.sort((a, b) => {
+          return a.datetemp < b.datetemp? 1 : -1
+        })
+        setData(temp); 
+        setOrderData(temp);
+        dispatch(setChecking(false));
+      }, []);
 
     // Changing state value when searching name
     useEffect(() => {
@@ -262,9 +303,6 @@ const TransactionHistory = () => {
     setValue(newValue);
     
     if (newValue === 0){
-      console.log("value", newValue);
-    console.log("order", orderData);
-    console.log("usd", orderDataUsd);
       setData(orderData);
     }
     else {
@@ -437,7 +475,7 @@ const TransactionHistory = () => {
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
                                   <span className="tb-lead">{item.desc}</span>
-                                  <span className="tb-date">{dateFormatterAlt(new Date(item.timestamp), true)}</span>
+                                  <span className="tb-date">{item.timestamp}</span>
                                 </div>
                               </div>
                             </DataTableRow>

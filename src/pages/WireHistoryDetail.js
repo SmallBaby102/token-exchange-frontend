@@ -43,7 +43,7 @@ export default function CustomizedTimeline() {
 let color = {color: "#1976d2"};
 return (
     <Box className="mt-4 pl-5 pt-2">
-      <Row>
+      { wireHistory && <Row>
           <Col md="6" className='pl-4' style={{overflowWrap: "anywhere"}}>
             <Row className="">
               <Col size={6}>
@@ -342,7 +342,7 @@ return (
             </Timeline>
           }
         </Col>
-        </Row>
+        </Row>}
     </Box>
   );
 }

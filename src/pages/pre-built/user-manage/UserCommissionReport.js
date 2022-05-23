@@ -224,9 +224,9 @@ const handleThemeToggle1 = (theme) => () => {
               <div className="card-title-group">
                 <div className="card-title">
                   <div className="justify-content-around " style={{ justifyContent:"space-around", display: "flex"}}>
-                      <label className="" style={{fontSize: "1rem"}}>Pending {total_commission_pending_approval? Helper.limitDecimal(total_commission_pending_approval, 2): "0.00"} USD</label> 
-                      <label className="" style={{fontSize: "1rem"}}>Unpaid {total_commission_unpaid? Helper.limitDecimal(total_commission_unpaid, 2): "0.00"} USD</label> 
-                      <label className="" style={{fontSize: "1rem"}}>Paid {total_commission_paid? Helper.limitDecimal(total_commission_paid, 2): "0.00"} USD</label> 
+                      <label className="" style={{fontSize: "1rem"}}>Pending {total_commission_pending_approval? Helper.limitDecimal(total_commission_pending_approval, 2): "0.00"} USDT</label> 
+                      <label className="" style={{fontSize: "1rem"}}>Unpaid {total_commission_unpaid? Helper.limitDecimal(total_commission_unpaid, 2): "0.00"} USDT</label> 
+                      <label className="" style={{fontSize: "1rem"}}>Paid {total_commission_paid? Helper.limitDecimal(total_commission_paid, 2): "0.00"} USDT</label> 
 
                   </div> 
                   <Row>

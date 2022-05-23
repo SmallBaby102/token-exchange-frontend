@@ -92,7 +92,7 @@ export const dateFormatterAlt = (date, reverse) => {
   let m = date.getMonth() + 1;
   m = m < 10 ? "0" + m : m;
   let y = date.getFullYear();
-  reverse ? (date =  d + "/" + m + "/" + y) : (date = y + "/" + d + "/" + m);
+  reverse ? (date =  d + "/" + m + "/" + y) : (date = y + "/" + m + "/" + d);
   return date;
 };
 export const dateCompare = (d1, d2) => {
@@ -130,6 +130,8 @@ export const fromStringTodateFormatter = (date, reverse, string) => {
   date = date[0].split("T");
 
   var dateformat = date[0].split("-");
+  if(dateformat.length < 2)
+    return date;
   //var date = dateformat[1]+"-"+dateformat[2]+"-"+dateformat[0];
   reverse
     ? (date = dateformat[2] + "/" + dateformat[1] + "/" + dateformat[0])

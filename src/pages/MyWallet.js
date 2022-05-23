@@ -1506,7 +1506,7 @@ const MyWallet = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {sellFinish === 0 ? "Cancel" : "Close"}
                         </Button>
                       </li>
                     </ul>
