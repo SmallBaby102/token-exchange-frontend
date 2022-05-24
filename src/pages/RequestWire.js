@@ -9,7 +9,7 @@ import {
   useDispatch,
   useSelector,
 } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
   Badge,
@@ -63,6 +63,8 @@ const RequestWire = () => {
   const [fees, setFees] = useState(320);
   const user_id = localStorage.getItem("user_id");
   const [usditem, setUsditem] = useState({})
+  const [wireFinish, setWireFinish] = useState(0)
+  const [wireId, setWireId] = useState(null)
   const [modal, setModal] = useState({
     wireConfirm: false,
   });
@@ -90,6 +92,7 @@ const RequestWire = () => {
     status: false,
     message: ""
   })
+  
   const [formData, setFormData] = useState({
 
     // individual relative state
@@ -125,11 +128,10 @@ const RequestWire = () => {
     occupation  : [{value: "CEO", label: "CEO"}, {value: "Director", label: "Director"}, {value: "Employee", label: "Employee"}, {value: "Housewife", label: "Housewife"}, {value: "Student", label: "Student"}, {value: "Other", label: "Other"}],
   };
 const onWireConfirmFormCancel = () => {
+  setFormData({...formData, amount: 0})
   setModal({...modal, wireConfirm: false})
 }
   const handleFormSubmit = (submitFormData) => {
-    console.log("ss", submitFormData)
-    console.log("ll", loading)
     if (loading)
     return;
     if (formData.beneficiary_name === "") {
@@ -228,13 +230,15 @@ const onWireConfirmFormCancel = () => {
       return;
     }
     setFormData({...formData, beneficiary_country: submitFormData.beneficiary_country, bank_country: submitFormData.bank_country, intermediarybank_country: submitFormData.intermediarybank_country})
-   setModal({...modal, wireConfirm: true})
+    setWireFinish(0);
+    setModal({...modal, wireConfirm: true})
     
   };
   const onWireConfirmSubmit = () => {
-    setModal({...modal, wireConfirm: false})
+    // setModal({...modal, wireConfirm: false})
     if (loading)
     return;
+    setLoading(true);
     let configdata = {
       exchange: "CONFIGURATOR_PLUSQO",
       username: CONFIGURATOR_USERNAME,
@@ -274,15 +278,22 @@ const onWireConfirmFormCancel = () => {
         }
         myApi.put("sell", sellData)
         .then(result => {
-          setFormData({...formData, amount: 0})
+          setWireId(result.data.wireid);
           toast.success("Successfully corrected balance");
           console.log("successfully selled")
           setLoading(false); 
-         
+          setWireFinish(1);
+          
         }).catch( e => {
+          setWireId(null);
           setLoading(false); 
+          setWireFinish(2);
           console.log("sell error")
         })
+    })
+    .catch(e => {
+      setWireFinish(2);
+      
     })
     
   };
@@ -1456,7 +1467,7 @@ const onWireConfirmFormCancel = () => {
             <div className="text-center pt-5">
                 <FormGroup>
                 <Button type="submit" color="primary" size="lg" className="btn-block">
-                  {loading ? <Spinner size="sm" color="light" /> : "SUBMIT"}
+                  SUBMIT
                 </Button>
                 </FormGroup>
               </div>
@@ -1476,22 +1487,27 @@ const onWireConfirmFormCancel = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure to request wire {formData.amount} USD?</h5>
+            {wireFinish === 0 && <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure to request wire {formData.amount}USD?</h5>}
+              {wireFinish === 1 && <h5 className="title" style={{overflowWrap: "anywhere"}}>You successfully requested wire {formData.amount}USD.</h5>}
+              {wireFinish === 2 && <h5 className="title" style={{overflowWrap: "anywhere"}}>Request wire failed.</h5>}
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onWireConfirmSubmit)}>
                   <Col md="12">
                     <FormGroup>
-                      <div>
-                      </div>
+                      { wireFinish !== 0 && wireId !== null &&
+                        <div>
+                         WireID is <Link to ={`/wirehistory/${wireId}`}>{wireId}</Link>
+                      </div>}
                     </FormGroup>
                   </Col>
                  <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button color="primary" size="md" type="submit">
-                          Confirm
+                    { wireFinish === 0 && <li>
+                       <Button color="primary" size="md" type="submit">
+                          
+                          {loading ? <Spinner size="sm" color="light" /> : "Confirm"}
                         </Button>
-                      </li>
+                      </li>}
                       <li>
                         <Button
                           onClick={(ev) => {
@@ -1500,7 +1516,10 @@ const onWireConfirmFormCancel = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {
+                            wireFinish === 0 ? "Cancel": "Close"
+                          }
+                          
                         </Button>
                       </li>
                     </ul>
@@ -1509,7 +1528,7 @@ const onWireConfirmFormCancel = () => {
               </div>
             </div>
           </ModalBody>
-        </Modal>
+      </Modal>
     </React.Fragment>
   );
 };

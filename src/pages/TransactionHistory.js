@@ -40,7 +40,7 @@ import {
 import Content from '../layout/content/Content';
 import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
-import { dateFormatter, dateFormatterAlt, fromStringTodateFormatter } from '../utils/Utils';
+import { dateFormatter, dateFormatterAlt, fromStringTodateFormatter, fromStringTodateTimeFormatter } from '../utils/Utils';
 import {
   cryptoActivityOptions,
   filterStatusOptions,
@@ -138,8 +138,8 @@ const TransactionHistory = () => {
         let dataForUsd = temp;
         dataForUsd.forEach(obj => {
           obj.status = "Crypto SELL";
-          obj.date = dateFormatterAlt(new Date(obj.close_time), true);
-          obj.datetemp = new Date(obj.close_time);
+          obj.date = new Date(obj.open_time);
+          obj.datetemp = new Date(obj.open_time);
           obj.amount1 = obj.amount;
           obj.amount2 = obj.amount * obj.average_price;
           obj.balance2 = 0;
@@ -165,7 +165,6 @@ const TransactionHistory = () => {
           }
         }).catch(err => {
             console.log('error: ', err);
-            dispatch(setChecking(false));
         });
        
       
@@ -177,20 +176,19 @@ const TransactionHistory = () => {
              reports.forEach(element => {
               if (element.status === "SELL"){
                 element.status =  "Crypto SELL";
-                element.datetemp = new Date(element.date);
               // element.detail = `Sell ${element.amount1} ${element.type}`;
               }
               if (element.status === "WIRE"){
                 element.status =  "Wire";
-                element.datetemp = new Date(element.date);
                 // element.detail = `WireID is <Link>WID${element.id}</Link>`;
               }
               if (element.status === "FAIL"){
                 element.status =  "Back";
-                element.datetemp = new Date(element.date);
                 // element.detail = `WID${element.id} was failed`;
               }
-
+              element.datetemp = new Date(element.date);
+              element.datetemp.setTime(element.datetemp.getTime() + 3 * 60 * 60 * 1000)
+              element.date = new Date(element.date);
               
             });
            
@@ -201,7 +199,6 @@ const TransactionHistory = () => {
             tempForUsd = tempForUsd.sort((a, b) => {
               return a.datetemp < b.datetemp? 1 : -1 
             })
-            console.log("usd", tempForUsd)
             setOrderDataUsd(tempForUsd);
             reports.forEach(element => {
               if (element.status === "Crypto SELL"){
@@ -552,7 +549,7 @@ const TransactionHistory = () => {
                           </Button>
                         </li> */}
                         <li className="btn-toolbar-sep"></li>
-                        <li>
+                        {/* <li>
                           <UncontrolledDropdown>
                             <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
                               <div className="dot dot-primary"></div>
@@ -561,11 +558,7 @@ const TransactionHistory = () => {
                             <DropdownMenu right className="filter-wg dropdown-menu-xl">
                               <div className="dropdown-head">
                                 <span className="sub-title dropdown-title">Advanced Filter</span>
-                                {/* <div className="dropdown">
-                                  <Button size="sm" className="btn-icon">
-                                    <Icon name="more-h"></Icon>
-                                  </Button>
-                                </div> */}
+                               
                               </div>
                               <div className="dropdown-body dropdown-body-rg" style={{height: "250px"}}>
                                 <Row className="gx-6 gy-4" >
@@ -585,7 +578,7 @@ const TransactionHistory = () => {
                               </div>
                             </DropdownMenu>
                           </UncontrolledDropdown>
-                        </li>
+                        </li> */}
                         <li>
                           <UncontrolledDropdown>
                             <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
@@ -662,7 +655,7 @@ const TransactionHistory = () => {
                             <DataTableRow>
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
-                                  <span className="tb-date">{fromStringTodateFormatter(item.date, true)}</span>
+                                  <span className="tb-date">{dateFormatterAlt(item.date, true)}</span>
                                 </div>
                               </div>
                             </DataTableRow>

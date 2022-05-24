@@ -421,8 +421,8 @@ const uploadData = (e) => {
             <Col className="ml-3 mt-2">
                 The following documents are required for individual verification.
               <br/><br/>
-              1. ID (passport or valid drivers license or residence permit or government-issued ID Card)<br/>
-              <br/>
+              1. ID (passport or valid drivers license or residence permit or government-issued ID Card)
+              <br/><br/>
                 *In some cases, we may request additional confirmation documents.
             </Col>
           </Row>
@@ -571,10 +571,10 @@ const uploadData = (e) => {
           <Col className="ml-3 mt-2">
           The following documents are required for corporate verification.
           <br/><br/>
-          1. Certificate of Incorporation <br/>
+          1. Certificate of Incorporation
           <br/><br/>
           2. Director's ID(passport or valid drivers license or residence permit or government-issued ID card)
-          <br/>
+          <br/><br/>
           *In some cases, we may request additional confirmation documents. <br/>
           </Col>
       </Row>

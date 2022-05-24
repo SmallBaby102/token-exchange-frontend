@@ -86,13 +86,17 @@ export const setDeadlineDays = (deadline) => {
 
 //Date formatter function
 export const dateFormatterAlt = (date, reverse) => {
-  if (date === null) return "";
+  if (date === null || date === undefined) return "";
   let d = date.getDate();
   d = d < 10 ? "0" + d : d;
   let m = date.getMonth() + 1;
   m = m < 10 ? "0" + m : m;
   let y = date.getFullYear();
-  reverse ? (date =  d + "/" + m + "/" + y) : (date = y + "/" + m + "/" + d);
+  let hh = date.getHours();
+  if (hh < 10)
+    hh = "0"+hh;
+  let mm = date.getMinutes();
+  reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date = y + "/" + m + "/" + d);
   return date;
 };
 export const dateCompare = (d1, d2) => {
@@ -139,6 +143,22 @@ export const fromStringTodateFormatter = (date, reverse, string) => {
 
   return date;
 };
+export const fromStringTodatetimeFormatter = (date, reverse, string) => {
+  if (date === null || date === undefined) return "";
+  date = new Date(date);
+  let d = date.getDate();
+  d = d < 10 ? "0" + d : d;
+  let m = date.getMonth() + 1;
+  m = m < 10 ? "0" + m : m;
+  let y = date.getFullYear();
+  let hh = date.getHours();
+  if (hh < 10)
+    hh = "0"+hh;
+  let mm = date.getMinutes();
+  reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date = y + "/" + m + "/" + d);
+  return date;
+};
+
 
 //todays Date
 export const todaysDate = new Date();

@@ -18,6 +18,8 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { bgcolor, Box } from '@mui/system';
 import { Col, Row } from 'reactstrap';
+import Content from '../layout/content/Content';
+import { fromStringTodateFormatter, fromStringTodatetimeFormatter } from '../utils/Utils';
 
 export default function CustomizedTimeline() {
   const { wireid } =  useParams();
@@ -42,307 +44,312 @@ export default function CustomizedTimeline() {
 
 let color = {color: "#1976d2"};
 return (
-    <Box className="mt-4 pl-5 pt-2">
-      { wireHistory && <Row>
-          <Col md="6" className='pl-4' style={{overflowWrap: "anywhere"}}>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6">Wire ID</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6">{wireHistory.wireid}</span>
-              </Col>
-            </Row>
-            <Row className="mt-3">
-              <Col size={6}>
-                <span className="h6 fw-light">BENEFICIARY NAME</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.beneficiary_name}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">ACCOUNT TYPE</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.account_type}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BENEFICIARY ADDRESS</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.beneficiary_address}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BENEFICIARY POSTAL CODE</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.beneficiary_postal_code}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BANK NAME</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.bank_name}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BANK ACCOUNT NUMBER</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.bankaccount_number}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BANK COUNTRY</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.bank_country}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BANK ADDRESS</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.bankstreet_address}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">BANK POSTAL CODE</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.bankpostal_code}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">SWIFT/BIC CODE</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.swift_code}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">REFERENCE CODE</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.reference_code}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">INTERMEDIARY BANK NAME</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.intermediarybank_name}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">INTERMEDIARY BANK ACCNO</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.intermediarybank_number}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">INTERMEDIARY BANK COUNTRY</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.intermediarybank_swiftcode}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">INTERMEDIARY BANK ADDRESS</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.intermediarybank_address}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">INTERMEDIARY BANK SWIFT</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{wireHistory.intermediarybank_swiftcode}</span>
-              </Col>
-            </Row>
-            <Row className="">
-              <Col size={6}>
-                <span className="h6 fw-light">AMOUNT</span>
-              </Col>
-              <Col size={6}>
-                <span className="h6 fw-light">{-wireHistory.amount} USD</span>
-              </Col>
-            </Row>
-          </Col>
-          <Col md="6" className='mt-2'>
-          {
-          wireHistory &&
-          <Timeline >
-            <TimelineItem>
-              <TimelineOppositeContent
-                align="right"
-                variant="body2"
-                color="text.secondary"
-              >
-                {wireHistory.pending_date}
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineDot color='primary'/>
-                <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
-              </TimelineSeparator>
-              <TimelineContent sx={{ my: '-12px', px: 2 }}>
-              {wireHistory.status === "0" ? <Typography variant="h6" component="span" style={color}>
-                  Pending
-                </Typography>:
-                <Typography variant="h6" component="span">
-                Pending
-              </Typography>}
-                {wireHistory.status === "0" ? <Typography style={color}> You set up your transfer</Typography>:
-                <Typography > You set up your transfer</Typography>}
-              </TimelineContent>
-            </TimelineItem>
-            { wireHistory.status !== "0" &&
+    <Content>
+      <Box className="mt-4 pl-5 pt-2">
+        { wireHistory && <Row>
+            <Col md="6" className='pl-4' style={{overflowWrap: "anywhere"}}>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6">Wire ID</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6">{wireHistory.wireid}</span>
+                </Col>
+              </Row>
+              <Row className="mt-3">
+                <Col size={6}>
+                  <span className="h6 fw-light">BENEFICIARY NAME</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.beneficiary_name}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">ACCOUNT TYPE</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.account_type}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BENEFICIARY ADDRESS</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.beneficiary_street}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BENEFICIARY POSTAL CODE</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.beneficiary_postal_code}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BANK NAME</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.bank_name}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BANK ACCOUNT NUMBER</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.bankaccount_number}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BANK COUNTRY</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.bank_country}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BANK ADDRESS</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.bankstreet_address}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">BANK POSTAL CODE</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.bankpostal_code}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">SWIFT/BIC CODE</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.swift_code}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">REFERENCE CODE</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.reference_code}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">INTERMEDIARY BANK NAME</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.intermediarybank_name}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">INTERMEDIARY BANK ACCNO</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.intermediarybank_number}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">INTERMEDIARY BANK COUNTRY</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.intermediarybank_swiftcode}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">INTERMEDIARY BANK ADDRESS</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.intermediarybank_address}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">INTERMEDIARY BANK SWIFT</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{wireHistory.intermediarybank_swiftcode}</span>
+                </Col>
+              </Row>
+              <Row className="">
+                <Col size={6}>
+                  <span className="h6 fw-light">AMOUNT</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{-wireHistory.amount}USD</span>
+                </Col>
+              </Row>
+            </Col>
+            <Col md="6" className='mt-2'>
+            {
+            wireHistory &&
+            <Timeline >
               <TimelineItem>
-              {wireHistory.status === "1" ? <TimelineOppositeContent
-                sx={{ m: 'auto 0' }}
-                color="text.primary"
-              >
-                {wireHistory.approved_date}
-              </TimelineOppositeContent>:
-              <TimelineOppositeContent
+                <TimelineOppositeContent
+                  align="right"
+                  variant="body2"
+                  color="text.secondary"
+                >
+                  {fromStringTodatetimeFormatter(wireHistory.pending_date, true)}
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineDot color='primary'/>
+                  <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
+                </TimelineSeparator>
+                <TimelineContent sx={{ my: '-12px', px: 2 }}>
+                {wireHistory.status === "0" ? <Typography variant="h6" component="span" style={color}>
+                    Pending
+                  </Typography>:
+                  <Typography variant="h6" component="span">
+                  Pending
+                </Typography>}
+                  {wireHistory.status === "0" ? <Typography style={color}> You set up your transfer</Typography>:
+                  <Typography > You set up your transfer</Typography>}
+                </TimelineContent>
+              </TimelineItem>
+              { wireHistory.status !== "0" && wireHistory.approved_date !== "Null" &&
+                <TimelineItem>
+                {wireHistory.status === "1" ? <TimelineOppositeContent
+                  sx={{ m: 'auto 0' }}
+                  color="text.primary"
+                >
+                  {fromStringTodatetimeFormatter(wireHistory.approved_date, true)}
+                </TimelineOppositeContent>:
+                <TimelineOppositeContent
+                    sx={{ m: 'auto 0' }}
+                    variant="body2"
+                    color="text.secondary"
+                >
+                  {fromStringTodatetimeFormatter(wireHistory.approved_date, true)}
+                </TimelineOppositeContent>
+                }
+                <TimelineSeparator>
+                  <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
+                  <TimelineDot color="primary">
+                  </TimelineDot>
+                  {wireHistory.status !== "1" && <TimelineConnector sx={{ bgcolor: 'primary.main' }}/> }
+                </TimelineSeparator>
+                <TimelineContent sx={{ py: '12px', px: 2 }}>
+                {wireHistory.status === "1" ? <Typography variant="h6" component="span" style={color}>
+                    Approved
+                  </Typography>:<Typography variant="h6" component="span">
+                    Approved
+                  </Typography>}
+                  {wireHistory.status === "1" ? <Typography style={color}>Your transfer was approved</Typography>:
+                  <Typography>Your transfer was approved</Typography>}
+                </TimelineContent>
+              </TimelineItem>
+              }
+              { (wireHistory.status !== "0" &&  wireHistory.status !== "1" && wireHistory.processing_date !== "Null") &&
+                (wireHistory.status == "2" ?
+                <TimelineItem>
+                  <TimelineOppositeContent
+                    color="text.primary"
+                    sx={{ m: 'auto 0', mt: "34px" }}
+                  >
+                    {fromStringTodatetimeFormatter(wireHistory.processing_date, true)}
+                  </TimelineOppositeContent>
+                  <TimelineSeparator>
+                    <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
+                    <TimelineDot color="info"  >
+                    </TimelineDot>
+                  </TimelineSeparator>
+                  <TimelineContent sx={{  px: 2 }}>
+                    <Typography variant="h6" component="span" sx={{ color: 'primary.main' }}>
+                      Processing
+                    </Typography>
+                    <Typography sx={{ color: 'primary.main' }}>Our bank is processing your transfer</Typography>
+                  </TimelineContent>
+                </TimelineItem>:
+                <TimelineItem>
+                <TimelineOppositeContent
                   sx={{ m: 'auto 0' }}
                   variant="body2"
                   color="text.secondary"
-              >
-                {wireHistory.approved_date}
-              </TimelineOppositeContent>
-              }
-              <TimelineSeparator>
-                <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
-                <TimelineDot color="primary">
-                </TimelineDot>
-                {wireHistory.status !== "1" && <TimelineConnector sx={{ bgcolor: 'primary.main' }}/> }
-              </TimelineSeparator>
-              <TimelineContent sx={{ py: '12px', px: 2 }}>
-              {wireHistory.status === "1" ? <Typography variant="h6" component="span" style={color}>
-                  Approved
-                </Typography>:<Typography variant="h6" component="span">
-                  Approved
-                </Typography>}
-                {wireHistory.status === "1" ? <Typography style={color}>Your transfer was approved</Typography>:
-                <Typography>Your transfer was approved</Typography>}
-              </TimelineContent>
-            </TimelineItem>
-            }
-            { (wireHistory.status !== "0" &&  wireHistory.status !== "1") &&
-              (wireHistory.status == "2" ?
-              <TimelineItem>
-                <TimelineOppositeContent
-                  color="text.primary"
-                  sx={{ m: 'auto 0', mt: "34px" }}
                 >
-                  {wireHistory.processing_date}
+                  {fromStringTodatetimeFormatter(wireHistory.processing_date, true)}
                 </TimelineOppositeContent>
                 <TimelineSeparator>
                   <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
-                  <TimelineDot color="info"  >
+                  <TimelineDot color="info">
+                    {/* <HotelIcon /> */}
                   </TimelineDot>
+                  <TimelineConnector sx={{ bgcolor: 'primary.main' }} />
                 </TimelineSeparator>
-                <TimelineContent sx={{  px: 2 }}>
-                  <Typography variant="h6" component="span" sx={{ color: 'primary.main' }}>
+                <TimelineContent sx={{ py: '12px', px: 2 }}>
+                  <Typography variant="h6" component="span">
                     Processing
                   </Typography>
-                  <Typography sx={{ color: 'primary.main' }}>Our bank is processing your transfer</Typography>
+                  <Typography>Our bank is processing your transfer</Typography>
                 </TimelineContent>
-              </TimelineItem>:
+              </TimelineItem>)
+              }
+              {
+                wireHistory.status === "3" && wireHistory.completed_date !== "Null" &&
               <TimelineItem>
-              <TimelineOppositeContent
-                sx={{ m: 'auto 0' }}
-                variant="body2"
-                color="text.secondary"
-              >
-                {wireHistory.processing_date}
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
-                <TimelineDot color="info">
-                  {/* <HotelIcon /> */}
-                </TimelineDot>
-                <TimelineConnector sx={{ bgcolor: 'primary.main' }} />
-              </TimelineSeparator>
-              <TimelineContent sx={{ py: '12px', px: 2 }}>
-                <Typography variant="h6" component="span">
-                  Processing
-                </Typography>
-                <Typography>Our bank is processing your transfer</Typography>
-              </TimelineContent>
-            </TimelineItem>)
+                <TimelineOppositeContent
+                  sx={{ m: 'auto 0', mt: "34px"  }}
+                  color="text.primary"
+                >
+                  {fromStringTodatetimeFormatter(wireHistory.completed_date, true)}
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
+                  <TimelineDot color="info" >
+                  </TimelineDot>
+                </TimelineSeparator>
+                <TimelineContent>
+                  <Typography variant="h6" component="span"  sx={{ color: 'primary.main' }}>
+                    Complete
+                  </Typography>
+                  <Typography  sx={{ color: 'primary.main' }}>Your transfer went out of our bank</Typography>
+                </TimelineContent>
+              </TimelineItem>
+              }
+              {
+                wireHistory.status === "9" &&
+              <TimelineItem>
+                <TimelineOppositeContent
+                  sx={{ m: 'auto 0', mt: "34px" }}
+                  variant="body2"
+                  color="red"
+                >
+                  {fromStringTodatetimeFormatter(wireHistory.decline_date, true)}
+                </TimelineOppositeContent>
+                <TimelineSeparator>
+                  <TimelineConnector sx={{ bgcolor: 'primary.main' }} />
+                  <TimelineDot color="warning">
+                  </TimelineDot>
+                </TimelineSeparator>
+                <TimelineContent >
+                  <Typography variant="h6" component="span" style={{color:"red"}}>
+                    Decline
+                  </Typography>
+                  <Typography style={{color:"red"}}>Your transaction was declined</Typography>
+                </TimelineContent>
+              </TimelineItem>
+              }
+              </Timeline>
             }
-            {
-              wireHistory.status === "3" &&
-            <TimelineItem>
-              <TimelineOppositeContent
-                sx={{ m: 'auto 0', mt: "34px"  }}
-                color="text.primary"
-              >
-                {wireHistory.completed_date}
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineConnector sx={{ bgcolor: 'primary.main' }}/>
-                <TimelineDot color="info" >
-                </TimelineDot>
-              </TimelineSeparator>
-              <TimelineContent>
-                <Typography variant="h6" component="span"  sx={{ color: 'primary.main' }}>
-                  Complete
-                </Typography>
-                <Typography  sx={{ color: 'primary.main' }}>Your transfer went out of our bank</Typography>
-              </TimelineContent>
-            </TimelineItem>
-            }
-            {
-              wireHistory.status === "9" &&
-            <TimelineItem>
-              <TimelineOppositeContent
-                sx={{ m: 'auto 0', mt: "34px" }}
-                variant="body2"
-                color="red"
-              >
-                {wireHistory.decline_date}
-              </TimelineOppositeContent>
-              <TimelineSeparator>
-                <TimelineConnector sx={{ bgcolor: 'primary.main' }} />
-                <TimelineDot color="warning">
-                </TimelineDot>
-              </TimelineSeparator>
-              <TimelineContent >
-                <Typography variant="h6" component="span" style={{color:"red"}}>
-                  Decline
-                </Typography>
-                <Typography style={{color:"red"}}>Your transaction was declined</Typography>
-              </TimelineContent>
-            </TimelineItem>
-            }
-            </Timeline>
-          }
-        </Col>
-        </Row>}
-    </Box>
+              <Row style={{wordBreak: "break-all"}}>
+                  {wireHistory.memo}
+              </Row>
+          </Col>
+          </Row>}
+      </Box>
+    </Content>
   );
 }
