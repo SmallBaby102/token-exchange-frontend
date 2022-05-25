@@ -175,7 +175,7 @@ const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress,
     console.log("Added Files", addedFiles)
 }
   const removeFile = (index) => {
-  if (data.verification_status !== "Not Approved" || addedFiles.length < 2) {
+  if (data.verification_status !== "Not Approved") {
     return;
   }
     let temp = addedFiles;
@@ -429,7 +429,7 @@ const uploadData = (e) => {
           <Row>
             <Col size={8}  style={{width: "60%"}}>
             {
-              addedFiles.length && addedFiles.map((item, index) => {
+              addedFiles.length !== 0 ? addedFiles.map((item, index) => {
                 return(
                   <FormGroup className="mt-4 ml-3" style={{width: "100%"}}>
                       <div className="form-control-wrap d-flex">
@@ -446,7 +446,7 @@ const uploadData = (e) => {
 
                   </FormGroup> 
                 )
-              })
+              }):""
             }
             </Col>
             <Col size={4}>
@@ -581,7 +581,7 @@ const uploadData = (e) => {
       <Row>
             <Col size={8}  style={{width: "60%"}}>
             {
-              addedFiles.length && addedFiles.map((item, index) => {
+              addedFiles.length !== 0 ?addedFiles.map((item, index) => {
                 return(
                   <FormGroup className="mt-4 ml-3" style={{width: "100%"}}>
                       <div className="form-control-wrap d-flex">
@@ -597,7 +597,7 @@ const uploadData = (e) => {
                       </div>
                   </FormGroup> 
                 )
-              })
+              }): ""
             }
             </Col>
             <Col size={4}>

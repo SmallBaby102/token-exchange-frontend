@@ -348,7 +348,7 @@ const handleThemeToggle1 = (theme) => () => {
                               <div className="mt-2" style={{ justifyContent:"space-around", display: "flex", marginLeft: "-20px"}}>
                                 <FormGroup>
                                   <div className="custom-control custom-control-sm custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="includeDel" onChange={(e) => setDisplaySetting({...displaySetting, tier1: e.target.checked})}  />
+                                    <input type="checkbox" className="custom-control-input" id="includeDel" checked={displaySetting.tier1} onChange={(e) => setDisplaySetting({...displaySetting, tier1: e.target.checked})}  />
                                     <label className="custom-control-label" htmlFor="includeDel">
                                       Tier1
                                     </label>
@@ -356,7 +356,7 @@ const handleThemeToggle1 = (theme) => () => {
                                 </FormGroup>
                                 <FormGroup>
                                   <div className="custom-control custom-control-sm custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="includeDel2" onChange={(e) => setDisplaySetting({...displaySetting, tier2: e.target.checked})} />
+                                    <input type="checkbox" className="custom-control-input" id="includeDel2" checked={displaySetting.tier2} onChange={(e) => setDisplaySetting({...displaySetting, tier2: e.target.checked})} />
                                     <label className="custom-control-label" htmlFor="includeDel2">
                                       Tier2
                                     </label>
@@ -364,7 +364,7 @@ const handleThemeToggle1 = (theme) => () => {
                                 </FormGroup>
                                 <FormGroup>
                                   <div className="custom-control custom-control-sm custom-checkbox">
-                                    <input type="checkbox" className="custom-control-input" id="includeDel3" onChange={(e) => setDisplaySetting({...displaySetting, tier3: e.target.checked})} />
+                                    <input type="checkbox" className="custom-control-input" id="includeDel3" checked={displaySetting.tier3} onChange={(e) => setDisplaySetting({...displaySetting, tier3: e.target.checked})} />
                                     <label className="custom-control-label" htmlFor="includeDel3">
                                       Tier3
                                     </label>

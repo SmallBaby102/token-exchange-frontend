@@ -1233,13 +1233,20 @@ const Dashboard = () => {
 
                       </div>
                       <div className="nk-iv-wg2-text">
-                        <div className="nk-iv-wg2-amount">
+                        <div className="nk-iv-wg2-amount d-none d-md-flex">
                           {" $ "}
                           {usdtBalance !== -1 && usdtPrice !== 0 && Helper.limitDecimal(usdtBalance * usdtPrice, 2)} 
-                          {/* USD{" "} */}
-                          <span className="change ">
-                            <span className="sign"></span>{usdtBalance !== -1 && Helper.limitDecimal(usdtBalance, 2)} USDT
-                          </span >
+                            <span className="change ">
+                              <span className="sign"></span>{usdtBalance !== -1 && Helper.limitDecimal(usdtBalance, 2)} USDT
+                            </span >
+                        </div>
+                        <div className="nk-iv-wg2-amount d-md-none d-block">
+                         <div> {" $ "}
+                            {usdtBalance !== -1 && usdtPrice !== 0 && Helper.limitDecimal(usdtBalance * usdtPrice, 2)} 
+                          </div>
+                            <span className="change d-block">
+                              <span className="sign"></span>{usdtBalance !== -1 && Helper.limitDecimal(usdtBalance, 2)} USDT
+                            </span >
                         </div>
                         <div className='text-right'>
                               {usdtPrice !== 0 &&  <span>1 USDT = {Helper.limitDecimal(usdtPrice, 2)} USD</span>}
