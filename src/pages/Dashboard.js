@@ -493,7 +493,7 @@ const Dashboard = () => {
                           })
                         }
                         else {
-                          toast.error("Failed balance correction");
+                          toast.error("Failed sell operation");
                           setSellFinish(2);
 
                         }
@@ -501,13 +501,13 @@ const Dashboard = () => {
                     })
                     .catch( e => {
                         setSellFinish(2);
-                        toast.error("Failed balance correction");
+                        toast.error("Failed sell operation");
                         setLoading(false);
                     })
                     
                   })
                   .catch(e => {
-                      toast.error("Failed balance correction");
+                      toast.error("Failed sell operation");
                       setLoading(false);
                       setSellFinish(2);
                     
@@ -516,12 +516,12 @@ const Dashboard = () => {
               else{
                   setSellFinish(2);
                   // history.push("auth-login")
-                  toast.error("Failed balance correction");
+                  toast.error("Failed sell operation");
                   setLoading(false);
               }
             }else{
               setSellFinish(2);
-              toast.error("Failed balance correction");
+              toast.error("Failed sell operation");
               setLoading(false);
             }
             // dispatch(setChecking(false));
@@ -1618,7 +1618,7 @@ const Dashboard = () => {
                          {formData.amount_sell} {formData.product} was successfully sold
                     </Col> :
                     <Col md="12" className='fail_dlg'>
-                        Failed balance correction
+                        Failed sell operation
                     </Col>
                   )}
                   <Col size="12">
