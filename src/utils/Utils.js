@@ -94,8 +94,10 @@ export const dateFormatterAlt = (date, reverse) => {
   let y = date.getFullYear();
   let hh = date.getHours();
   if (hh < 10)
-    hh = "0"+hh;
+    hh = "0" + hh;
   let mm = date.getMinutes();
+  if (mm < 10)
+    mm = "0" + mm;
   reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date = y + "/" + m + "/" + d);
   return date;
 };

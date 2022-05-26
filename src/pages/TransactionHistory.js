@@ -2,6 +2,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
+import DatePickerMobile from 'react-mobile-datepicker'
+import DatePicker from 'react-datepicker';
 
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -40,7 +42,7 @@ import {
 import Content from '../layout/content/Content';
 import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
-import { dateFormatter, dateFormatterAlt, fromStringTodateFormatter, fromStringTodateTimeFormatter } from '../utils/Utils';
+import { dateFormatter,dateCompare, hideEmail, dateFormatterAlt, fromStringTodateFormatter, fromStringTodateTimeFormatter } from '../utils/Utils';
 import {
   cryptoActivityOptions,
   filterStatusOptions,
@@ -79,20 +81,12 @@ const TransactionHistory = () => {
   const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("");
   const [displaySetting, setDisplaySetting] = useState({
+    from: null,
+    end: null,
     type : "",
     currency : "",
   });
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.ref.localeCompare(b.ref));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.ref.localeCompare(a.ref));
-      setData([...sortedData]);
-    }
-  };
+
   function renameKey(obj, old_key, new_key) {   
     // check if old key = new key  
         if (old_key !== new_key) {                  
@@ -121,6 +115,9 @@ const TransactionHistory = () => {
                   obj.entity_type = obj.side.toUpperCase();
                   obj.amount = obj.quantity;
                   obj.timestamp = obj.close_time;
+                  obj.date = new Date(obj.timestamp);
+                  obj.date.setTime(obj.date.getTime() - 9 * 60 * 60 * 1000)
+
                   obj.product_id = obj.instrument_id.substring(0,3);
                   if (obj.status === "completely_filled" || obj.status.toUpperCase() === "partially_filled") {
                     obj.status = "COMPLETED";
@@ -139,7 +136,8 @@ const TransactionHistory = () => {
         dataForUsd.forEach(obj => {
           obj.status = "Crypto SELL";
           obj.date = new Date(obj.open_time);
-          obj.datetemp = new Date(obj.open_time);
+          obj.date.setTime(obj.date.getTime() - 9 * 60 * 60 * 1000)
+          obj.datetemp = obj.date;
           obj.amount1 = obj.amount;
           obj.amount2 = obj.amount * obj.average_price;
           obj.balance2 = 0;
@@ -151,6 +149,7 @@ const TransactionHistory = () => {
           obj.type = obj.product_id;
 
         })
+        
         await secureApi.get(`/wallet/transaction/history?exchange=${exchange}&type=${type}`).then(res => {
           if (res) {
             let transactions = res.data.transactions;
@@ -159,6 +158,11 @@ const TransactionHistory = () => {
             transactions.forEach(obj => renameKey(obj, 'type', 'entity_type'));
             transactions.forEach(obj => renameKey(obj, 'created_at_timestamp', 'timestamp'));
             transactions.forEach(obj => renameKey(obj, 'product', 'product_id'));
+            transactions.forEach(obj => {
+              obj.date = new Date(obj.timestamp);
+              obj.date.setTime(obj.date.getTime() - 9 * 60 * 60 * 1000)
+    
+            })
             temp = [...temp, ...transactions.filter(obj =>  obj.status === "COMPLETED" && (obj.product_id === "BTC" || obj.product_id === "USDT" || obj.product_id === "ETH"))]
             
 
@@ -187,7 +191,7 @@ const TransactionHistory = () => {
                 // element.detail = `WID${element.id} was failed`;
               }
               element.datetemp = new Date(element.date);
-              element.datetemp.setTime(element.datetemp.getTime() + 3 * 60 * 60 * 1000)
+              // element.datetemp.setTime(element.datetemp.getTime() + 3 * 60 * 60 * 1000)
               element.date = new Date(element.date);
               
             });
@@ -219,8 +223,8 @@ const TransactionHistory = () => {
             console.log('error: ', err);
         });
         temp.forEach(element => {
-          element.datetemp = new Date(element.timestamp);
-          element.timestamp = dateFormatterAlt(new Date(element.timestamp), true)
+          element.datetemp = new Date(element.date);
+          element.timestamp = dateFormatterAlt(element.date, true)
         });
         temp = temp.sort((a, b) => {
           return a.datetemp < b.datetemp? 1 : -1
@@ -233,8 +237,21 @@ const TransactionHistory = () => {
     // Changing state value when searching name
     useEffect(() => {
       if ( orderData?.length > 0) {
-        if (displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
+        if (displaySetting.from !== null || displaySetting.end !== null || displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
             let filteredObject = orderData;
+            if (value === 1) {
+              filteredObject = orderDataUsd;
+            }
+            if (displaySetting.from !== null ) {
+              filteredObject = filteredObject.filter((item) => {
+                return displaySetting.from <=  item.date ;
+              });  
+            } 
+            if (displaySetting.end !== null) {
+              filteredObject = filteredObject.filter((item) => {
+                return item.date <= displaySetting.end ;
+              });  
+            }
             if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
               filteredObject = filteredObject.filter((item) => {
                 return item.entity_type.toLowerCase() == displaySetting.type.toLowerCase();
@@ -248,6 +265,10 @@ const TransactionHistory = () => {
             setData([...filteredObject]);
         } else {
            setData([...orderData]);
+           if (value === 1) {
+             setData([...orderDataUsd]);
+
+           }
         }  
       }
       
@@ -258,7 +279,26 @@ const TransactionHistory = () => {
   const onFilterChange = (e) => {
     setSearchText(e.target.value);
   };
+  const [state, setState] = useState({
+    time: new Date(),
+    isOpen: false,
+    isOpen1: false,
+    theme: 'default',
+})
 
+const handleToggle = (isOpen) => () => {
+    setState({ isOpen });
+}
+const handleToggle1 = (isOpen1) => () => {
+    setState({ isOpen1 });
+}
+
+const handleThemeToggle = (theme) => () => {
+    setState({ theme, isOpen: true });
+}
+const handleThemeToggle1 = (theme) => () => {
+    setState({ theme, isOpen1: true });
+}
 
 
   // Get current list, pagination
@@ -307,6 +347,7 @@ const TransactionHistory = () => {
       setData(orderDataUsd);
     }
   };
+
   return (
     <React.Fragment>
       <Head title="Trasaction List"></Head>
@@ -334,6 +375,7 @@ const TransactionHistory = () => {
                 </li>
               </ul>
             </BlockHeadContent> */}
+           
           </BlockBetween>
         </BlockHead>
         <Box sx={{ width: '100%' }}>
@@ -350,6 +392,102 @@ const TransactionHistory = () => {
                   <div className="card-title-group">
                     <div className="card-title">
                       <h5 className="title">All History</h5>
+                      <Row>
+                        <FormGroup style={{width:"30%"}} className="d-none d-md-block">
+                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label>
+                          
+                          <DatePicker
+                            style = {{"zIndex": "9999"}}
+                            selected={displaySetting.from}
+                            className="form-control d-none d-md-block"
+                            dateFormat="dd/MM/yyyy"
+                            onChange={(date) => {
+                                setDisplaySetting({ ...displaySetting, from: date }); 
+                                console.log(dateFormatterAlt(date, true));
+                              }}
+                          />
+                          
+
+                        </FormGroup>
+                        <FormGroup className='d-md-none'>
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                            <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.from, true)}/>
+                            <a
+                                style={{opacity: "0", position:"absolute", left: "0"}}
+                                className="select-btn sm"
+                                onClick={handleThemeToggle('default')}>
+                                {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
+                            </a>
+                            <DatePickerMobile
+                            // value={displaySetting.from}
+                            theme={state.theme}
+                            isOpen={state.isOpen}
+                            showCaption
+                            dateConfig={{
+                                'year': {
+                                    format: 'YYYY',
+                                    caption: 'Year',
+                                    step: 1,
+                                },
+                                'month': {
+                                    format: 'M',
+                                    caption: 'Month',
+                                    step: 1,
+                                },
+                                'date': {
+                                    format: 'D',
+                                    caption: 'Day',
+                                    step: 1,
+                                },
+                            }}
+                            onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
+                            onCancel={handleToggle(false)} />
+                        </FormGroup>
+                        <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block">
+                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label>
+                          <DatePicker
+                            style = {{"zIndex": "9999"}}
+                            selected={displaySetting.end}
+                            className="form-control"
+                            dateFormat="dd/MM/yyyy"
+                            minDate={displaySetting.from}
+                            onChange={(date) => setDisplaySetting({ ...displaySetting, end: date })}
+                          />
+                        </FormGroup>
+                        <FormGroup className='d-md-none'  >
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                            <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.end, true)}/>
+                            <a
+                              style={{opacity: "0", position:"absolute", left: "0"}}
+                                className="select-btn sm"
+                                onClick={handleThemeToggle1('default')}>
+                                {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
+                            </a>
+                            <DatePickerMobile
+                            theme={state.theme}
+                            isOpen={state.isOpen1}
+                            showCaption
+                            dateConfig={{
+                                'year': {
+                                    format: 'YYYY',
+                                    caption: 'Year',
+                                    step: 1,
+                                },
+                                'month': {
+                                    format: 'M',
+                                    caption: 'Month',
+                                    step: 1,
+                                },
+                                'date': {
+                                    format: 'D',
+                                    caption: 'Day',
+                                    step: 1,
+                                },
+                            }}
+                            onSelect={(date) => {setDisplaySetting({ ...displaySetting, end: date }); setState({isOpen1:false})}}
+                            onCancel={handleToggle1(false)} />
+                        </FormGroup>
+                    </Row>
                     </div>
                     <div className="card-tools mr-n1">
                       <ul className="btn-toolbar gx-1">
@@ -366,7 +504,7 @@ const TransactionHistory = () => {
                           </Button>
                         </li> */}
                         <li className="btn-toolbar-sep"></li>
-                        <li>
+                        {/* <li>
                           <UncontrolledDropdown>
                             <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
                               <div className="dot dot-primary"></div>
@@ -375,11 +513,6 @@ const TransactionHistory = () => {
                             <DropdownMenu right className="filter-wg dropdown-menu-xl">
                               <div className="dropdown-head">
                                 <span className="sub-title dropdown-title">Advanced Filter</span>
-                                {/* <div className="dropdown">
-                                  <Button size="sm" className="btn-icon">
-                                    <Icon name="more-h"></Icon>
-                                  </Button>
-                                </div> */}
                               </div>
                               <div className="dropdown-body dropdown-body-rg" style={{height: "250px"}}>
                                 <Row className="gx-6 gy-4" >
@@ -399,7 +532,7 @@ const TransactionHistory = () => {
                               </div>
                             </DropdownMenu>
                           </UncontrolledDropdown>
-                        </li>
+                        </li> */}
                         <li>
                           <UncontrolledDropdown>
                             <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
@@ -533,6 +666,102 @@ const TransactionHistory = () => {
                   <div className="card-title-group">
                     <div className="card-title">
                       <h5 className="title">All History</h5>
+                      <Row>
+                        <FormGroup style={{width:"30%"}} className="d-none d-md-block">
+                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label>
+                          
+                          <DatePicker
+                            style = {{"zIndex": "9999"}}
+                            selected={displaySetting.from}
+                            className="form-control d-none d-md-block"
+                            dateFormat="dd/MM/yyyy"
+                            onChange={(date) => {
+                                setDisplaySetting({ ...displaySetting, from: date }); 
+                                console.log(dateFormatterAlt(date, true));
+                              }}
+                          />
+                          
+
+                        </FormGroup>
+                        <FormGroup className='d-md-none'>
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                            <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.from, true)}/>
+                            <a
+                                style={{opacity: "0", position:"absolute", left: "0"}}
+                                className="select-btn sm"
+                                onClick={handleThemeToggle('default')}>
+                                {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
+                            </a>
+                            <DatePickerMobile
+                            // value={displaySetting.from}
+                            theme={state.theme}
+                            isOpen={state.isOpen}
+                            showCaption
+                            dateConfig={{
+                                'year': {
+                                    format: 'YYYY',
+                                    caption: 'Year',
+                                    step: 1,
+                                },
+                                'month': {
+                                    format: 'M',
+                                    caption: 'Month',
+                                    step: 1,
+                                },
+                                'date': {
+                                    format: 'D',
+                                    caption: 'Day',
+                                    step: 1,
+                                },
+                            }}
+                            onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
+                            onCancel={handleToggle(false)} />
+                        </FormGroup>
+                        <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block">
+                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label>
+                          <DatePicker
+                            style = {{"zIndex": "9999"}}
+                            selected={displaySetting.end}
+                            className="form-control"
+                            dateFormat="dd/MM/yyyy"
+                            minDate={displaySetting.from}
+                            onChange={(date) => setDisplaySetting({ ...displaySetting, end: date })}
+                          />
+                        </FormGroup>
+                        <FormGroup className='d-md-none'  >
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                            <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.end, true)}/>
+                            <a
+                              style={{opacity: "0", position:"absolute", left: "0"}}
+                                className="select-btn sm"
+                                onClick={handleThemeToggle1('default')}>
+                                {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
+                            </a>
+                            <DatePickerMobile
+                            theme={state.theme}
+                            isOpen={state.isOpen1}
+                            showCaption
+                            dateConfig={{
+                                'year': {
+                                    format: 'YYYY',
+                                    caption: 'Year',
+                                    step: 1,
+                                },
+                                'month': {
+                                    format: 'M',
+                                    caption: 'Month',
+                                    step: 1,
+                                },
+                                'date': {
+                                    format: 'D',
+                                    caption: 'Day',
+                                    step: 1,
+                                },
+                            }}
+                            onSelect={(date) => {setDisplaySetting({ ...displaySetting, end: date }); setState({isOpen1:false})}}
+                            onCancel={handleToggle1(false)} />
+                        </FormGroup>
+                    </Row>
                     </div>
                     <div className="card-tools mr-n1">
                       <ul className="btn-toolbar gx-1">
@@ -634,7 +863,7 @@ const TransactionHistory = () => {
                     <DataTableRow >
                       <span>Detail</span>
                     </DataTableRow>
-                    <DataTableRow className="text-right">
+                    <DataTableRow size="sm" className="text-right">
                       <span>Amount</span>
                     </DataTableRow>
                     <DataTableRow size="sm" className="text-right">

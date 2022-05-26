@@ -44,8 +44,8 @@ export default function CustomizedTimeline() {
 
 let color = {color: "#1976d2"};
 return (
-    <Content>
-      <Box className="mt-4 pl-5 pt-2">
+    <Content >
+      <Box className="mt-4 pl-5 pt-2 pr-5">
         { wireHistory && <Row>
             <Col md="6" className='pl-4' style={{overflowWrap: "anywhere"}}>
               <Row className="">
@@ -342,11 +342,21 @@ return (
                 </TimelineContent>
               </TimelineItem>
               }
+               <TimelineItem>
+                  <TimelineOppositeContent
+                    sx={{ m: 'auto 0', mt: "34px" }}
+                    variant="body2"
+                    align="left"
+                    color="text.secondary"
+                  >
+                    <div className='d-flex' style={{wordBreak: "break-all", color: "#364a63", justifyContent:"center"}}>
+                      {wireHistory.memo}
+                  </div>
+                  </TimelineOppositeContent>
+                </TimelineItem>
               </Timeline>
             }
-              <Row style={{wordBreak: "break-all"}}>
-                  {wireHistory.memo}
-              </Row>
+              
           </Col>
           </Row>}
       </Box>
