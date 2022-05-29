@@ -279,8 +279,7 @@ const onWireConfirmFormCancel = () => {
         myApi.put("sell", sellData)
         .then(result => {
           setWireId(result.data.wireid);
-          toast.success("Successfully corrected balance");
-          console.log("successfully selled")
+          toast.success("'Successfully request wire");
           setLoading(false); 
           setWireFinish(1);
           
@@ -288,7 +287,6 @@ const onWireConfirmFormCancel = () => {
           setWireId(null);
           setLoading(false); 
           setWireFinish(2);
-          console.log("sell error")
         })
     })
     .catch(e => {

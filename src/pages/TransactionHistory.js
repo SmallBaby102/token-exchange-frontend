@@ -244,12 +244,12 @@ const TransactionHistory = () => {
             }
             if (displaySetting.from !== null ) {
               filteredObject = filteredObject.filter((item) => {
-                return displaySetting.from <=  item.date ;
+                return displaySetting.from <=  item.datetemp ;
               });  
             } 
             if (displaySetting.end !== null) {
               filteredObject = filteredObject.filter((item) => {
-                return item.date <= displaySetting.end ;
+                return item.datetemp <= displaySetting.end ;
               });  
             }
             if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
@@ -504,7 +504,7 @@ const handleThemeToggle1 = (theme) => () => {
                           </Button>
                         </li> */}
                         <li className="btn-toolbar-sep"></li>
-                        {/* <li>
+                        <li>
                           <UncontrolledDropdown>
                             <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
                               <div className="dot dot-primary"></div>
@@ -532,7 +532,7 @@ const handleThemeToggle1 = (theme) => () => {
                               </div>
                             </DropdownMenu>
                           </UncontrolledDropdown>
-                        </li> */}
+                        </li>
                         <li>
                           <UncontrolledDropdown>
                             <DropdownToggle tag="a" className="btn btn-trigger btn-icon dropdown-toggle">
@@ -585,6 +585,9 @@ const handleThemeToggle1 = (theme) => () => {
                     <DataTableRow >
                       <span>Type</span>
                     </DataTableRow>
+                    <DataTableRow >
+                      <span>Currency</span>
+                    </DataTableRow>
                     <DataTableRow className="text-right">
                       <span>Amount</span>
                     </DataTableRow>
@@ -625,6 +628,9 @@ const handleThemeToggle1 = (theme) => () => {
                               >
                                 {item.entity_type}
                               </span>
+                            </DataTableRow>
+                            <DataTableRow>
+                                  <span className="tb-type">{item.product_id}</span>
                             </DataTableRow>
                             <DataTableRow className="text-right">
                               <span className="tb-amount">

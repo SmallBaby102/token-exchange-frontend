@@ -47,7 +47,7 @@ return (
     <Content >
       <Box className="mt-4 pl-5 pt-2 pr-5">
         { wireHistory && <Row>
-            <Col md="6" className='pl-4' style={{overflowWrap: "anywhere"}}>
+            <Col md="5" className='pl-4' style={{overflowWrap: "anywhere"}}>
               <Row className="">
                 <Col size={6}>
                   <span className="h6">Wire ID</span>
@@ -193,7 +193,7 @@ return (
                 </Col>
               </Row>
             </Col>
-            <Col md="6" className='mt-2'>
+            <Col md="7" className='mt-2'>
             {
             wireHistory &&
             <Timeline >

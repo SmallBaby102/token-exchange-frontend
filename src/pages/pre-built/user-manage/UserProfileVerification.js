@@ -427,11 +427,11 @@ const uploadData = (e) => {
             </Col>
           </Row>
           <Row>
-            <Col size={8}  style={{width: "60%"}}>
+            <Col  md={8} >
             {
               addedFiles.length !== 0 ? addedFiles.map((item, index) => {
                 return(
-                  <FormGroup className="mt-4 ml-3" style={{width: "100%"}}>
+                  <FormGroup className="mt-4 ml-3">
                       <div className="form-control-wrap d-flex">
                           <div className="custom-file">
                               <input type="file" className="custom-file-input" name={index} id={index} disabled= {data.verification_status !== "Not Approved"}
@@ -449,7 +449,7 @@ const uploadData = (e) => {
               }):""
             }
             </Col>
-            <Col size={4}>
+            <Col md={4}>
               <FormGroup>
                   <Button type="input" color="primary" disabled= {data.verification_status !== "Not Approved"} size="md" onClick={(e) => addFile(e)} className="btn mt-4 ml-3">
                   Add
@@ -579,11 +579,11 @@ const uploadData = (e) => {
           </Col>
       </Row>
       <Row>
-            <Col size={8}  style={{width: "60%"}}>
+            <Col  md={8}>
             {
               addedFiles.length !== 0 ?addedFiles.map((item, index) => {
                 return(
-                  <FormGroup className="mt-4 ml-3" style={{width: "100%"}}>
+                  <FormGroup className="mt-4 ml-3" >
                       <div className="form-control-wrap d-flex">
                           <div className="custom-file">
                               <input type="file" className="custom-file-input" name={index} id={index} disabled= {data.verification_status !== "Not Approved"}
@@ -600,7 +600,7 @@ const uploadData = (e) => {
               }): ""
             }
             </Col>
-            <Col size={4}>
+            <Col md={4}>
               <FormGroup>
                   <Button type="input" color="primary" disabled= {data.verification_status !== "Not Approved"} size="md" onClick={(e) => addFile(e)} className="btn mt-4 ml-3">
                   Add

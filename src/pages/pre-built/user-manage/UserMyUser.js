@@ -187,11 +187,11 @@ const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
 
   const { errors, register, handleSubmit } = useForm();
   const [state, setState] = useState({
-    time: new Date(),
-    isOpen: false,
-    isOpen1: false,
-    theme: 'default',
-})
+      time: new Date(),
+      isOpen: false,
+      isOpen1: false,
+      theme: 'default',
+  })
 
 const handleToggle = (isOpen) => () => {
     setState({ isOpen });

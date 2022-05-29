@@ -53,6 +53,8 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Helper from '../utils/Helper';
 import { useHistory, useParams } from 'react-router';
+import DatePickerMobile from 'react-mobile-datepicker'
+import DatePicker from 'react-datepicker';
 
 const WireHistory = () => {
   const params = useParams();
@@ -80,6 +82,8 @@ const WireHistory = () => {
   const [itemPerPage, setItemPerPage] = useState(10);
   const [sort, setSortState] = useState("");
   const [displaySetting, setDisplaySetting] = useState({
+    from: null,
+    end: null,
     type : "",
     currency : "",
   });
@@ -130,8 +134,18 @@ const WireHistory = () => {
     // Changing state value when searching name
     useEffect(() => {
       if ( orderData?.length > 0) {
-        if (displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
+        if (displaySetting.from !== null || displaySetting.end !== null || displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
             let filteredObject = orderData;
+            if (displaySetting.from !== null) {
+              filteredObject = filteredObject.filter((item) => {
+                return displaySetting.from <= new Date(item.date);
+              });  
+            } 
+            if (displaySetting.end !== null) {
+              filteredObject = filteredObject.filter((item) => {
+                return new Date(item.date) <= new Date(displaySetting.end);
+              });  
+            }
             if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
               filteredObject = filteredObject.filter((item) => {
                 return item.entity_type.toLowerCase() == displaySetting.type.toLowerCase();
@@ -151,22 +165,33 @@ const WireHistory = () => {
   
     }, [onSearchText, displaySetting]);
   
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
-
-
-
   // Get current list, pagination
   const indexOfLastItem = currentPage * itemPerPage;
   const indexOfFirstItem = indexOfLastItem - itemPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
+  const [state, setState] = useState({
+    time: new Date(),
+    isOpen: false,
+    isOpen1: false,
+    theme: 'default',
+})
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  const [value, setValue] = React.useState(0);
+  const handleToggle = (isOpen) => () => {
+      setState({ isOpen });
+  }
+  const handleToggle1 = (isOpen1) => () => {
+      setState({ isOpen1 });
+  }
+
+  const handleThemeToggle = (theme) => () => {
+      setState({ theme, isOpen: true });
+  }
+  const handleThemeToggle1 = (theme) => () => {
+      setState({ theme, isOpen1: true });
+  }
 
   return (
     <React.Fragment>
@@ -206,7 +231,101 @@ const WireHistory = () => {
                   <div className="card-title-group">
                     <div className="card-title">
                       <h5 className="title">All History</h5>
+                      <Row>
+                        <FormGroup style={{width:"30%"}} className="d-none d-md-block">
+                          <label className="form-label">Date(from)</label>
+                          <DatePicker
+                            style = {{"zIndex": "9999"}}
+                            selected={displaySetting.from}
+                            className="form-control"
+                            dateFormat="dd/MM/yyyy"
+                            onChange={(date) => {
+                                setDisplaySetting({ ...displaySetting, from: date }); 
+                              }}
+                          />
+                        </FormGroup>
+                        <FormGroup className='d-md-none'>
+                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                        <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.from, true)}/>
+                          <a
+                              style={{opacity: "0", position:"absolute", left: "0"}}
+                              className="select-btn sm"
+                              onClick={handleThemeToggle('default')}>
+                              {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
+                          </a>
+                          <DatePickerMobile
+                          // value={displaySetting.from}
+                          theme={state.theme}
+                          isOpen={state.isOpen}
+                          showCaption
+                          dateConfig={{
+                              'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
+                              },
+                              'month': {
+                                  format: 'M',
+                                  caption: 'Month',
+                                  step: 1,
+                              },
+                              'date': {
+                                  format: 'D',
+                                  caption: 'Day',
+                                  step: 1,
+                              },
+                          }}
+                          onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
+                          onCancel={handleToggle(false)} />
+                      </FormGroup>
+                        <FormGroup style={{width:"30%", marginLeft:"20px"}} className="d-none d-md-block">
+                          <label className="form-label">Date(to)</label>
+                          <DatePicker
+                            style = {{"zIndex": "9999"}}
+                            selected={displaySetting.end}
+                            className="form-control"
+                            dateFormat="dd/MM/yyyy"
+                            onChange={(date) => {
+                                setDisplaySetting({ ...displaySetting, end: date }); 
+                              }}
+                          />
+                        </FormGroup>
+                        <FormGroup className='d-md-none'  >
+                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                        <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.end, true)}/>
+                          <a
+                            style={{opacity: "0", position:"absolute", left: "0"}}
+                              className="select-btn sm"
+                              onClick={handleThemeToggle1('default')}>
+                              {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
+                          </a>
+                          <DatePickerMobile
+                          theme={state.theme}
+                          isOpen={state.isOpen1}
+                          showCaption
+                          dateConfig={{
+                              'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
+                              },
+                              'month': {
+                                  format: 'M',
+                                  caption: 'Month',
+                                  step: 1,
+                              },
+                              'date': {
+                                  format: 'D',
+                                  caption: 'Day',
+                                  step: 1,
+                              },
+                          }}
+                          onSelect={(date) => {setDisplaySetting({ ...displaySetting, end: date }); setState({isOpen1:false})}}
+                          onCancel={handleToggle1(false)} />
+                      </FormGroup>
+                    </Row>
                     </div>
+
                     <div className="card-tools mr-n1">
                       <ul className="btn-toolbar gx-1">
                         {/* <li>
