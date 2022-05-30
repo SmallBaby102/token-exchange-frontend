@@ -232,7 +232,7 @@ code {
   }
 
   .react-datepicker-popper {
-    z-index: 5!important;
+    z-index: 9999!important;
   }
   a:focus{
     color: #465fff;
