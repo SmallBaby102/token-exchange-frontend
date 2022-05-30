@@ -39,7 +39,7 @@ import Content from '../../../layout/content/Content';
 import Head from '../../../layout/head/Head';
 import { myServerApi, getAuthenticatedApi } from '../../../utils/api';
 import Helper from '../../../utils/Helper';
-import { fromStringTodateFormatter, dateFormatterAlt, dateCompare, hideEmail } from '../../../utils/Utils';
+import { fromStringTodateFormatter, dateFormatterAlt, dateCompare, hideEmail, dateFormatterWithdoutTime } from '../../../utils/Utils';
 import {
   commissionTypeOptions,
   commissionStatusOptions,
@@ -249,7 +249,7 @@ const handleThemeToggle1 = (theme) => () => {
                       </FormGroup>
                       <FormGroup className='d-md-none'>
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
-                       <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.from, true)}/>
+                       <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                         <a
                             style={{opacity: "0", position:"absolute", left: "0"}}
                             className="select-btn sm"
@@ -295,7 +295,7 @@ const handleThemeToggle1 = (theme) => () => {
                       </FormGroup>
                       <FormGroup className='d-md-none'  >
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
-                       <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.end, true)}/>
+                       <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                         <a
                           style={{opacity: "0", position:"absolute", left: "0"}}
                             className="select-btn sm"

@@ -5,11 +5,6 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineContent from '@mui/lab/TimelineContent';
 import TimelineOppositeContent from '@mui/lab/TimelineOppositeContent';
 import TimelineDot from '@mui/lab/TimelineDot';
-import PendingIcon from '@mui/icons-material/Pending';
-import ApprovalIcon from '@mui/icons-material/Approval';
-import LaptopMacIcon from '@mui/icons-material/LaptopMac';
-import HotelIcon from '@mui/icons-material/Hotel';
-import RepeatIcon from '@mui/icons-material/Repeat';
 import Typography from '@mui/material/Typography';
 import { useEffect, useState } from 'react';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
@@ -25,7 +20,7 @@ export default function CustomizedTimeline() {
   const { wireid } =  useParams();
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");
-  const [wireHistory, setWireHistory] = useState({})
+  const [wireHistory, setWireHistory] = useState(null)
   useEffect(async () => {
     dispatch(setChecking(true));
       // get report data from local db
@@ -196,7 +191,7 @@ return (
             <Col md="7" className='mt-2'>
             {
             wireHistory &&
-            <Timeline >
+              <Timeline >
               <TimelineItem>
                 <TimelineOppositeContent
                   align="right"

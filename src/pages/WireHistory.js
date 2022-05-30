@@ -40,7 +40,7 @@ import {
 import Content from '../layout/content/Content';
 import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
-import { dateFormatter, dateFormatterAlt, fromStringTodateFormatter } from '../utils/Utils';
+import { dateFormatterWithdoutTime, dateFormatterAlt, fromStringTodateFormatter } from '../utils/Utils';
 import {
   cryptoActivityOptions,
   filterStatusOptions,
@@ -246,7 +246,7 @@ const WireHistory = () => {
                         </FormGroup>
                         <FormGroup className='d-md-none'>
                         <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
-                        <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.from, true)}/>
+                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                           <a
                               style={{opacity: "0", position:"absolute", left: "0"}}
                               className="select-btn sm"
@@ -292,7 +292,7 @@ const WireHistory = () => {
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
                         <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
-                        <input style={{width:"60%"}}  value={dateFormatterAlt(displaySetting.end, true)}/>
+                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                           <a
                             style={{opacity: "0", position:"absolute", left: "0"}}
                               className="select-btn sm"

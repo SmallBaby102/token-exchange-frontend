@@ -101,6 +101,22 @@ export const dateFormatterAlt = (date, reverse) => {
   reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date = y + "/" + m + "/" + d);
   return date;
 };
+export const dateFormatterWithdoutTime = (date, reverse) => {
+  if (date === null || date === undefined) return "";
+  let d = date.getDate();
+  d = d < 10 ? "0" + d : d;
+  let m = date.getMonth() + 1;
+  m = m < 10 ? "0" + m : m;
+  let y = date.getFullYear();
+  let hh = date.getHours();
+  if (hh < 10)
+    hh = "0" + hh;
+  let mm = date.getMinutes();
+  if (mm < 10)
+    mm = "0" + mm;
+  reverse ? (date =  d + "/" + m + "/" + y) : (date = y + "/" + m + "/" + d);
+  return date;
+};
 export const dateCompare = (d1, d2) => {
   var dateformat1 = d1.split("/");
   var dateformat2 = d2.split("/");
