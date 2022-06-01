@@ -1,12 +1,11 @@
-import { DriveEtaRounded, Help, TrendingUpRounded } from '@mui/icons-material';
 import React, {
   useEffect,
   useState,
 } from 'react';
 import DatePicker from 'react-datepicker';
 
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import {
   DropdownItem,
   DropdownMenu,
@@ -19,14 +18,14 @@ import { setChecking } from '../../../actions';
 import {
   Block,
   BlockBetween,
-  BlockDes,
+  // BlockDes,
   BlockHead,
   BlockHeadContent,
   BlockTitle,
   Button,
   Col,
-  DataTable,
-  DataTableBody,
+  // DataTable,
+  // DataTableBody,
   DataTableHead,
   DataTableItem,
   DataTableRow,
@@ -37,7 +36,7 @@ import {
 } from '../../../components/Component';
 import Content from '../../../layout/content/Content';
 import Head from '../../../layout/head/Head';
-import { myServerApi, getAuthenticatedApi } from '../../../utils/api';
+import { myServerApi } from '../../../utils/api';
 import Helper from '../../../utils/Helper';
 import { fromStringTodateFormatter, dateFormatterAlt,dateFormatterWithdoutTime, dateCompare, hideEmail } from '../../../utils/Utils';
 import {
@@ -48,11 +47,11 @@ import {
  import DatePickerMobile from 'react-mobile-datepicker'
 const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName }) => {
   const dispatch = useDispatch();
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
-  const user = useSelector(state => state.user.user);
+  // const [onSearch, setonSearch] = useState(true);
+  // const [onSearchText, setSearchText] = useState("");
+  // const user = useSelector(state => state.user.user);
   const email = localStorage.getItem("username");
-  const [modalDetail, setModalDetail] = useState(false);
+  // const [modalDetail, setModalDetail] = useState(false);
   const [orderData, setOrderData] = useState([]);
   const [data, setData] = useState([]);
   const [total_commission_pending_approval, setTotal_commission_pending_approval] = useState("");
@@ -60,7 +59,6 @@ const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName 
   const [total_commission_paid, setTotal_commission_paid] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const [closeDropdown, setCloseDropdown] = useState(false);
   const [displaySetting, setDisplaySetting] = useState({
     from: null,
@@ -69,50 +67,30 @@ const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName 
     status : "All",
     paidStatus : "All",
   });
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.ref.localeCompare(b.ref));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.ref.localeCompare(a.ref));
-      setData([...sortedData]);
-    }
-  };
-  function renameKey(obj, old_key, new_key) {   
-    // check if old key = new key  
-        if (old_key !== new_key) {                  
-           Object.defineProperty(obj, new_key, // modify old key
-                                // fetch description from object
-           Object.getOwnPropertyDescriptor(obj, old_key));
-           delete obj[old_key];                // delete old key
-           }
-    }
-    useEffect(() => {
-      const myApi = myServerApi();
-      dispatch(setChecking(true));
-      // let username = "Tomtony202232@outlook.com"
-      myApi.get(`commission_report/${email}`)
-      .then(res => {
-        let temp = res.data.commission_arr;
-        temp = temp.sort((a, b) => {
-          return a.dateinserted < b.dateinserted? 1 : -1
-        })
-        setOrderData(temp);
-        setData(temp);
-        setTotal_commission_pending_approval(res.data.total_commission_pending_approval)
-        setTotal_commission_unpaid(res.data.total_commission_unpaid)
-        setTotal_commission_paid(res.data.total_commission_paid)
-        dispatch(setChecking(false));
+  useEffect(() => {
+    const myApi = myServerApi();
+    dispatch(setChecking(true));
+    // let username = "Tomtony202232@outlook.com"
+    myApi.get(`commission_report/${email}`)
+    .then(res => {
+      let temp = res.data.commission_arr;
+      temp = temp.sort((a, b) => {
+        return a.dateinserted < b.dateinserted? 1 : -1
       })
-      .catch(err => {
-        setOrderData([]);
-        setData([]);
-        dispatch(setChecking(false));
-        console.log("get commission report error", err)
-      })
-    }, [])
+      setOrderData(temp);
+      setData(temp);
+      setTotal_commission_pending_approval(res.data.total_commission_pending_approval)
+      setTotal_commission_unpaid(res.data.total_commission_unpaid)
+      setTotal_commission_paid(res.data.total_commission_paid)
+      dispatch(setChecking(false));
+    })
+    .catch(err => {
+      setOrderData([]);
+      setData([]);
+      dispatch(setChecking(false));
+      console.log("get commission report error", err)
+    })
+  }, [])
   // Changing state value when searching name
   useEffect(() => {
     if ( orderData?.length > 0) {
@@ -151,13 +129,7 @@ const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName 
     }
     
 
-  }, [onSearchText, displaySetting]);
-
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
-
+  }, [displaySetting]);
 
   // Get current list, pagination
   const indexOfLastItem = currentPage * itemPerPage;
@@ -166,20 +138,12 @@ const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName 
 
   // Change Page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  // function to toggle the search option
-  const toggle = () => setonSearch(!onSearch);
-
-  // function to toggle details modal
-  const toggleModalDetail = () => setModalDetail(!modalDetail);
-
-  const { errors, register, handleSubmit } = useForm();
- const [state, setState] = useState({
-    time: new Date(),
-    isOpen: false,
-    isOpen1: false,
-    theme: 'default',
-})
+  const [state, setState] = useState({
+      time: new Date(),
+      isOpen: false,
+      isOpen1: false,
+      theme: 'default',
+  })
 
 const handleToggle = (isOpen) => () => {
     setState({ isOpen });
@@ -250,7 +214,7 @@ const handleThemeToggle1 = (theme) => () => {
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                         <a
-                            style={{opacity: "0", position:"absolute", left: "0"}}
+                            style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle('default')}>
                             {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
@@ -295,7 +259,7 @@ const handleThemeToggle1 = (theme) => () => {
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                         <a
-                          style={{opacity: "0", position:"absolute", left: "0"}}
+                          style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle1('default')}>
                             {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}

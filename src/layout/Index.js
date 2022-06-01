@@ -54,7 +54,7 @@ const Layout = () => {
             toggleSidebar={toggleSidebar}
             mobileView={mobileView}
             theme={'theme'}
-            fixed={false}
+            fixed={true}
           />
           <Pages />
           <Footer />

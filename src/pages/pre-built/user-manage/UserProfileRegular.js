@@ -41,9 +41,13 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
   const dispatch = useDispatch();
   const myApi = myServerApi(); 
   const currentUser = useSelector((state) => state.user.user);
-  const verification_status = currentUser?.verification_status;
+  let verification_status = currentUser?.verification_status;
+  if (verification_status === null || verification_status === undefined)
+  {
+    verification_status = "0";
+  }
   const email = localStorage.getItem("username"); //useSelector((state) => state.user.user.username)
-  const { errors, register, handleSubmit, watch } = useForm();
+  const { handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     department: "Individual",

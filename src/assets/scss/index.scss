@@ -280,3 +280,8 @@ code {
 .col {
   overflow-wrap: anywhere;
 }
+@media (max-width: 575.98px){
+  .nk-block-tools-toggle .toggle-expand-content {
+    width: 80vw;
+  }
+}

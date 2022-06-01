@@ -133,6 +133,13 @@ export const resetPassword = (password, verificationCode, history) => dispatch =
     api.post(`/authentication/user_authentication/completeForgotPassword/`, data).then(res => {
         if (res.data.result) {
             toast.success('Your password has been successfully reset.');
+            const myApi = myServerApi();
+            myApi.post(`change_pap_password`, data).then(res => {
+                console.log('resetPasswordResult: ', res);
+            })
+            .catch (err => {
+                console.log('error: ', err);
+            });
             history.push('/login');
         } else {
             toast.warn('Please input the correct verification code.');

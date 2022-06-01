@@ -31,7 +31,7 @@ import {
 } from '../../../components/Component';
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
-import { fromStringTodateFormatter, dateFormatterAlt, dateCompare, hideEmail } from '../../../utils/Utils';
+import { fromStringTodateFormatter } from '../../../utils/Utils';
 
 const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress, sm, updateSm }) => {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress,
   const user = useSelector((state) => state.user.user)
   const email = user?.username;
   const [loading, setLoading] = useState(false);
-  const [fileCount, setFileCount] = useState(1);
+  // const [fileCount, setFileCount] = useState(1);
   const [addedFiles, setAddedFiles] = useState([null]);
   const [data, setData] = useState({
       verification_status : "",

@@ -47,12 +47,9 @@ import {
   filterCoin,
 } from './TransData';
 // Tab
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Helper from '../utils/Helper';
-import { useHistory, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import DatePickerMobile from 'react-mobile-datepicker'
 import DatePicker from 'react-datepicker';
 
@@ -248,7 +245,7 @@ const WireHistory = () => {
                         <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
                         <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                           <a
-                              style={{opacity: "0", position:"absolute", left: "0"}}
+                              style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                               className="select-btn sm"
                               onClick={handleThemeToggle('default')}>
                               {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
@@ -294,7 +291,7 @@ const WireHistory = () => {
                         <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
                         <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                           <a
-                            style={{opacity: "0", position:"absolute", left: "0"}}
+                            style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                               className="select-btn sm"
                               onClick={handleThemeToggle1('default')}>
                               {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}

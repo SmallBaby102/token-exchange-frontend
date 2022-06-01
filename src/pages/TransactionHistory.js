@@ -5,7 +5,6 @@ import React, {
 import DatePickerMobile from 'react-mobile-datepicker'
 import DatePicker from 'react-datepicker';
 
-import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import {
   DropdownItem,
@@ -16,8 +15,6 @@ import {
 } from 'reactstrap';
 import {
   Link,
-  Route,
-  Switch,
 } from 'react-router-dom';
 import { setChecking } from '../actions';
 import {
@@ -27,7 +24,7 @@ import {
   BlockHead,
   BlockHeadContent,
   BlockTitle,
-  Button,
+  // Button,
   Col,
   DataTable,
   DataTableBody,
@@ -42,7 +39,7 @@ import {
 import Content from '../layout/content/Content';
 import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
-import { dateFormatter,dateCompare, hideEmail, dateFormatterAlt, dateFormatterWithdoutTime, fromStringTodateFormatter, fromStringTodateTimeFormatter } from '../utils/Utils';
+import { dateFormatterAlt, dateFormatterWithdoutTime } from '../utils/Utils';
 import {
   cryptoActivityOptions,
   filterStatusOptions,
@@ -403,7 +400,6 @@ const handleThemeToggle1 = (theme) => () => {
                             dateFormat="dd/MM/yyyy"
                             onChange={(date) => {
                                 setDisplaySetting({ ...displaySetting, from: date }); 
-                                console.log(dateFormatterAlt(date, true));
                               }}
                           />
                           
@@ -411,9 +407,9 @@ const handleThemeToggle1 = (theme) => () => {
                         </FormGroup>
                         <FormGroup className='d-md-none'>
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
-                            <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
+                            <input style={{width:"60%"}}  readOnly={true} value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                             <a
-                                style={{opacity: "0", position:"absolute", left: "0"}}
+                                style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                                 className="select-btn sm"
                                 onClick={handleThemeToggle('default')}>
                                 {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
@@ -456,9 +452,9 @@ const handleThemeToggle1 = (theme) => () => {
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
-                            <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
+                            <input style={{width:"60%"}} readOnly={true} value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                             <a
-                              style={{opacity: "0", position:"absolute", left: "0"}}
+                              style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                                 className="select-btn sm"
                                 onClick={handleThemeToggle1('default')}>
                                 {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
@@ -585,7 +581,7 @@ const handleThemeToggle1 = (theme) => () => {
                     <DataTableRow >
                       <span>Type</span>
                     </DataTableRow>
-                    <DataTableRow >
+                    <DataTableRow size="sm">
                       <span>Currency</span>
                     </DataTableRow>
                     <DataTableRow className="text-right">
@@ -629,7 +625,7 @@ const handleThemeToggle1 = (theme) => () => {
                                 {item.entity_type}
                               </span>
                             </DataTableRow>
-                            <DataTableRow>
+                            <DataTableRow size="sm">
                                   <span className="tb-type">{item.product_id}</span>
                             </DataTableRow>
                             <DataTableRow className="text-right">

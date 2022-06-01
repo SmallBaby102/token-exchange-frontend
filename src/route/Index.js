@@ -6,7 +6,6 @@ import Dashboard from "../pages/Dashboard";
 import Welcome from "../pages/LeaderBoardWelcome";
 import Faq from "../pages/Faq";
 import MyWallet from "../pages/MyWallet";
-import Leaderboard from "../pages/Leaderboard";
 import CompleteProfile from '../pages/auth/CompleteProfile';
 import CompleteProfile2 from '../pages/auth/CompleteProfile2';
 import InvestHomePage from '../pages/Invest';

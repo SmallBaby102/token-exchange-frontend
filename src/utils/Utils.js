@@ -123,11 +123,11 @@ export const dateCompare = (d1, d2) => {
   if (dateformat1[2] > dateformat2[2]) {
     return true;
   }
-  if (dateformat1[2] == dateformat2[2]) {
+  if (dateformat1[2] === dateformat2[2]) {
     if (dateformat1[1] > dateformat2[1]) {
       return true;
     }
-    if (dateformat1[1] == dateformat2[1]) {
+    if (dateformat1[1] === dateformat2[1]) {
       if (dateformat1[0] > dateformat2[0]) {
         return true;
       }
@@ -173,6 +173,8 @@ export const fromStringTodatetimeFormatter = (date, reverse, string) => {
   if (hh < 10)
     hh = "0"+hh;
   let mm = date.getMinutes();
+  if (mm < 10)
+    mm = "0"+mm;
   reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date = y + "/" + m + "/" + d);
   return date;
 };

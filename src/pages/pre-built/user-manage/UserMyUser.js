@@ -1,12 +1,11 @@
-import { Help, TrendingUpRounded } from '@mui/icons-material';
 import React, {
   useEffect,
   useState,
 } from 'react';
 import DatePicker from 'react-datepicker';
 
-import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import {
   DropdownItem,
   DropdownMenu,
@@ -24,8 +23,8 @@ import {
   BlockHeadContent,
   BlockTitle,
   Button,
-  Col,
-  DataTable,
+  // Col,
+  // DataTable,
   DataTableBody,
   DataTableHead,
   DataTableItem,
@@ -33,32 +32,25 @@ import {
   Icon,
   PaginationComponent,
   Row,
-  RSelect,
 } from '../../../components/Component';
 import Content from '../../../layout/content/Content';
 import Head from '../../../layout/head/Head';
-import { myServerApi, getAuthenticatedApi } from '../../../utils/api';
+import { myServerApi } from '../../../utils/api';
 import Helper from '../../../utils/Helper';
 import { fromStringTodateFormatter, dateFormatterAlt, dateCompare, hideEmail, dateFormatterWithdoutTime } from '../../../utils/Utils';
-import {
-  commissionTypeOptions,
-  commissionStatusOptions,
-  commissionPaidStatusOptions,
-} from '../../TransData';
 import DatePickerMobile from 'react-mobile-datepicker'
  
 const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
   const dispatch = useDispatch();
-  const [onSearch, setonSearch] = useState(true);
-  const [onSearchText, setSearchText] = useState("");
-  const user = useSelector(state => state.user.user);
+  // const [onSearch, setonSearch] = useState(true);
+  // const [onSearchText, setSearchText] = useState("");
+  // const user = useSelector(state => state.user.user);
   const email = localStorage.getItem("username");
   const [modalDetail, setModalDetail] = useState(false);
   const [orderData, setOrderData] = useState("");
   const [data, setData] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const [displaySetting, setDisplaySetting] = useState({
     from: null,
     end: null,
@@ -69,46 +61,27 @@ const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
     status : "",
     paidStatus : "",
   });
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.ref.localeCompare(b.ref));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.ref.localeCompare(a.ref));
-      setData([...sortedData]);
-    }
-  };
-  function renameKey(obj, old_key, new_key) {   
-    // check if old key = new key  
-        if (old_key !== new_key) {                  
-           Object.defineProperty(obj, new_key, // modify old key
-                                // fetch description from object
-           Object.getOwnPropertyDescriptor(obj, old_key));
-           delete obj[old_key];                // delete old key
-           }
-    }
-    useEffect(() => {
-      if (data.length > 0 ) return;
-      const myApi = myServerApi();
-      dispatch(setChecking(true));
-      // let username = "Tomtony202232@outlook.com"
-      myApi.get(`commission_myuser/${email}`)
-      .then(res => {
-        let temp = res.data.commission_arr;
-        temp = temp.sort((a, b) => {
-          return a.dateinserted < b.dateinserted? 1 : -1
-        })
-        setOrderData(temp);
-        setData(temp);
-        dispatch(setChecking(false));
+
+  useEffect(() => {
+    if (data.length > 0 ) return;
+    const myApi = myServerApi();
+    dispatch(setChecking(true));
+    // let username = "Tomtony202232@outlook.com"
+    myApi.get(`commission_myuser/${email}`)
+    .then(res => {
+      let temp = res.data.commission_arr;
+      temp = temp.sort((a, b) => {
+        return a.dateinserted < b.dateinserted? 1 : -1
       })
-      .catch(err => {
-        dispatch(setChecking(false));
-        console.log("get commission user error", err)
-      })
-    }, [])
+      setOrderData(temp);
+      setData(temp);
+      dispatch(setChecking(false));
+    })
+    .catch(err => {
+      dispatch(setChecking(false));
+      console.log("get commission user error", err)
+    })
+  }, [])
   // Changing state value when searching name
   useEffect(() => {
     if ( orderData?.length > 0) {
@@ -126,35 +99,35 @@ const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
           // 
           if (displaySetting.tier1 && displaySetting.tier2 && displaySetting.tier3) {
             filteredObject = filteredObject.filter((item) => {
-              return (item.type.toLowerCase() == "tier1".toLowerCase() || item.type.toLowerCase() == "tier2".toLowerCase() || item.type.toLowerCase() == "tier3".toLowerCase());
+              return (item.type.toLowerCase() === "tier1".toLowerCase() || item.type.toLowerCase() === "tier2".toLowerCase() || item.type.toLowerCase() === "tier3".toLowerCase());
             }); 
           }else{
               if (displaySetting.tier2 && displaySetting.tier1) {
                 filteredObject = filteredObject.filter((item) => {
-                  return (item.type.toLowerCase() == "tier2".toLowerCase() || item.type.toLowerCase() == "tier1".toLowerCase());
+                  return (item.type.toLowerCase() === "tier2".toLowerCase() || item.type.toLowerCase() === "tier1".toLowerCase());
                 });  
               }else{
                 console.log("else")
                 if (displaySetting.tier3 && displaySetting.tier1) {
                   filteredObject = filteredObject.filter((item) => {
-                    return (item.type.toLowerCase() == "tier3".toLowerCase() || item.type.toLowerCase() == "tier1".toLowerCase());
+                    return (item.type.toLowerCase() === "tier3".toLowerCase() || item.type.toLowerCase() === "tier1".toLowerCase());
                   });  
                 } else if (displaySetting.tier2 && displaySetting.tier3) {
                   filteredObject = filteredObject.filter((item) => {
-                    return (item.type.toLowerCase() == "tier2".toLowerCase() || item.type.toLowerCase() == "tier3".toLowerCase());
+                    return (item.type.toLowerCase() === "tier2".toLowerCase() || item.type.toLowerCase() === "tier3".toLowerCase());
                   });  
                 } else if (displaySetting.tier1) {
                   filteredObject = filteredObject.filter((item) => {
-                    return (item.type.toLowerCase() == "tier1".toLowerCase());
+                    return (item.type.toLowerCase() === "tier1".toLowerCase());
                   });
                 } else if (displaySetting.tier2) {
                   filteredObject = filteredObject.filter((item) => {
-                    return (item.type.toLowerCase() == "tier2".toLowerCase());
+                    return (item.type.toLowerCase() === "tier2".toLowerCase());
                   });
                 } else if (displaySetting.tier3) {
                   console.log("tier3")
                   filteredObject = filteredObject.filter((item) => {
-                    return (item.type.toLowerCase() == "tier3".toLowerCase());
+                    return (item.type.toLowerCase() === "tier3".toLowerCase());
                   });
                 }
               } 
@@ -163,12 +136,7 @@ const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
     }
     
 
-  }, [onSearchText, displaySetting]);
-
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
+  }, [displaySetting]);
 
 
   // Get current list, pagination
@@ -180,12 +148,6 @@ const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   // function to toggle the search option
-  const toggle = () => setonSearch(!onSearch);
-
-  // function to toggle details modal
-  const toggleModalDetail = () => setModalDetail(!modalDetail);
-
-  const { errors, register, handleSubmit } = useForm();
   const [state, setState] = useState({
       time: new Date(),
       isOpen: false,
@@ -251,7 +213,7 @@ const handleThemeToggle1 = (theme) => () => {
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                         <a
-                            style={{opacity: "0", position:"absolute", left: "0"}}
+                            style={{opacity: "0",width:"60%", zIndex:"9999", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle('default')}>
                             {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
@@ -297,7 +259,7 @@ const handleThemeToggle1 = (theme) => () => {
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                         <a
-                          style={{opacity: "0", position:"absolute", left: "0"}}
+                          style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle1('default')}>
                             {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}

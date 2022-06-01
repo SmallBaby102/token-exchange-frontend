@@ -1,16 +1,16 @@
 /* eslint-disable no-useless-escape */
 const CLIENT_ACCESS_TOKEN = "client_access_token";
 const CLIENT_REFRESH_TOKEN = "client_refresh_token";
-const CLIENT_USER_ID = "client_user_id";
+// const CLIENT_USER_ID = "client_user_id";
 const CLIENT_USERNAME = "client_username";
 const REFRESH_TOKEN = "exchange_refresh_token";
 const TOKEN_KEY = "exchange_access_token";
 const EXPIRES_IN = "expires_in";
 const USER_ID = "user_id";
 const USERNAME = "username";
-const NOT_APPROVED = "0";
-const PENDING = "1";
-const COMPLETED = "2";
+// const NOT_APPROVED = "0";
+// const PENDING = "1";
+// const COMPLETED = "2";
 
 export const  CONFIGURATOR_USERNAME = "PlusqoAdmin2";
 export const CONFIGURATOR_PASSWORD = "fY2ADeHDFkpVq%J18gaq";
@@ -114,7 +114,7 @@ class Helper {
     }
     var string = String(t);
     var decimal = "";
-    if (string.substr(0, string.indexOf(".")) == -1|| string.substr(0, string.indexOf(".")) == "") {
+    if (string.substr(0, string.indexOf(".")) === -1|| string.substr(0, string.indexOf(".")) === "") {
       for (let index = 0; index < n; index++) {
         decimal += "0";
       }   
