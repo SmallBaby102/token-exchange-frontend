@@ -284,7 +284,9 @@ code {
   // z-index: 9999;
   position: absolute;
 }
-
+.nk-header-fixed + .nk-content {
+  margin-top: 100px!important;
+}
 @media (max-width: 575.98px){
   .nk-block-tools-toggle .toggle-expand-content {
     width: 80vw;
