@@ -597,10 +597,11 @@ export const commissionPaidStatusOptions = [
 
 export const filterStatusOptions = [
   { value: "All", label: "All" },
-  { value: "Pending", label: "Pending" },
-  { value: "Rejected", label: "Rejected" },
-  { value: "Upcoming", label: "Upcoming" },
-  { value: "Completed", label: "Completed" },
+  { value: "0", label: "Pending" },
+  { value: "1", label: "Approved" },
+  { value: "2", label: "Processing" },
+  { value: "3", label: "Completed" },
+  { value: "9", label: "Decline" },
 ];
 
 export const filterCoin = [

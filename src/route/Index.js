@@ -15,6 +15,7 @@ import AdminRoute from "./AdminRoute";
 import Users from '../pages/Users';
 import UserProfileLayout from "../pages/pre-built/user-manage/UserProfileLayout";
 import AffiliateLayout from "../pages/pre-built/user-manage/AffiliateLayout";
+import Security from "../pages/pre-built/user-manage/Security";
 import TransactionHistory from "../pages/TransactionHistory";
 import WireHistory from "../pages/WireHistory";
 import WireHistoryDetail from "../pages/WireHistoryDetail";
@@ -52,6 +53,8 @@ const Pages = () => {
         <Route exact path={`${process.env.PUBLIC_URL}/user-affiliate/`} component={AffiliateLayout}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/user-myuser/`} component={AffiliateLayout}></Route>
         <Route exact path={`${process.env.PUBLIC_URL}/user-commission-report/`} component={AffiliateLayout}></Route>
+
+        <Route exact path={`${process.env.PUBLIC_URL}/security`} component={Security}></Route>
 
         <Route component={RedirectAs404}></Route>
       </Switch>

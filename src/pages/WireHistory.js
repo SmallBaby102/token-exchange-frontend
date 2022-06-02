@@ -77,33 +77,12 @@ const WireHistory = () => {
   });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const [displaySetting, setDisplaySetting] = useState({
     from: null,
     end: null,
     type : "",
-    currency : "",
+    status : "All",
   });
-  // Sorting data
-  const sortFunc = (params) => {
-    let defaultData = data;
-    if (params === "asc") {
-      let sortedData = defaultData.sort((a, b) => a.ref.localeCompare(b.ref));
-      setData([...sortedData]);
-    } else if (params === "dsc") {
-      let sortedData = defaultData.sort((a, b) => b.ref.localeCompare(a.ref));
-      setData([...sortedData]);
-    }
-  };
-  function renameKey(obj, old_key, new_key) {   
-    // check if old key = new key  
-        if (old_key !== new_key) {                  
-           Object.defineProperty(obj, new_key, // modify old key
-                                // fetch description from object
-           Object.getOwnPropertyDescriptor(obj, old_key));
-           delete obj[old_key];                // delete old key
-           }
-    }
   // Changing state value when searching name
   useEffect(async () => {
       const secureApi = getAuthenticatedApi();
@@ -131,7 +110,7 @@ const WireHistory = () => {
     // Changing state value when searching name
     useEffect(() => {
       if ( orderData?.length > 0) {
-        if (displaySetting.from !== null || displaySetting.end !== null || displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
+        if (displaySetting.from !== null || displaySetting.end !== null || displaySetting.status !== "") {
             let filteredObject = orderData;
             if (displaySetting.from !== null) {
               filteredObject = filteredObject.filter((item) => {
@@ -143,14 +122,10 @@ const WireHistory = () => {
                 return new Date(item.date) <= new Date(displaySetting.end);
               });  
             }
-            if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
+            console.log("Ss", displaySetting.status)
+            if (displaySetting.status !== "" &&  displaySetting.status !== "All") {
               filteredObject = filteredObject.filter((item) => {
-                return item.entity_type.toLowerCase() == displaySetting.type.toLowerCase();
-              });  
-            }
-            if (displaySetting.currency !== "" &&  displaySetting.currency !== "All") {
-              filteredObject = filteredObject.filter((item) => {
-                return item.product_id.toLowerCase() == displaySetting.currency.toLowerCase();
+                return item.status.toLowerCase() === displaySetting.status.toLowerCase();
               });  
             }
             setData([...filteredObject]);
@@ -353,20 +328,20 @@ const WireHistory = () => {
                                   </Button>
                                 </div> */}
                               </div>
-                              <div className="dropdown-body dropdown-body-rg" style={{height: "250px"}}>
+                              <div className="dropdown-body dropdown-body-rg" style={{height: "250px", overflow: "scroll"}}>
                                 <Row className="gx-6 gy-4" >
                                   <Col size="6">
                                     <FormGroup>
-                                      <label className="overline-title overline-title-alt">Type</label>
-                                      <RSelect options={cryptoActivityOptions} onChange={(e) => setDisplaySetting({...displaySetting, type: e.value})} placeholder="Any Activity" />
+                                      <label className="overline-title overline-title-alt">Status</label>
+                                      <RSelect options={filterStatusOptions} defaultValue={{value: displaySetting.status, label: displaySetting.status === "0" ? "Pending" : (displaySetting.status === "1" ? "Approved": displaySetting.status === "2" ? "Processing" : displaySetting.status === "3" ? "Completed" : "Decline")}} onChange={(e) => setDisplaySetting({...displaySetting, status: e.value})} placeholder="Any Status" />
                                     </FormGroup>
                                   </Col>
-                                  <Col size="6">
+                                  {/* <Col size="6">
                                     <FormGroup className="form-group">
                                       <label className="overline-title overline-title-alt">Currency</label>
                                       <RSelect options={filterCoin} placeholder="Any coin" onChange={(e) => setDisplaySetting({...displaySetting, currency: e.value})} />
                                     </FormGroup>
-                                  </Col> 
+                                  </Col>  */}
                                 </Row>
                               </div>
                             </DropdownMenu>
@@ -482,6 +457,7 @@ const WireHistory = () => {
                                 } d-md-none`}
                               ></div> */}
                               <span
+                                style={{width: "80px", justifyContent: "center"}}
                                 className={`badge badge-sm badge-dim badge-outline-${
                                   item.status === "0"
                                     ? "warning"

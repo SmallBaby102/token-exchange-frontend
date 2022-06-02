@@ -280,8 +280,14 @@ code {
 .col {
   overflow-wrap: anywhere;
 }
+.react-select__menu {
+  // z-index: 9999;
+  position: absolute;
+}
+
 @media (max-width: 575.98px){
   .nk-block-tools-toggle .toggle-expand-content {
     width: 80vw;
   }
 }
+

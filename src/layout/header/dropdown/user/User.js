@@ -78,6 +78,17 @@ const User = () => {
         </div>
         <div className="dropdown-inner">
           <LinkList>
+            <LinkItem
+              link="/security"
+              icon="shield"
+              onClick={toggle}
+            >
+              Security
+            </LinkItem>
+          </LinkList>
+        </div>
+        <div className="dropdown-inner">
+          <LinkList>
             <Link to="#" onClick={() => { clearInterval(accountIntervalId); clearInterval(quoteIntervalId); dispatch(logout(history)); } }>
               <Icon name="signout"></Icon>
               <span>Sign Out</span>
