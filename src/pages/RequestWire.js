@@ -738,7 +738,7 @@ const RequestWire = () => {
       <Content>
         <BlockHead size="lg">
             <BlockHeadContent className="text-center">
-              <BlockTitle tag="h4" className="mt-4">USD Wire Withdrawal</BlockTitle>
+              <BlockTitle tag="h4" className="">USD Wire Withdrawal</BlockTitle>
             </BlockHeadContent>
         </BlockHead>
 

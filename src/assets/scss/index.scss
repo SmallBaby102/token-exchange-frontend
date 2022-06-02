@@ -245,7 +245,7 @@ code {
   height: 160px;
 }
 .nk-content {
-  padding: 24px 35px 21px 14px;
+  padding: 44px 35px 21px 14px;
 }
 .react-datepicker-popper[data-placement^=bottom] {
   padding-top: 10px;
@@ -284,9 +284,7 @@ code {
   // z-index: 9999;
   position: absolute;
 }
-.container-xl {
-  margin-top: 20px!important;
-}
+
 @media (max-width: 575.98px){
   .nk-block-tools-toggle .toggle-expand-content {
     width: 80vw;

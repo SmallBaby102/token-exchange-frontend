@@ -961,41 +961,6 @@ const Dashboard = () => {
     <React.Fragment>
       <Head title="Dashboard"></Head>
       <Content size="lg">
-        <BlockHead>
-          <BlockBetween className="g-3">
-            <BlockHeadContent>
-              {/* <BlockHeadSub>Welcome!</BlockHeadSub>
-              <div className="align-center flex-wrap pb-2 gx-4 gy-3">
-                <div>
-                  <BlockTitle tag="h2" className="fw-normal">
-                    { user?.name }
-                  </BlockTitle>
-                </div>
-               
-              </div>
-              <BlockDes>
-                <p>Have a great day here</p>
-              </BlockDes> */}
-            </BlockHeadContent>
-            {/* <BlockHeadContent className="d-none d-md-block">
-              <div className="nk-slider nk-slider-s1">
-                <Slider {...settings}>
-                  <div className="nk-iv-wg1">
-                    <div className="nk-iv-wg1-sub sub-text">Your Global Rank</div>
-                    <h6 className="nk-iv-wg1-info title">SILVER - 79%</h6>
-                    <a href="#slide" onClick={(ev) => ev.preventDefault()} className="nk-iv-wg1-link link link-light">
-                      <span>Check Details</span>
-                    </a>
-                    <div className="nk-iv-wg1-progress">
-                      <div className="progress-bar bg-primary" style={{ width: "100%" }}></div>
-                    </div>
-                  </div>
-                </Slider>
-              </div>
-            </BlockHeadContent> */}
-          </BlockBetween>
-        </BlockHead>
-
         <Block>
             <Row>
             <Col md="6" lg="4">
