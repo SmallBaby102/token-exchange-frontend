@@ -1115,6 +1115,7 @@ const RequestWire = () => {
                       </Label>
                           <div className="form-control-wrap">
                               <select id="bank_country" name="bank_country" value={formData.bank_country} className="form-control"
+                                onChange={e => setFormData({...formData, bank_country: e.target.value})}
                                 ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a bank country` })}
                               >
                                   <option value="noselect" >Select a bank country</option>
