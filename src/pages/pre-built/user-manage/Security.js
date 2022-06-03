@@ -63,10 +63,10 @@ const SecurityLayout = () => {
       let res = await axios.request(options);
       flag =  res.data
     }
-    // if (flag === "False"){
-    //   toast.warn("Please input correct credential");
-    //   return;
-    // }
+    if (flag === "False"){
+      toast.warn("Please input correct credential");
+      return;
+    }
     let status = 0;
     let login = 0;
     let withdraw = 0;
@@ -183,7 +183,7 @@ const SecurityLayout = () => {
           <Row>
             <Col md={6}>
                 <label>Current status : </label>
-                <label className='ml-5'> { security.status === 1 ? "Enable": "Disable"}</label>
+                <label className='ml-5' style={{fontWeight: "bold"}}> { security.status === 1 ? "Enable": "Disable"}</label>
             </Col>
           </Row>
           {security.status === 0 ? <Row>          
@@ -278,12 +278,12 @@ const SecurityLayout = () => {
           }
 
           <Row className="mt-3">
-            <Col md={12}>
-              <label className="">
+            <div className='mb-3' style={{width: "100%", borderBottom: "1px solid darkgray"}}>
+              {/* <label className="">
                   Disable 2FA
-              </label>
-            </Col>
-            <Col md={6}>
+              </label> */}
+            </div>
+            <Col md={6} >
                 <FormGroup style={{width: "70%"}}>
                   <div className="form-label-group">
                     <label className="form-label" htmlFor="default-01">
