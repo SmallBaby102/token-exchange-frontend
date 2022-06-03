@@ -61,6 +61,7 @@ import axios from 'axios';
 
 import { projectData } from './ProjectData';
 import { Link } from 'react-router-dom';
+let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
 
 const MyWallet = () => {
   const history = useHistory();
@@ -91,6 +92,7 @@ const MyWallet = () => {
     sell: false,
     sellConfirm: false,
     withdrawConfirm: false,
+    auth: false,
   });
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState(projectData);
@@ -117,6 +119,9 @@ const MyWallet = () => {
       status: false,
       message: ""
   })
+  const [errorsf, setErrorsf] = useState({
+    authfield: { status: false, message : "Must be only alphabetic characters",},
+  });
   const [formData, setFormData] = useState({
     product: "",
     amount_withdraw: "",
@@ -153,6 +158,8 @@ const MyWallet = () => {
     eth: 5,
     usdt: null,
   })
+  const [secret_val, setSecret_val] = useState("")
+  const [authCode, setAuthCode] = useState("")
   const accounts = useSelector(state => state.user.accounts);
   const pairPriceArr = useSelector(state => state.user.quote);
   
@@ -210,72 +217,191 @@ const MyWallet = () => {
     setModal({...modal, ...{ withdrawConfirm : true}});
     
   };
-  const onWithdrawConfirmSubmit = () => {
+  const onWithdrawConfirmSubmit = async () => {
     if(loading)
         return;
-    setModal({...modal, ...{withdrawConfirm : false}});
-   
-    const secureApi = getAuthenticatedApi();
-    let data = {
-      exchange: "PLUSQO",
-      product: formData.product,
-      amount:  formData.amount_withdraw,
-      address: formData.address_withdraw,
-      // code: '',
-      // network: "Stellar"
-    }
-    // dispatch(setChecking(true));
- 
-    setLoading(true)
-    secureApi.post(`/wallet/withdraw/create`, data).then(res => {
-        if (res && res.data && res.data.success) {
-          secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
-            setLoading(false)
-            if (response.data.success) {
-              setWithdrawFinish(1);
-
-              toast.success("Successfully Withdrawed");
-              // setModal({ withdraw: false });
-              dispatch(setChecking(false))
-              let exchange_access_token =localStorage.getItem("exchange_access_token")
-              if (exchange_access_token !== null && exchange_access_token !== "") {
-                Http.getAccounts(exchange_access_token)
-                .then((response) => {
-                    if (response.message === "Unauthorized"){
-                      history.push("auth-login");
-                      dispatch(setChecking(false));
-                      return;
-                    }
-                    // setModal({ sell: false });
-                    setLoading(false);
-                    dispatch(setAccounts(response));
-                  })
-              }else{
-                // history.push("auth-login")
-              }
-              let withdrawInfo = {
-                  ...data,
-                  email: email,
-              };
-              myApi.post("/withdraw", withdrawInfo)
-              .then( res => {
-                
-              })
-              .catch()
-            } else {
-              setWithdrawFinish(2);
-              toast.error("Server not response");
-            }
-            dispatch(setChecking(false))
-
-          })
+        const myApi = myServerApi();
+      let security = await myApi.get(`security/${email}`)
+      let twoFactor = security.data.data;
+      setLoading(false);
+      if (twoFactor.status === 1 && twoFactor.withdraw === 1){
+        setModal({...modal, auth: true});
+        const options = {
+          method: 'GET',
+          url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
+          headers: {
+            'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+            'X-RapidAPI-Key': RapidAPIKey
+          }
+        };
+    
+        axios.request(options).then(function (response) {
+            setSecret_val(response.data);
+            // const options = {
+            //   method: 'GET',
+            //   url: 'https://google-authenticator.p.rapidapi.com/enroll/',
+            //   params: {secret: response.data, issuer: 'Cryptowire', account: email},
+            //   headers: {
+            //     'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+            //     'X-RapidAPI-Key': RapidAPIKey
+            //   }
+            // };
+    
+            // axios.request(options).then(function (res) {
+            //     setEnrollUrl(res.data);
+            // }).catch(function (error) {
+            //   console.error(error);
+            // });
+        }).catch(function (error) {
+          console.error(error);
+        });
+      } else {
+        setModal({...modal, ...{withdrawConfirm : false}});
+      
+        const secureApi = getAuthenticatedApi();
+        let data = {
+          exchange: "PLUSQO",
+          product: formData.product,
+          amount:  formData.amount_withdraw,
+          address: formData.address_withdraw,
+          // code: '',
+          // network: "Stellar"
         }
-    }).catch(err => {
-      setWithdrawFinish(2);
-      toast.error(err.response.data.message);
+        // dispatch(setChecking(true));
+    
+        setLoading(true)
+        secureApi.post(`/wallet/withdraw/create`, data).then(res => {
+            if (res && res.data && res.data.success) {
+              secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
+                setLoading(false)
+                if (response.data.success) {
+                  setWithdrawFinish(1);
+
+                  toast.success("Successfully Withdrawed");
+                  // setModal({ withdraw: false });
+                  dispatch(setChecking(false))
+                  let exchange_access_token =localStorage.getItem("exchange_access_token")
+                  if (exchange_access_token !== null && exchange_access_token !== "") {
+                    Http.getAccounts(exchange_access_token)
+                    .then((response) => {
+                        if (response.message === "Unauthorized"){
+                          history.push("auth-login");
+                          dispatch(setChecking(false));
+                          return;
+                        }
+                        // setModal({ sell: false });
+                        setLoading(false);
+                        dispatch(setAccounts(response));
+                      })
+                  }else{
+                    // history.push("auth-login")
+                  }
+                  let withdrawInfo = {
+                      ...data,
+                      email: email,
+                  };
+                  myApi.post("/withdraw", withdrawInfo)
+                  .then( res => {
+                    
+                  })
+                  .catch()
+                } else {
+                  setWithdrawFinish(2);
+                  toast.error("Server not response");
+                }
+                dispatch(setChecking(false))
+
+              })
+            }
+        }).catch(err => {
+          setWithdrawFinish(2);
+          toast.error(err.response.data.message);
+            setLoading(false)
+            console.log('error: ', err);
+        });
+      }
+  };
+  const confirmWithdraw = async () => {
+    if(loading)
+        return;
+    let flag = "False";
+    const options = {
+      method: 'GET',
+      url: 'https://google-authenticator.p.rapidapi.com/validate/',
+      params: {code: authCode, secret: secret_val},
+      headers: {
+        'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+        'X-RapidAPI-Key': RapidAPIKey
+      }
+    };
+    let response = await axios.request(options);
+    flag =  response.data
+    if (flag === "False")
+    {
+      toast.warn("Please input correct code");
+      return;
+    }
+      setModal({...modal, ...{auth : false}});
+      const secureApi = getAuthenticatedApi();
+      let data = {
+        exchange: "PLUSQO",
+        product: formData.product,
+        amount:  formData.amount_withdraw,
+        address: formData.address_withdraw,
+        // code: '',
+        // network: "Stellar"
+      }
+      // dispatch(setChecking(true));
+      setLoading(true)
+      secureApi.post(`/wallet/withdraw/create`, data).then(res => {
+          if (res && res.data && res.data.success) {
+            secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
+              setLoading(false)
+              if (response.data.success) {
+                setWithdrawFinish(1);
+
+                toast.success("Successfully Withdrawed");
+                // setModal({ withdraw: false });
+                dispatch(setChecking(false))
+                let exchange_access_token =localStorage.getItem("exchange_access_token")
+                if (exchange_access_token !== null && exchange_access_token !== "") {
+                  Http.getAccounts(exchange_access_token)
+                  .then((response) => {
+                      if (response.message === "Unauthorized"){
+                        history.push("auth-login");
+                        dispatch(setChecking(false));
+                        return;
+                      }
+                      // setModal({ sell: false });
+                      setLoading(false);
+                      dispatch(setAccounts(response));
+                    })
+                }else{
+                  // history.push("auth-login")
+                }
+                let withdrawInfo = {
+                    ...data,
+                    email: email,
+                };
+                myApi.post("/withdraw", withdrawInfo)
+                .then( res => {
+                  
+                })
+                .catch()
+              } else {
+                setWithdrawFinish(2);
+                toast.error("Server not response");
+              }
+              dispatch(setChecking(false))
+
+            })
+          }
+      }).catch(err => {
+        setWithdrawFinish(2);
+        toast.error(err.response.data.message);
         setLoading(false)
         console.log('error: ', err);
-    });
+      });
   };
   const onSellSubmit = () => {
     if(loading)
@@ -1627,6 +1753,83 @@ const MyWallet = () => {
           </ModalBody>
         </Modal>
       </Content>
+      <Modal isOpen={modal.auth} toggle={() => setModal({ auth: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+          <ModalBody>
+            <a
+              href="#cancel"
+              onClick={(ev) => {
+                ev.preventDefault();
+                setModal({ auth: false });
+              }}
+              className="close"
+            >
+              <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <div className="">
+                <Form className="row gy-4" onSubmit={handleSubmit(confirmWithdraw)}>
+                  <Col md="12">
+                    <FormGroup>
+                        <label className="form-label" htmlFor="default-01">
+                          Input 2FA code
+                        </label>
+                        <div className="form-control-wrap">
+                          <input
+                            type="text"
+                            id="default-01"
+                            name="authcode"
+                            value={authCode}
+                            placeholder="Enter your code"
+                            className="form-control-lg form-control"
+                            onChange={ e => {
+                              // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
+                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                              setAuthCode(e.target.value); 
+                              if (e.target.value === "")  
+                              setErrorsf({
+                                ...errorsf, emailfield: {status:true}
+                              });
+                              else {
+                                setErrorsf({...errorsf, emailfield: {status:false}})
+                              }
+                            } else 
+                              setErrorsf({
+                                ...errorsf, emailfield: {status:true}
+                              })
+                            }}
+                          />
+                          {errorsf.authfield.status && <p className="invalid">This field is required</p>}
+                    
+                        </div>
+                    </FormGroup>
+                  </Col>
+                 <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="button" onClick={confirmWithdraw}>
+                          Confirm
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            setModal({...modal, auth: false});
+                          }}
+                          className="link link-light"
+                        >
+                          
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
+                </Form>
+              </div>
+            </div>
+          </ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };

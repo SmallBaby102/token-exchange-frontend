@@ -7,8 +7,11 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
   Alert,
+  Col,
   Form,
   FormGroup,
+  Modal,
+  ModalBody,
   Spinner,
 } from 'reactstrap';
 
@@ -37,6 +40,8 @@ import Http from '../../utils/Http';
 import AuthFooter from './AuthFooter';
 import LogoComp from './Logo';
 import { useCookies } from 'react-cookie';
+import axios from 'axios';
+let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
 const Login = () => {
   const [cookies, setCookie] = useCookies();
   const [loading, setLoading] = useState(false);
@@ -48,12 +53,103 @@ const Login = () => {
   const quoteIntervalId = useSelector(state => state.user.quoteIntervalId);
   const [email, setEmail] = useState("")
   const currentPath = useSelector(state => state.user.currentPath)
+  const [secret_val, setSecret_val] = useState("")
+  const [tempForLogin, setTempForLogin] = useState();
+  const [data, setData] = useState()
+  const [modal, setModal] = useState({
+    auth: false,
+  });
+  const [authCode, setAuthCode] = useState("")
   const [errorsf, setErrorsf] = useState({
     emailfield: { status: false, message : "Please input correct email address",},
     password: { status: false, message : "Must be only alphabetic characters",},
+    authfield: { status: false, message : "Must be only alphabetic characters",},
   });
+  const confirmLogin = async () => {
+    if (authCode === ""){
+      setErrorsf({...errorsf, authfield: {status: true}});
+      return;
+    }
+    let flag = "False";
+    const options = {
+      method: 'GET',
+      url: 'https://google-authenticator.p.rapidapi.com/validate/',
+      params: {code: authCode, secret: secret_val},
+      headers: {
+        'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+        'X-RapidAPI-Key': RapidAPIKey
+      }
+    };
+    let response = await axios.request(options);
+    flag =  response.data
+    if (flag !== "False"){
+        let res = tempForLogin;
+        Helper.storeUser(res);
+        // const role = res.data.user.role;
+        // const pStep = res.data.user.user.profile_complete_step;
+        // if (pStep === 0) {
+          // history.push('/dashboard');
+        console.log("currentpath", currentPath)
+        let nextPath = currentPath;
+        if (nextPath === null || nextPath === "/auth-login"  )
+            nextPath = "/dashboard"
+        history.push(nextPath);
+        let registerData = {
+            email: email,
+            password: data.passcode,
+            firstname: email,
+            lastname: email,
+            papCookie: data.papCookie,
+            AffRefId: cookies.PAPAffiliateId || " ",
+            pap_visitorId: cookies.PAPVisitorId || " ",
+          }
+          const myApi = myServerApi();
+          myApi.post("signinAffiliate", registerData)
+          .then( (res) => {
+          })
+          .catch( err => [
+
+          ])
+      
+      // } else if (pStep === 1) {
+      //   history.push('/onboarding2');
+      // } else {
+        dispatch(setCurrentUser({ ...res}));
+        Http.getAccounts(res.exchange_access_token)
+        .then((response) => {
+          if (response.message === "Unauthorized"){
+            history.push("auth-login");
+            dispatch(setChecking(false));
+            return;
+          }
+          dispatch(setAccounts(response));
+          dispatch(setChecking(false));
+          
+        })
+        .catch(e =>{
+            toast.error(e.response.message);
+            dispatch(setChecking(false));
+        })
+        api.get("exchange/quotes?exchange=PLUSQO")
+        .then((res) => {
+            let pairPriceArr = res.data;
+            dispatch(setQuoteData(pairPriceArr));
+        })
+        .catch((err) => {
+          console.log(err)
+        // toast.error("Server error. Failed to get btc price");
+        })
+
+      //   role === "admin" ? history.push("/") : history.push("/");
+      // }
+    } else {
+      toast.warn("Please input correct code");
+    }
+     
+  }
   const onFormSubmit = (formData) => {
     if (loading) return;
+    setData(formData);
     if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
       setErrorsf({
           ...errorsf, emailfield: {status: true}
@@ -65,56 +161,93 @@ const Login = () => {
       localStorage.setItem("username", email);
       Http.login(email, formData.passcode)
         .then( async (res) => {
-          setLoading(false);
-           dispatch(setChecking(true));
           if (res.result === "success") {
-            Helper.storeUser(res);
-            // const role = res.data.user.role;
-            // const pStep = res.data.user.user.profile_complete_step;
-            // if (pStep === 0) {
-              // history.push('/dashboard');
-              console.log("currentpath", currentPath)
-              let nextPath = currentPath;
-              if (nextPath === null || nextPath === "/auth-login"  )
-                  nextPath = "/dashboard"
-              history.push(nextPath);
-               let registerData = {
-                  email: email,
-                  password: formData.passcode,
-                  firstname: email,
-                  lastname: email,
-                  papCookie: formData.papCookie,
-                  AffRefId: cookies.PAPAffiliateId || " ",
-                  pap_visitorId: cookies.PAPVisitorId || " ",
+            setTempForLogin(res);
+            const myApi = myServerApi();
+            let security = await myApi.get(`security/${email}`)
+            let twoFactor = 0;
+            if (security.data.data !== null)
+                twoFactor = security.data.data.status;
+            setLoading(false);
+            if (twoFactor === 1){
+              setModal({...modal, auth: true});
+              const options = {
+                method: 'GET',
+                url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
+                headers: {
+                  'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+                  'X-RapidAPI-Key': RapidAPIKey
                 }
-                const myApi = myServerApi();
-                myApi.post("signinAffiliate", registerData)
-                .then( (res) => {
+              };
+          
+              axios.request(options).then(function (response) {
+                  setSecret_val(response.data);
+                  // const options = {
+                  //   method: 'GET',
+                  //   url: 'https://google-authenticator.p.rapidapi.com/enroll/',
+                  //   params: {secret: response.data, issuer: 'Cryptowire', account: email},
+                  //   headers: {
+                  //     'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+                  //     'X-RapidAPI-Key': RapidAPIKey
+                  //   }
+                  // };
+          
+                  // axios.request(options).then(function (res) {
+                  //     setEnrollUrl(res.data);
+                  // }).catch(function (error) {
+                  //   console.error(error);
+                  // });
+              }).catch(function (error) {
+                console.error(error);
+              });
+            } else {
+                Helper.storeUser(res);
+                // const role = res.data.user.role;
+                // const pStep = res.data.user.user.profile_complete_step;
+                // if (pStep === 0) {
+                  // history.push('/dashboard');
+                console.log("currentpath", currentPath)
+                let nextPath = currentPath;
+                if (nextPath === null || nextPath === "/auth-login"  )
+                    nextPath = "/dashboard"
+                history.push(nextPath);
+                let registerData = {
+                    email: email,
+                    password: formData.passcode,
+                    firstname: email,
+                    lastname: email,
+                    papCookie: formData.papCookie,
+                    AffRefId: cookies.PAPAffiliateId || " ",
+                    pap_visitorId: cookies.PAPVisitorId || " ",
+                  }
+                  const myApi = myServerApi();
+                  myApi.post("signinAffiliate", registerData)
+                  .then( (res) => {
+                  })
+                  .catch( err => [
+        
+                  ])
+              
+              // } else if (pStep === 1) {
+              //   history.push('/onboarding2');
+              // } else {
+                dispatch(setCurrentUser({ ...res}));
+                Http.getAccounts(res.exchange_access_token)
+                .then((response) => {
+                  if (response.message === "Unauthorized"){
+                    history.push("auth-login");
+                    dispatch(setChecking(false));
+                    return;
+                  }
+                  dispatch(setAccounts(response));
+                  dispatch(setChecking(false));
+                  
                 })
-                .catch( err => [
-
-                ])
-             
-            // } else if (pStep === 1) {
-            //   history.push('/onboarding2');
-            // } else {
-              dispatch(setCurrentUser({ ...res}));
-              Http.getAccounts(res.exchange_access_token)
-              .then((response) => {
-                if (response.message === "Unauthorized"){
-                  history.push("auth-login");
-                  dispatch(setChecking(false));
-                  return;
-                }
-                dispatch(setAccounts(response));
-                dispatch(setChecking(false));
-                
-              })
-              .catch(e =>{
-                  toast.error(e.response.message);
-                  dispatch(setChecking(false));
-              })
-              api.get("exchange/quotes?exchange=PLUSQO")
+                .catch(e =>{
+                    toast.error(e.response.message);
+                    dispatch(setChecking(false));
+                })
+                api.get("exchange/quotes?exchange=PLUSQO")
                 .then((res) => {
                     let pairPriceArr = res.data;
                     dispatch(setQuoteData(pairPriceArr));
@@ -123,10 +256,14 @@ const Login = () => {
                   console.log(err)
                 // toast.error("Server error. Failed to get btc price");
                 })
-
-            //   role === "admin" ? history.push("/") : history.push("/");
-            // }
+        
+              //   role === "admin" ? history.push("/") : history.push("/");
+              // }
+            }
+            
+           
           } else {
+            setLoading(false);
             if (res.message === "User is not confirmed"){
               toast.info("Please verify email");
               // for test
@@ -327,6 +464,82 @@ const Login = () => {
           </PreviewCard>
         </Block>
         <AuthFooter />
+        <Modal isOpen={modal.auth} toggle={() => setModal({ auth: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+          <ModalBody>
+            <a
+              href="#cancel"
+              onClick={(ev) => {
+                ev.preventDefault();
+                setModal({ auth: false });
+              }}
+              className="close"
+            >
+              <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+              <div className="">
+                <Form className="row gy-4" onSubmit={handleSubmit(confirmLogin)}>
+                  <Col md="12">
+                    <FormGroup>
+                        <label className="form-label" htmlFor="default-01">
+                          Input 2FA code
+                        </label>
+                        <div className="form-control-wrap">
+                          <input
+                            type="text"
+                            id="default-01"
+                            name="authcode"
+                            value={authCode}
+                            placeholder="Enter your code"
+                            className="form-control-lg form-control"
+                            onChange={ e => {
+                              // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
+                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                              setAuthCode(e.target.value); 
+                              if (e.target.value === "")  
+                              setErrorsf({
+                                ...errorsf, emailfield: {status:true}
+                              });
+                              else {
+                                setErrorsf({...errorsf, emailfield: {status:false}})
+                              }
+                            } else 
+                              setErrorsf({
+                                ...errorsf, emailfield: {status:true}
+                              })
+                            }}
+                          />
+                          {errorsf.authfield.status && <p className="invalid">This field is required</p>}
+                    
+                        </div>
+                    </FormGroup>
+                  </Col>
+                 <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="button" onClick={confirmLogin}>
+                          Confirm
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            setModal({...modal, auth: false});
+                          }}
+                          className="link link-light"
+                        >
+                          
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
+                </Form>
+              </div>
+            </div>
+          </ModalBody>
+        </Modal>
       </PageContainer>
     </React.Fragment>
   );

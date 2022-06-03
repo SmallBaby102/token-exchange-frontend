@@ -22,7 +22,7 @@ import {
   PopoverHeader,
   Spinner,
   UncontrolledPopover,
-  Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle
+  Card, DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle, Toast
 } from 'reactstrap';
 
 import { setChecking, setCurrentUser } from '../actions';
@@ -55,6 +55,7 @@ import Content from "../layout/content/Content";
 // import ProductH from "../../../images/product/h.png";
 import Dropzone from "react-dropzone";
 import SimpleBar from "simplebar-react";
+let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
 // var formatter = new Intl.NumberFormat('en-US', {
 //   style: 'currency',
 //   currency: "USD",
@@ -80,7 +81,9 @@ const RequestWire = () => {
   const [wireId, setWireId] = useState(null)
   const [modal, setModal] = useState({
     wireConfirm: false,
-    useTemplate: false
+    useTemplate: false,
+    template_remove_confirm: false,
+    auth: false,
   });
   const accounts = useSelector(state => state.user.accounts);
   // let accouts_arr = Object.keys(accounts).map((key) => [Number(key), accounts[key]]);
@@ -92,6 +95,7 @@ const RequestWire = () => {
     beneficiary_postal_code : {status: false, message: "You have entered an unavailable character" },
     bank_name : {status: false, message: "You have entered an unavailable character" },
     bank_city : {status: false, message: "You have entered an unavailable character" },
+    bank_country : {status: false, message: "This field is required" },
     bankpostal_code : {status: false, message: "You have entered an unavailable character" },
     swift_code : {status: false, message: "Only alphabet characters are allowed for Swift code" },
     reference_code : {status: false, message: "Only alphabet characters are allowed for Swift code" },
@@ -107,7 +111,9 @@ const RequestWire = () => {
     status: false,
     message: ""
   })
-  
+  const [errorsf, setErrorsf] = useState({
+    authfield: { status: false, message : "Must be only alphabetic characters",},
+  });
   const [formData, setFormData] = useState({
 
     // individual relative state
@@ -119,7 +125,7 @@ const RequestWire = () => {
     beneficiary_postal_code: "",
     bank_name: "",
     bankaccount_number: "",
-    bank_country: "",
+    bank_country: "noselect",
     bankstreet_address: "",
     // bank_city: "",
     // bank_region: "",
@@ -135,7 +141,8 @@ const RequestWire = () => {
     intermediarybank_swiftcode: "",
     amount: 0,
   });
-
+  const [secret_val, setSecret_val] = useState("")
+  const [authCode, setAuthCode] = useState("")
   // const profileOptions = {
   //   title       : [{value: "Mr.", label: "Mr."},{value: "Ms.", label: "Ms."}],
   //   marriage    : [{value: "Single", label: "Single"}, {value: "Married", label: "Married"}],
@@ -179,6 +186,12 @@ const RequestWire = () => {
     if (formData.bank_name === "") {
       setErrorsStr({
         ...errorsStr, bank_name: {status: true, message: "This field is required"}
+      });
+      return;
+    }
+    if (formData.bank_country === "noselect") {
+      setErrorsStr({
+        ...errorsStr, bank_country: {status: true, message: "This field is required"}
       });
       return;
     }
@@ -282,66 +295,180 @@ const RequestWire = () => {
     
   };
   
-  const onWireConfirmSubmit = () => {
+  const onWireConfirmSubmit = async () => {
     // setModal({...modal, wireConfirm: false})
     if (loading)
     return;
-    setLoading(true);
-    let configdata = {
-      exchange: "CONFIGURATOR_PLUSQO",
-      username: CONFIGURATOR_USERNAME,
-      password: CONFIGURATOR_PASSWORD
-    }
-    let headers = {
-      "Content-Type" : "application/json",
-    }
-    axios.post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken", configdata, { headers })
-    .then(res => {
-        let configurator_access_token = res.data.configurator_access_token;
-        const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${configurator_access_token}`,
-        };
-        let bodyData = {
-          userId: user_id, 
-          accountId: usditem.id, 
-          type:5, 
-          amount: -(formData.amount), 
-          comment:"Sell_operation", 
-          currency:"USD"
+    const myApi = myServerApi();
+    let security = await myApi.get(`security/${email}`)
+    let twoFactor = security.data.data;
+    setLoading(false);
+    if (twoFactor.status === 1 && twoFactor.request_wire === 1){
+      setModal({...modal, auth: true});
+      const options = {
+        method: 'GET',
+        url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
+        headers: {
+          'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+          'X-RapidAPI-Key': RapidAPIKey
         }
-        let data = {...formData, status: "0"};
-        let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
-        let sellData = {
-          papFlag: true,
-          email: email,
-          bodyData: bodyData,
-          url: url,
-          amount1: -(formData.amount),
-          amount2: -(formData.amount),
-          balance1: usditem.balance.active_balance,
-          balance2: usditem.balance.active_balance,
-          formData: data,
-          headers: headers
+      };
+  
+      axios.request(options).then(function (response) {
+          setSecret_val(response.data);
+          // const options = {
+          //   method: 'GET',
+          //   url: 'https://google-authenticator.p.rapidapi.com/enroll/',
+          //   params: {secret: response.data, issuer: 'Cryptowire', account: email},
+          //   headers: {
+          //     'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+          //     'X-RapidAPI-Key': RapidAPIKey
+          //   }
+          // };
+  
+          // axios.request(options).then(function (res) {
+          //     setEnrollUrl(res.data);
+          // }).catch(function (error) {
+          //   console.error(error);
+          // });
+      }).catch(function (error) {
+        console.error(error);
+      });
+    } else {
+        setLoading(true);
+        let configdata = {
+          exchange: "CONFIGURATOR_PLUSQO",
+          username: CONFIGURATOR_USERNAME,
+          password: CONFIGURATOR_PASSWORD
         }
-        myApi.put("sell", sellData)
-        .then(result => {
-          setWireId(result.data.wireid);
-          toast.success("'Successfully request wire");
-          setLoading(false); 
-          setWireFinish(1);
-          
-        }).catch( e => {
-          setWireId(null);
-          setLoading(false); 
-          setWireFinish(2);
+        let headers = {
+          "Content-Type" : "application/json",
+        }
+        axios.post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken", configdata, { headers })
+        .then(res => {
+            let configurator_access_token = res.data.configurator_access_token;
+            const headers = {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${configurator_access_token}`,
+            };
+            let bodyData = {
+              userId: user_id, 
+              accountId: usditem.id, 
+              type:5, 
+              amount: -(formData.amount), 
+              comment:"Sell_operation", 
+              currency:"USD"
+            }
+            let data = {...formData, status: "0"};
+            let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
+            let sellData = {
+              papFlag: true,
+              email: email,
+              bodyData: bodyData,
+              url: url,
+              amount1: -(formData.amount),
+              amount2: -(formData.amount),
+              balance1: usditem.balance.active_balance,
+              balance2: usditem.balance.active_balance,
+              formData: data,
+              headers: headers
+            }
+            myApi.put("sell", sellData)
+            .then(result => {
+              setWireId(result.data.wireid);
+              toast.success("'Successfully request wire");
+              setLoading(false); 
+              setWireFinish(1);
+              
+            }).catch( e => {
+              setWireId(null);
+              setLoading(false); 
+              setWireFinish(2);
+            })
         })
-    })
-    .catch(e => {
-      setWireFinish(2);
-      
-    })
+        .catch(e => {
+          setWireFinish(2);
+          
+        })
+      }
     
+  };
+  const confirmWire = async () => {
+    if(loading)
+        return;
+    let flag = "False";
+    const options = {
+      method: 'GET',
+      url: 'https://google-authenticator.p.rapidapi.com/validate/',
+      params: {code: authCode, secret: secret_val},
+      headers: {
+        'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+        'X-RapidAPI-Key': RapidAPIKey
+      }
+    };
+    let response = await axios.request(options);
+    flag =  response.data
+    if (flag === "False")
+    {
+      toast.warn("Please input correct code");
+      return;
+    }
+    setModal({...modal, ...{auth : false}});
+    setLoading(true);
+      let configdata = {
+        exchange: "CONFIGURATOR_PLUSQO",
+        username: CONFIGURATOR_USERNAME,
+        password: CONFIGURATOR_PASSWORD
+      }
+      let headers = {
+        "Content-Type" : "application/json",
+      }
+      axios.post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken", configdata, { headers })
+      .then(res => {
+          let configurator_access_token = res.data.configurator_access_token;
+          const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${configurator_access_token}`,
+          };
+          let bodyData = {
+            userId: user_id, 
+            accountId: usditem.id, 
+            type:5, 
+            amount: -(formData.amount), 
+            comment:"Sell_operation", 
+            currency:"USD"
+          }
+          let data = {...formData, status: "0"};
+          let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
+          let sellData = {
+            papFlag: true,
+            email: email,
+            bodyData: bodyData,
+            url: url,
+            amount1: -(formData.amount),
+            amount2: -(formData.amount),
+            balance1: usditem.balance.active_balance,
+            balance2: usditem.balance.active_balance,
+            formData: data,
+            headers: headers
+          }
+          myApi.put("sell", sellData)
+          .then(result => {
+            setWireId(result.data.wireid);
+            toast.success("'Successfully request wire");
+            setLoading(false); 
+            setWireFinish(1);
+            
+          }).catch( e => {
+            setWireId(null);
+            setLoading(false); 
+            setWireFinish(2);
+          })
+      })
+      .catch(e => {
+        setWireFinish(2);
+        
+      })
   };
   useEffect(() => {
       dispatch(setChecking(true))
@@ -509,15 +636,17 @@ const RequestWire = () => {
     setModalData({ ...modalData, [e.target.name]: e.target.value });
   };
 
-  // category change
-  const onCategoryChange = (value) => {
-    setModalData({ ...modalData, category: value });
-  };
+
   const onUseTemplateFormSubmit = () => {
     if (loading)
     return;
     let newData = data;
     let index = newData.findIndex((item) => item.check === true);
+    if (index === -1 ) {
+      toast.warn("Please select a template");
+      return;
+    }
+    setErrorsStr({...errorsStr, beneficiary_name: {status: false}, bank_name: {status: false},bankaccount_number: {status: false},bank_country: {status: false},swift_code: {status: false}});
     setFormData({
       ...formData,
       beneficiary_name: newData[index].beneficiary_name,
@@ -577,7 +706,7 @@ const RequestWire = () => {
         console.log('error: ', err);
     });
     setView({ open: false });
-    resetForm();
+    // resetForm();
   };
 
   const onEditSubmit = () => {
@@ -700,16 +829,6 @@ const RequestWire = () => {
     });
   };
 
-  // handles ondrop function of dropzone
-  const handleDropChange = (acceptedFiles) => {
-    setFiles(
-      acceptedFiles.map((file) =>
-        Object.assign(file, {
-          preview: URL.createObjectURL(file),
-        })
-      )
-    );
-  };
 
   // Get current list, pagination
   const indexOfLastItem = currentPage * itemPerPage;
@@ -724,7 +843,7 @@ const RequestWire = () => {
       if (res) {
         let bankTemplates = res.data.data;
         bankTemplates = bankTemplates.sort((a, b) => {
-          return a.template_name > b.template_name? 1 : -1
+          return a.created_at < b.created_at? 1 : -1
         })
         setData(bankTemplates);
       }
@@ -1115,8 +1234,17 @@ const RequestWire = () => {
                       </Label>
                           <div className="form-control-wrap">
                               <select id="bank_country" name="bank_country" value={formData.bank_country} className="form-control"
-                                onChange={e => setFormData({...formData, bank_country: e.target.value})}
-                                ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a bank country` })}
+                                onChange = { e => {
+                                    setFormData({...formData, bank_country: e.target.value}); 
+                                    if (e.target.value === "noselect")  
+                                      setErrorsStr({
+                                        ...errorsStr, bank_country: {message: "This field is required", status: true }
+                                      });
+                                    else {
+                                      setErrorsStr({...errorsStr, bank_country: {status:false}})
+                                    }
+                                  }
+                                }
                               >
                                   <option value="noselect" >Select a bank country</option>
                                   <option value="United States">United States</option>
@@ -1304,7 +1432,7 @@ const RequestWire = () => {
                                   <option value="Vietnam">Vietnam</option>
                                   <option value="Zambia">Zambia</option>
                             </select>
-                            {errors.bank_country && <span className="invalid">{errors.bank_country.message}</span>}
+                            {errorsStr.bank_country.status && <span className="invalid">{errorsStr.bank_country.message}</span>}
                           </div>
                     </FormGroup>
                     {/* <FormGroup >
@@ -1397,7 +1525,8 @@ const RequestWire = () => {
                       </Label>
                       <div className="form-control-wrap">
                         <input className="form-control " name="reference_code"
-                          onChange = { e => {
+                        value={formData.reference_code} 
+                        onChange = { e => {
                             if (e.target.value.match(/^[a-zA-Z\d-+_|{}[\]!<>@'$#%"/^&*.,()=~;:? ]+$/) !== null || e.target.value === "" ) {
                               setFormData({...formData, reference_code: e.target.value}); 
                               setErrorsStr({...errorsStr, reference_code: {status:false}})
@@ -2168,7 +2297,7 @@ const RequestWire = () => {
                                                           href="#remove"
                                                           onClick={(ev) => {
                                                             ev.preventDefault();
-                                                            deleteTemplate(item.id);
+                                                            setModal({...modal, template_remove_confirm: true});
                                                           }}
                                                         >
                                                           <Icon name="trash"></Icon>
@@ -2206,25 +2335,25 @@ const RequestWire = () => {
                       </Block>
                   </Col>
                   <Col size="12">
-                      <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                        <li>
-                          <Button color="primary" size="md" type="button" onClick={e => {onUseTemplateFormSubmit()}}>
-                            Submit
-                          </Button>
-                        </li>
-                        <li>
-                          <Button
-                            onClick={(ev) => {
-                              ev.preventDefault();
-                              onUseTemplateFormCancel();
-                            }}
-                            className="link link-light"
-                          >
-                            Cancel
-                          </Button>
-                        </li>
-                      </ul>
-                    </Col>
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="button" onClick={e => {onUseTemplateFormSubmit()}}>
+                          Submit
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            onUseTemplateFormCancel();
+                          }}
+                          className="link link-light"
+                        >
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
                 </Form>
             </div>
           </ModalBody>
@@ -2526,8 +2655,8 @@ const RequestWire = () => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label" htmlFor="SKU">
-                        Bank Country
+                      <label className="form-label" htmlFor="reference_code">
+                        Reference Code
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2603,148 +2732,447 @@ const RequestWire = () => {
           </div>
         </ModalBody>
       </Modal>
-
-      <SimpleBar
-        className={`nk-add-product toggle-slide toggle-slide-right toggle-screen-any ${
-          view.add ? "content-active" : ""
-        }`}
-        style={{zIndex: "9999"}}
-      >
-        <BlockHead>
-          <BlockHeadContent>
-            <BlockTitle tag="h5">Add Template</BlockTitle>
-          </BlockHeadContent>
-        </BlockHead>
-        <Block>
-          <form onSubmit={handleSubmit(onFormSubmit)}>
-            <Row className="g-3">
-              <Col size="12">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="product-title">
-                    Template Name
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="template_name"
-                      onChange={(e) => {onInputChange(e); setErrorsMsg({...errorsMsg, add_template_name: {status: false}})}}
-                      defaultValue={modalData.template_name}
-                    />
-                    {errorsMsg.add_template_name.status && <span className="invalid">{errorsMsg.add_template_name.message}</span>}
+      <Modal isOpen={view.add} toggle={() => onFormCancel()} className="modal-dialog-centered" size="lg">
+        <ModalBody>
+          <a href="#cancel" className="close">
+            {" "}
+            <Icon
+              name="cross-sm"
+              onClick={(ev) => {
+                ev.preventDefault();
+                onFormCancel();
+              }}
+            ></Icon>
+          </a>
+          <div className="p-2">
+            <h5 className="title">Add Template</h5>
+            <div className="mt-4">
+            <form onSubmit={handleSubmit(onFormSubmit)}>
+              <Row className="g-3">
+                <Col size="12">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="product-title">
+                      Template Name
+                    </label>
+                    <div className="form-control-wrap">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="template_name"
+                        onChange={(e) => {onInputChange(e); setErrorsMsg({...errorsMsg, add_template_name: {status: false}})}}
+                        defaultValue={modalData.template_name}
+                      />
+                      {errorsMsg.add_template_name.status && <span className="invalid">{errorsMsg.add_template_name.message}</span>}
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col md="6">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="regular-price">
-                    Beneficiary Name
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      name="beneficiary_name"
-                      onChange={(e) => onInputChange(e)}
-                      className="form-control"
-                      defaultValue={modalData.beneficiary_name}
-                    />
+                </Col>
+                <Col md="6">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="regular-price">
+                      Beneficiary Name
+                    </label>
+                    <div className="form-control-wrap">
+                      <input
+                        type="text"
+                        name="beneficiary_name"
+                        onChange={(e) => onInputChange(e)}
+                        className="form-control"
+                        defaultValue={modalData.beneficiary_name}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col md="6">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="sale-price">
-                    Bank Name
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="bank_name"
-                      onChange={(e) => onInputChange(e)}
-                      defaultValue={modalData.bank_name}
-                    />
+                </Col>
+                <Col md="6">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="sale-price">
+                      Bank Name
+                    </label>
+                    <div className="form-control-wrap">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="bank_name"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={modalData.bank_name}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col md="6">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="bank_account_number">
-                  Bank Account Number/Iban
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="bank_account_number"
-                      onChange={(e) => onInputChange(e)}
-                      defaultValue={modalData.bank_account_number}
-                    />
+                </Col>
+                <Col md="6">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="bank_account_number">
+                    Bank Account Number/Iban
+                    </label>
+                    <div className="form-control-wrap">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="bank_account_number"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={modalData.bank_account_number}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col md="6">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="bank_country">
-                    Bank Country
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="bank_country"
-                      onChange={(e) => onInputChange(e)}
-                      defaultValue={modalData.bank_country}
-                    />
+                </Col>
+                <Col md="6">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="bank_country">
+                      Bank Country
+                    </label>
+                    <div className="form-control-wrap">
+                          <select id="bank_country" name="bank_country" value={modalData.bank_country} onChange={(e) => onInputChange(e)} className="form-control"
+                          >
+                              <option value="noselect" >Select a bank country</option>
+                              <option value="United States">United States</option>
+                              <option value="Afghanistan">Afghanistan</option>
+                              <option value="Albania">Albania</option>
+                              <option value="Algeria">Algeria</option>
+                              <option value="Andorra">Andorra</option>
+                              <option value="Angola">Angola</option>
+                              <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                              <option value="Argentina">Argentina</option>
+                              <option value="Armenia">Armenia</option>
+                              <option value="Australia">Australia</option>
+                              <option value="Austria">Austria</option>
+                              <option value="Azerbaijan">Azerbaijan</option>
+                              <option value="Bahamas">Bahamas</option>
+                              <option value="Bahrain">Bahrain</option>
+                              <option value="Bangladesh">Bangladesh</option>
+                              <option value="Barbados">Barbados</option>
+                              <option value="Belarus">Belarus</option>
+                              <option value="Belgium">Belgium</option>
+                              <option value="Belize">Belize</option>
+                              <option value="Benin">Benin</option>
+                              <option value="Bhutan">Bhutan</option>
+                              <option value="Bolivia">Bolivia</option>
+                              <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                              <option value="Botswana">Botswana</option>
+                              <option value="Brazil">Brazil</option>
+                              <option value="Brunei">Brunei</option>
+                              <option value="Bulgaria">Bulgaria</option>
+                              <option value="Burkina Faso">Burkina Faso</option>
+                              <option value="Burundi">Burundi</option>
+                              <option value="Cabo Verde">Cabo Verde</option>
+                              <option value="Cambodia">Cambodia</option>
+                              <option value="Cameroon">Cameroon</option>
+                              <option value="Canada">Canada</option>
+                              <option value="Central African Republic">Central African Republic</option>
+                              <option value="Chad">Chad</option>
+                              <option value="Chile">Chile</option>
+                              <option value="China">China</option>
+                              <option value="Colombia">Colombia</option>
+                              <option value="Comoros">Comoros</option>
+                              <option value="Congo">Congo</option>
+                              <option value="Costa Rica">Costa Rica</option>
+                              <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+                              <option value="Croatia">Croatia</option>
+                              <option value="Cuba">Cuba</option>
+                              <option value="Cyprus">Cyprus</option>
+                              <option value="Czech Republic">Czech Republic</option>
+                              <option value="Denmark">Denmark</option>
+                              <option value="Djibouti">Djibouti</option>
+                              <option value="Dominica">Dominica</option>
+                              <option value="Dominican Republic">Dominican Republic</option>
+                              <option value="East Timor">East Timor</option>
+                              <option value="Ecuador">Ecuador</option>
+                              <option value="Egypt">Egypt</option>
+                              <option value="El Salvador">El Salvador</option>
+                              <option value="Equatorial Guinea">Equatorial Guinea</option>
+                              <option value="Eritrea">Eritrea</option>
+                              <option value="Estonia">Estonia</option>
+                              <option value="Fiji">Fiji</option>
+                              <option value="Finland">Finland</option>
+                              <option value="France">France</option>
+                              <option value="Gabon">Gabon</option>
+                              <option value="Gambia">Gambia</option>
+                              <option value="Georgia">Georgia</option>
+                              <option value="Germany">Germany</option>
+                              <option value="Ghana">Ghana</option>
+                              <option value="Greece">Greece</option>
+                              <option value="Grenada">Grenada</option>
+                              <option value="Guatemala">Guatemala</option>
+                              <option value="Guinea">Guinea</option>
+                              <option value="Guinea-Bissau">Guinea-Bissau</option>
+                              <option value="Guyana">Guyana</option>
+                              <option value="Haiti">Haiti</option>
+                              <option value="Honduras">Honduras</option>
+                              <option value="Hungary">Hungary</option>
+                              <option value="Iceland">Iceland</option>
+                              <option value="India">India</option>
+                              <option value="Indonesia">Indonesia</option>
+                              <option value="Iraq">Iraq</option>
+                              <option value="Ireland">Ireland</option>
+                              <option value="Israel">Israel</option>
+                              <option value="Italy">Italy</option>
+                              <option value="Jamaica">Jamaica</option>
+                              <option value="Japan">Japan</option>
+                              <option value="Jordan">Jordan</option>
+                              <option value="Kazakhstan">Kazakhstan</option>
+                              <option value="Kenya">Kenya</option>
+                              <option value="Kiribati">Kiribati</option>
+                              <option value="South Korea">South Korea </option>
+                              <option value="Kosovo">Kosovo</option>
+                              <option value="Kuwait">Kuwait</option>
+                              <option value="Kyrgyzstan">Kyrgyzstan</option>
+                              <option value="Laos">Laos</option>
+                              <option value="Latvia">Latvia</option>
+                              <option value="Lebanon">Lebanon</option>
+                              <option value="Lesotho">Lesotho</option>
+                              <option value="Liberia">Liberia</option>
+                              <option value="Libya">Libya</option>
+                              <option value="Liechtenstein">Liechtenstein</option>
+                              <option value="Lithuania">Lithuania</option>
+                              <option value="Luxembourg">Luxembourg</option>
+                              <option value="Macedonia">Macedonia</option>
+                              <option value="Madagascar">Madagascar</option>
+                              <option value="Malawi">Malawi</option>
+                              <option value="Malaysia">Malaysia</option>
+                              <option value="Maldives">Maldives</option>
+                              <option value="Mali">Mali</option>
+                              <option value="Malta">Malta</option>
+                              <option value="Marshall Islands">Marshall Islands</option>
+                              <option value="Mauritania">Mauritania</option>
+                              <option value="Mauritius">Mauritius</option>
+                              <option value="Mexico">Mexico</option>
+                              <option value="Federated States of Micronesia">Federated States of Micronesia</option>
+                              <option value="Moldova">Moldova</option>
+                              <option value="Monaco">Monaco</option>
+                              <option value="Mongolia">Mongolia</option>
+                              <option value="Montenegro">Montenegro</option>
+                              <option value="Morocco">Morocco</option>
+                              <option value="Mozambique">Mozambique</option>
+                              <option value="Myanmar">Myanmar</option>
+                              <option value="Namibia">Namibia</option>
+                              <option value="Nauru">Nauru</option>
+                              <option value="Nepal">Nepal</option>
+                              <option value="Netherlands">Netherlands</option>
+                              <option value="New Zealand">New Zealand</option>
+                              <option value="Nicaragua">Nicaragua</option>
+                              <option value="Niger">Niger</option>
+                              <option value="Nigeria">Nigeria</option>
+                              <option value="Norway">Norway</option>
+                              <option value="Oman">Oman</option>
+                              <option value="Palau">Palau</option>
+                              <option value="Panama">Panama</option>
+                              <option value="Papua New Guinea">Papua New Guinea</option>
+                              <option value="Paraguay">Paraguay</option>
+                              <option value="Peru">Peru</option>
+                              <option value="Philippines">Philippines</option>
+                              <option value="Poland">Poland</option>
+                              <option value="Portugal">Portugal</option>
+                              <option value="Qatar">Qatar</option>
+                              <option value="Romania">Romania</option>
+                              <option value="Russia">Russia</option>
+                              <option value="Rwanda">Rwanda</option>
+                              <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                              <option value="Saint Lucia">Saint Lucia</option>
+                              <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                              <option value="Samoa">Samoa</option>
+                              <option value="San Marino">San Marino</option>
+                              <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                              <option value="Saudi Arabia">Saudi Arabia</option>
+                              <option value="Senegal">Senegal</option>
+                              <option value="Seychelles">Seychelles</option>
+                              <option value="Sierra Leone">Sierra Leone</option>
+                              <option value="Singapore">Singapore</option>
+                              <option value="Slovakia">Slovakia</option>
+                              <option value="Slovenia">Slovenia</option>
+                              <option value="Solomon Islands">Solomon Islands</option>
+                              <option value="Somalia">Somalia</option>
+                              <option value="South Africa">South Africa</option>
+                              <option value="Spain">Spain</option>
+                              <option value="Sudan">Sudan</option>
+                              <option value="South Sudan">South Sudan</option>
+                              <option value="Suriname">Suriname</option>
+                              <option value="Swaziland">Swaziland</option>
+                              <option value="Sweden">Sweden</option>
+                              <option value="Switzerland">Switzerland</option>
+                              <option value="Taiwan">Taiwan</option>
+                              <option value="Tajikistan">Tajikistan</option>
+                              <option value="Tanzania">Tanzania</option>
+                              <option value="Thailand">Thailand</option>
+                              <option value="Togo">Togo</option>
+                              <option value="Tonga">Tonga</option>
+                              <option value="Turkey">Turkey</option>
+                              <option value="Turkmenistan">Turkmenistan</option>
+                              <option value="Tuvalu">Tuvalu</option>
+                              <option value="Uganda">Uganda</option>
+                              <option value="Ukraine">Ukraine</option>
+                              <option value="United Arab Emirates">United Arab Emirates</option>
+                              <option value="United Kingdom">United Kingdom</option>
+                              <option value="Uruguay">Uruguay</option>
+                              <option value="Uzbekistan">Uzbekistan</option>
+                              <option value="Vanuatu">Vanuatu</option>
+                              <option value="Vatican City">Vatican City</option>
+                              <option value="Venezela">Venezuela</option>
+                              <option value="Vietnam">Vietnam</option>
+                              <option value="Zambia">Zambia</option>
+                        </select>
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col md="6">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="swift_bic_code">
-                  Swift/Bic Code
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="swift_bic_code"
-                      onChange={(e) => onInputChange(e)}
-                      defaultValue={modalData.swift_bic_code}
-                    />
+                </Col>
+                <Col md="6">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="swift_bic_code">
+                    Swift/Bic Code
+                    </label>
+                    <div className="form-control-wrap">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="swift_bic_code"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={modalData.swift_bic_code}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Col>
-              <Col md="6">
-                <div className="form-group">
-                  <label className="form-label" htmlFor="reference_code">
-                 Reference Code
-                  </label>
-                  <div className="form-control-wrap">
-                    <input
-                      type="text"
-                      className="form-control"
-                      name="reference_code"
-                      onChange={(e) => onInputChange(e)}
-                      defaultValue={modalData.reference_code}
-                    />
+                </Col>
+                <Col md="6">
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="reference_code">
+                  Reference Code
+                    </label>
+                    <div className="form-control-wrap">
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="reference_code"
+                        onChange={(e) => onInputChange(e)}
+                        defaultValue={modalData.reference_code}
+                      />
+                    </div>
                   </div>
-                </div>
-              </Col>
-           
-              <Col size="12">
-                <Button color="primary" type="button" onClick={e => {e.preventDefault(); onFormSubmit();}}>
-                  <Icon className="plus"></Icon>
-                  <span>Add Template</span>
+                </Col>
+            
+                <Col size="12">
+                  <Button color="primary" type="button" onClick={e => {e.preventDefault(); onFormSubmit();}}>
+                    <Icon className="plus"></Icon>
+                    <span>Add Template</span>
+                  </Button>
+                </Col>
+              </Row>
+            </form>
+            </div>
+          </div>
+        </ModalBody>
+      </Modal>
+      <Modal isOpen={modal.template_remove_confirm} toggle={() => setModal({...modal, template_remove_confirm: false})} className="modal-dialog-centered" size="lg">
+        <ModalBody>
+          <a href="#cancel" className="close">
+            {" "}
+            <Icon
+              name="cross-sm"
+              onClick={(ev) => {
+                ev.preventDefault();
+                setModal({...modal, template_remove_confirm: false});
+              }}
+            ></Icon>
+          </a>
+          <div className="nk-modal-head">
+            <h4 className="nk-modal-title title">
+                Are you sure to remove this template?
+            </h4>
+          </div>
+          <Col size="12" className="mt-5">
+            <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2 ">
+              <li>
+                <Button color="primary" size="md" type="button" onClick={e => {deleteTemplate(editId)}}>
+                  Confirm
                 </Button>
-              </Col>
-            </Row>
-          </form>
-        </Block>
-      </SimpleBar>
-
-        
-      {view.add && <div className="toggle-overlay" style={{zIndex: "9990"}} onClick={toggle}></div>}
+              </li>
+              <li>
+                <Button
+                  onClick={(ev) => {
+                    ev.preventDefault();
+                    setModal({...modal, template_remove_confirm: false})
+                  }}
+                  className="link link-light"
+                >
+                  Cancel
+                </Button>
+              </li>
+            </ul>
+          </Col>
+        </ModalBody>
+      </Modal>
+      {/* {view.add && <div className="toggle-overlay" style={{zIndex: "9990"}} onClick={toggle}></div>} */}
+      <Modal isOpen={modal.auth} toggle={() => setModal({ auth: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+          <ModalBody>
+            <a
+              href="#cancel"
+              onClick={(ev) => {
+                ev.preventDefault();
+                setModal({ auth: false });
+              }}
+              className="close"
+            >
+              <Icon name="cross-sm"></Icon>
+            </a>
+            <div className="p-2">
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <div className="">
+                <Form className="row gy-4" onSubmit={handleSubmit(confirmWire)}>
+                  <Col md="12">
+                    <FormGroup>
+                        <label className="form-label" htmlFor="default-01">
+                          Input 2FA code
+                        </label>
+                        <div className="form-control-wrap">
+                          <input
+                            type="text"
+                            id="default-01"
+                            name="authcode"
+                            value={authCode}
+                            placeholder="Enter your code"
+                            className="form-control-lg form-control"
+                            onChange={ e => {
+                              // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
+                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                              setAuthCode(e.target.value); 
+                              if (e.target.value === "")  
+                              setErrorsf({
+                                ...errorsf, emailfield: {status:true}
+                              });
+                              else {
+                                setErrorsf({...errorsf, emailfield: {status:false}})
+                              }
+                            } else 
+                              setErrorsf({
+                                ...errorsf, emailfield: {status:true}
+                              })
+                            }}
+                          />
+                          {errorsf.authfield.status && <p className="invalid">This field is required</p>}
+                    
+                        </div>
+                    </FormGroup>
+                  </Col>
+                 <Col size="12">
+                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
+                      <li>
+                        <Button color="primary" size="md" type="button" onClick={confirmWire}>
+                          Confirm
+                        </Button>
+                      </li>
+                      <li>
+                        <Button
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                            setModal({...modal, auth: false});
+                          }}
+                          className="link link-light"
+                        >
+                          
+                          Cancel
+                        </Button>
+                      </li>
+                    </ul>
+                  </Col>
+                </Form>
+              </div>
+            </div>
+          </ModalBody>
+      </Modal>
     </React.Fragment>
   );
 };

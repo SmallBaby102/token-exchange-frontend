@@ -6,10 +6,12 @@ import QRCode from 'react-qr-code';
 import { useDispatch } from 'react-redux';
 import {
   FormGroup,
+  Spinner,
   UncontrolledDropdown,
 } from 'reactstrap';
+import axios from 'axios';
 
-import { setChecking } from '../../../actions';
+import { setChecking, setLoading } from '../../../actions';
 import {
   Block,
   BlockBetween,
@@ -24,32 +26,145 @@ import {
 import Content from '../../../layout/content/Content';
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
+import { toast } from 'react-toastify';
 import Helper from '../../../utils/Helper';
- 
+let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
 const SecurityLayout = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");
+  const myApi = myServerApi();
+  const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState("")
+  const [authCode, setAuthCode] = useState("")
+  const [secret_val, setSecret_val] = useState("")
   // For QR code generation
-  const [value, setValue] = useState();
-  const [back, setBack] = useState('#FFFFFF');
-  const [fore, setFore] = useState('#000000');
-  const [size, setSize] = useState(256);
+  // const [value, setValue] = useState();
+  // const [back, setBack] = useState('#FFFFFF');
+  // const [fore, setFore] = useState('#000000');
+  // const [size, setSize] = useState(256);
+  const [enrollUrl, setEnrollUrl] = useState("");
   // 
-  const [security, setSecurity] = useState(null)
+  const [security, setSecurity] = useState({})
+
+  const onChangeStatus = async () => {
+    let flag = "False";
+    if (password !== "")
+    {
+      const options = {
+        method: 'GET',
+        url: 'https://google-authenticator.p.rapidapi.com/validate/',
+        params: {code: authCode, secret: secret_val},
+        headers: {
+          'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+          'X-RapidAPI-Key': RapidAPIKey
+        }
+      };
+
+      let res = await axios.request(options);
+      flag =  res.data
+    }
+    if (flag === "False"){
+      toast.warn("Please input correct credential");
+      return;
+    }
+    let status = 0;
+    let login = 0;
+    let withdraw = 0;
+    let request_wire = 0;
+    if(security.status === 1)  
+      {
+        setSecurity({...security, status: 0})
+        status = 0;
+        login = 0;
+        withdraw = 0;
+        request_wire = 0;
+      }
+    else 
+     {
+      setSecurity({...security, status: 1})
+      status = 1;
+      login = 1;
+      // withdraw = 1;
+      // request_wire = 1;
+     }
+    let data = {
+      status,
+      login,
+      withdraw,
+      request_wire
+    } 
+    myApi.post(`security/${email}`, data)
+    .then(res => {
+      dispatch(setChecking(false));
+    })
+    .catch(err => {
+      dispatch(setChecking(false));
+    })
+    
+  }
+  const updateStatus = () => {
+    setLoading(true);
+    myApi.post(`security/${email}`, security)
+    .then(res => {
+      setLoading(false);
+    })
+    .catch(err => {
+      setLoading(false);
+    })
+    
+  }
   useEffect(() => {
-    const myApi = myServerApi();
     dispatch(setChecking(true));
     myApi.get(`security/${email}`)
     .then(res => {
-      setSecurity(res.data.data);
-      setValue(res.data.data.code_from_app)
+      if (res.data.data)
+        setSecurity(res.data.data);
+      else
+        setSecurity({
+          status : 0,
+          login : 0,
+          withdraw : 0,
+          request_wire : 0,
+        });
+
+      // setValue(res.data.data.code_from_app)
       dispatch(setChecking(false));
     })
     .catch(err => {
       dispatch(setChecking(false));
       console.log("get commission user error", err)
     })
+    const options = {
+      method: 'GET',
+      url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
+      headers: {
+        'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+        'X-RapidAPI-Key': RapidAPIKey
+      }
+    };
+
+    axios.request(options).then(function (response) {
+        setSecret_val(response.data);
+        const options = {
+          method: 'GET',
+          url: 'https://google-authenticator.p.rapidapi.com/enroll/',
+          params: {secret: response.data, issuer: 'Cryptowire', account: email},
+          headers: {
+            'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+            'X-RapidAPI-Key': RapidAPIKey
+          }
+        };
+
+        axios.request(options).then(function (res) {
+            setEnrollUrl(res.data);
+        }).catch(function (error) {
+          console.error(error);
+        });
+    }).catch(function (error) {
+      console.error(error);
+    });
   }, [])
+
   return (
     <React.Fragment>
       <Head title="Trasaction List"></Head>
@@ -63,40 +178,111 @@ const SecurityLayout = () => {
              </BlockHeadContent>
           </BlockBetween>
         </BlockHead>
-        <Block className="pl-5">
+        {security &&<Block className="pl-5">
           <div className="nk-data data-list"> 
           <Row>
             <Col md={6}>
                 <label>Current status : </label>
-                <label className='ml-5'> {security && security.status === 1 ? "Enable": "Disable"}</label>
+                <label className='ml-5'> { security.status === 1 ? "Enable": "Disable"}</label>
             </Col>
           </Row>
-          <Row>          
-            <Col md={12}>
-                <label>1. Install Google Authenticator. (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
-            </Col>
-            <Col md={12}>
-                <label>2. Scan QR code or enter authenticator key</label>
-            </Col>
-            <Col md={6}>
-                {value && (
-                  <FormGroup className="mt-3 text-center" >
-                    <QRCode
-                      title="GeeksForGeeks"
-                      value={value}
-                      bgColor={back}
-                      fgColor={fore}
-                      size={size === '' ? 0 : size}
-                    />
+          {security.status === 0 ? <Row>          
+              <Col md={12}>
+                  <label>1. Install Google Authenticator. (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
+              </Col>
+              <Col md={12}>
+                  <label>2. Scan QR code or enter authenticator key</label>
+              </Col>
+              <Col md={6}>
+                  {/* {value && ( */}
+                    <FormGroup className="mt-3 text-center" >
+                      {/* <QRCode
+                        title="Security Code"
+                        value={value}
+                        bgColor={back}
+                        fgColor={fore}
+                        size={size === '' ? 0 : size}
+                      /> */}
+                      <img src = {enrollUrl} alt=""/>
+                    </FormGroup>
+                  {/* )} */}
+              </Col>
+              <Col md={12} className="mt-5">
+                  <label>3. Enter code from your Google Authenticator App and your login password again to confirm</label>
+              </Col>
+            </Row>: 
+            <Row>
+              <Col md={12}>
+                  <label>Change confirm setting</label>
+                  <Col md="12">
+                    <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          name="saveTemplate"
+                          className="custom-control-input form-control"
+                          id='login'
+                          checked={security.status}
+                          disabled={security.status}
+                          // checked={saveTemplate}
+                          onChange={e => {setSecurity({...security, login:  e.target.checked});}}
+                        />
+                          <label className="custom-control-label form-label" htmlFor="login">
+                          Login
+                        </label>
+                    </div>
+                  </Col>
+              </Col>
+              <Col md={12}>
+                  <Col md="12">
+                    <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          name="saveTemplate"
+                          className="custom-control-input form-control"
+                          id='withdraw'
+                          // checked={saveTemplate}
+                          onChange={e => {setSecurity({...security, withdraw:  e.target.checked});}}
+                        />
+                          <label className="custom-control-label form-label" htmlFor="withdraw">
+                          Withdraw crypto
+                        </label>
+                    </div>
+                  </Col>
+              </Col>
+              <Col md={12}>
+                  <Col md="12">
+                    <div className="custom-control custom-checkbox">
+                        <input
+                          type="checkbox"
+                          name="saveTemplate"
+                          className="custom-control-input form-control"
+                          id='request_wire'
+                          // checked={saveTemplate}
+                          onChange={e => {setSecurity({...security, request_wire:  e.target.checked});}}
+                        />
+                          <label className="custom-control-label form-label" htmlFor="request_wire">
+                          Request wire
+                        </label>
+                    </div>
+                  </Col>
+              </Col>
+              <Col md={12}>
+                  <FormGroup>
+                    <Button color="primary"  className="mt-3 ml-3"  onClick={() => updateStatus()}>
+                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                       
+                    </Button>
                   </FormGroup>
-                )}
-            </Col>
-            <Col md={12} className="mt-5">
-                <label>3. Enter code from your Google Authenticator App and your login password again to confirm</label>
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          }
 
-          <Row>
+          <Row className="mt-3">
+            <Col md={12}>
+              <label className="">
+                  Disable 2FA
+              </label>
+            </Col>
             <Col md={6}>
                 <FormGroup style={{width: "70%"}}>
                   <div className="form-label-group">
@@ -108,6 +294,8 @@ const SecurityLayout = () => {
                     type="text"
                     className="form-control "
                     placeholder=""
+                    value={authCode}
+                    onChange={e => setAuthCode(e.target.value)}
                   />
                 </FormGroup>
             </Col>
@@ -122,6 +310,8 @@ const SecurityLayout = () => {
                     type="text"
                     className="form-control "
                     placeholder=""
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                   />
                 </FormGroup>
             </Col>
@@ -130,8 +320,8 @@ const SecurityLayout = () => {
           <Row>
             <Col md={6}>
                 <FormGroup>
-                  <Button color="primary"  className="mt-3" >
-                    Enable 2-Factor authentication
+                  <Button color="primary"  className="mt-3"  onClick={() => onChangeStatus()}>
+                    {security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
                   </Button>
                 </FormGroup>
             </Col>
@@ -139,7 +329,7 @@ const SecurityLayout = () => {
                    
           </div>
         
-      </Block>
+      </Block>}
       </Content>
     </React.Fragment>
   );
