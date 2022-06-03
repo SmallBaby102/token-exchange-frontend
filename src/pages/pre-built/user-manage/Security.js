@@ -63,10 +63,10 @@ const SecurityLayout = () => {
       let res = await axios.request(options);
       flag =  res.data
     }
-    if (flag === "False"){
-      toast.warn("Please input correct credential");
-      return;
-    }
+    // if (flag === "False"){
+    //   toast.warn("Please input correct credential");
+    //   return;
+    // }
     let status = 0;
     let login = 0;
     let withdraw = 0;
