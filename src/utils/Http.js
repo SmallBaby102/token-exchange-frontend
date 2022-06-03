@@ -234,6 +234,13 @@ class Http {
     }
     return sendRequest("authentication/user_authentication/confirmSignUp", data, "POST");
   }
+  static resendCode() {
+    let data = {
+      username: localStorage.getItem("username"),
+	    exchange: "PLUSQO"
+    }
+    return sendRequest("authentication/user_authentication/resendSignUpCode", data, "POST");
+  }
   static getAccounts(token) {
     const url = "trade/accounts";
     let headers = { "Content-Type": "application/json" };

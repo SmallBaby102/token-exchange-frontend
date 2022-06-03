@@ -593,6 +593,7 @@ const RequestWire = () => {
   
   // for bank template
   const [data, setData] = useState([]);
+  const [originData, setOriginData] = useState([]);
   const [sm, updateSm] = useState(false);
   const [modalData, setModalData] = useState({
     template_name: "",
@@ -619,17 +620,7 @@ const RequestWire = () => {
     update_template_name: {status: false, message: "This field is required"},
     add_template_name: {status: false, message: "This field is required"},
   })
-  // Changing state value when searching name
-  // useEffect(() => {
-  //   if (onSearchText !== "") {
-  //     const filteredObject = productData.filter((item) => {
-  //       return item.sku.toLowerCase().includes(onSearchText.toLowerCase());
-  //     });
-  //     setData([...filteredObject]);
-  //   } else {
-  //     setData([...productData]);
-  //   }
-  // }, [onSearchText]);
+ 
 
   // OnChange function to get the input data
   const onInputChange = (e) => {
@@ -702,6 +693,7 @@ const RequestWire = () => {
         console.log("result", res)
         submittedData.id = res.data.id;
         setData([submittedData, ...data]);
+        setOriginData([submittedData, ...data]);
     }).catch(err => {
         console.log('error: ', err);
     });
@@ -739,7 +731,7 @@ const RequestWire = () => {
       }
     });
     newItems[index] = submittedData;
-    //setData(newItems);
+    setData(newItems);
     resetForm();
     setView({ edit: false, add: false });
 
@@ -805,6 +797,10 @@ const RequestWire = () => {
     let defaultData = data;
     defaultData = defaultData.filter((item) => item.id !== id);
     setData([...defaultData]);
+    defaultData = originData;
+    defaultData = defaultData.filter((item) => item.id !== id);
+    setOriginData([...defaultData]);
+    setModal({...modal, template_remove_confirm: false});
     const myApi = myServerApi();
     myApi.delete(`/bank_template/${id}`).then(res => {
         console.log("result", res)
@@ -846,11 +842,23 @@ const RequestWire = () => {
           return a.created_at < b.created_at? 1 : -1
         })
         setData(bankTemplates);
+        setOriginData(bankTemplates);
       }
     }).catch(err => {
         console.log('error: ', err);
     });
   }, [])
+   // Changing state value when searching name
+   useEffect(() => {
+    if (onSearchText !== "") {
+      const filteredObject = originData.filter((item) => {
+        return item.template_name.toLowerCase().includes(onSearchText.toLowerCase());
+      });
+      setData([...filteredObject]);
+    } else {
+      setData([...originData]);
+    }
+  }, [onSearchText]);
   return (
     <React.Fragment>
       <Head title="Request Wire"></Head>
@@ -2033,7 +2041,7 @@ const RequestWire = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-                <Form className="row gy-4" onSubmit={handleSubmit(onUseTemplateFormSubmit)}>
+                <Form className="row gy-4" >
                   <Col md="12">
                       <BlockHead size="sm">
                         <BlockBetween>
@@ -2107,7 +2115,8 @@ const RequestWire = () => {
                                     <Button
                                       className="toggle btn-icon d-md-none"
                                       color="primary"
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        e.preventDefault();
                                         toggle("add");
                                       }}
                                     >
@@ -2116,7 +2125,8 @@ const RequestWire = () => {
                                     <Button
                                       className="toggle d-none d-md-inline-flex"
                                       color="primary"
-                                      onClick={() => {
+                                      onClick={(e) => {
+                                        e.preventDefault();
                                         toggle("add");
                                       }}
                                     >
@@ -2298,6 +2308,7 @@ const RequestWire = () => {
                                                           onClick={(ev) => {
                                                             ev.preventDefault();
                                                             setModal({...modal, template_remove_confirm: true});
+                                                            setEditedId(item.id);
                                                           }}
                                                         >
                                                           <Icon name="trash"></Icon>

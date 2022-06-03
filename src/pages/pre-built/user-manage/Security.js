@@ -34,7 +34,7 @@ const SecurityLayout = () => {
   const email = localStorage.getItem("username");
   const myApi = myServerApi();
   const [loading, setLoading] = useState(false);
-  const [password, setPassword] = useState("")
+  // const [password, setPassword] = useState("")
   const [authCode, setAuthCode] = useState("")
   const [secret_val, setSecret_val] = useState("")
   // For QR code generation
@@ -48,8 +48,8 @@ const SecurityLayout = () => {
 
   const onChangeStatus = async () => {
     let flag = "False";
-    if (password !== "")
-    {
+    // if (password !== "")
+    // {
       const options = {
         method: 'GET',
         url: 'https://google-authenticator.p.rapidapi.com/validate/',
@@ -62,7 +62,7 @@ const SecurityLayout = () => {
 
       let res = await axios.request(options);
       flag =  res.data
-    }
+    // }
     if (flag === "False"){
       toast.warn("Please input correct credential");
       return;
@@ -299,7 +299,7 @@ const SecurityLayout = () => {
                   />
                 </FormGroup>
             </Col>
-            <Col md={6}>
+            {/* <Col md={6}>
                 <FormGroup style={{width: "70%"}}>
                   <div className="form-label-group">
                     <label className="form-label">
@@ -314,7 +314,7 @@ const SecurityLayout = () => {
                     onChange={e => setPassword(e.target.value)}
                   />
                 </FormGroup>
-            </Col>
+            </Col> */}
             
           </Row>
           <Row>

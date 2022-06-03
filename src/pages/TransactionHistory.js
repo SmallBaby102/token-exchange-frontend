@@ -689,7 +689,7 @@ const handleThemeToggle1 = (theme) => () => {
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
                             <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                             <a
-                                style={{opacity: "0", position:"absolute", left: "0"}}
+                                style={{opacity: "0", width:"60%", position:"absolute", left: "0"}}
                                 className="select-btn sm"
                                 onClick={handleThemeToggle('default')}>
                                 {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
@@ -734,7 +734,7 @@ const handleThemeToggle1 = (theme) => () => {
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
                             <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                             <a
-                              style={{opacity: "0", position:"absolute", left: "0"}}
+                              style={{opacity: "0", width:"60%", position:"absolute", left: "0"}}
                                 className="select-btn sm"
                                 onClick={handleThemeToggle1('default')}>
                                 {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
@@ -855,17 +855,15 @@ const handleThemeToggle1 = (theme) => () => {
                 <DataTableBody bodyclass="nk-tb-tnx">
                   <DataTableHead>
                     <DataTableRow>
-                    </DataTableRow>
-                    <DataTableRow>
                       <span>Date</span>
                     </DataTableRow>
-                    <DataTableRow >
+                    <DataTableRow size="sm">
                       <span>Type</span>
                     </DataTableRow>
                     <DataTableRow >
                       <span>Detail</span>
                     </DataTableRow>
-                    <DataTableRow size="sm" className="text-right">
+                    <DataTableRow className="text-right">
                       <span>Amount</span>
                     </DataTableRow>
                     <DataTableRow size="sm" className="text-right">
@@ -880,17 +878,11 @@ const handleThemeToggle1 = (theme) => () => {
                             <DataTableRow>
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
-                                </div>
-                              </div>
-                            </DataTableRow>
-                            <DataTableRow>
-                              <div className="nk-tnx-type">
-                                <div className="nk-tnx-type-text">
                                   <span className="tb-date">{dateFormatterAlt(item.date, true)}</span>
                                 </div>
                               </div>
                             </DataTableRow>
-                            <DataTableRow >
+                            <DataTableRow size="sm">
                               <span
                                 className={`badge badge-dot badge-${
                                   item.status === "Wire"
@@ -915,7 +907,7 @@ const handleThemeToggle1 = (theme) => () => {
 
                               </span>
                             </DataTableRow>
-                            <DataTableRow className="text-right" size="sm">
+                            <DataTableRow className="text-right">
                               <span className="tb-amount">
                                   {Helper.limitDecimal(item.amount2, 2)} USD
                               </span>

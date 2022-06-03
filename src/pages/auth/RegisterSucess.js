@@ -17,11 +17,14 @@ import Head from '../../layout/head/Head';
 import Http from '../../utils/Http';
 import { useCookies } from 'react-cookie';
 import api, { myServerApi } from '../../utils/api';
+import { returnLevel } from '../../utils/Utils';
 
 const RegisterSuccess = () => {
   const [cookies, setCookie] = useCookies();
   const history = useHistory();
   const [loading, setLoading] = useState(false)
+  const [loadingResend, setLoadingResend] = useState(false)
+  const email = localStorage.getItem("username"); //useSelector((state) => state.user.user.username)
   const [ formData, setFormData ] = useState({
     verification_code: '',
     country: '',
@@ -34,6 +37,10 @@ const RegisterSuccess = () => {
   }
   const handleSubmit = e => {
     if (loading) return;
+    if (formData.verification_code === ''){
+      toast.warn("Please input a verification code");
+      return;
+    }
     e.preventDefault();
     setLoading(true);
     Http.confirmRegister(formData).then((res) => {
@@ -72,6 +79,17 @@ const RegisterSuccess = () => {
       }    
     });
   };
+  const resendCode = () => {
+    setLoadingResend(true);
+    Http.resendCode().then(res => {
+      setLoadingResend(false);
+      console.log("successfully resent")
+    })
+    .catch(e => {
+      setLoadingResend(false);
+      console.log(e);
+    })
+  }
   return (
     <React.Fragment>
       <Head title="Register" />
@@ -87,6 +105,18 @@ const RegisterSuccess = () => {
                   Verification Code
               </label>
               <div className="form-control-wrap">
+                  <a
+                    href="#verification_code"
+                    onClick={(ev) => {
+                      ev.preventDefault();
+                      resendCode();
+                    }}
+                    className={`form-icon lg form-icon-right`}
+                    style={{right: "20px"}}
+                  >
+                    {loadingResend ? <Spinner size="sm" color="light" /> : "Resend"}
+                    
+                  </a>
                 <input
                   type="text"
                   id="verification_code"
