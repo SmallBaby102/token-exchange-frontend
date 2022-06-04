@@ -375,7 +375,7 @@ const RequestWire = () => {
             myApi.put("sell", sellData)
             .then(result => {
               setWireId(result.data.wireid);
-              toast.success("'Successfully request wire");
+              toast.success("Successfully request wire");
               setLoading(false); 
               setWireFinish(1);
               
