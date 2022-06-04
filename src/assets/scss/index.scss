@@ -263,8 +263,8 @@ code {
 .datepicker {
   width: 94%!important;
 }
-.datepicker-modal{
-  position: fixed;
+.datepicker-modal, .datepicker{
+  position: fixed!important;
   bottom: 100px!important; 
 }
 .col {
