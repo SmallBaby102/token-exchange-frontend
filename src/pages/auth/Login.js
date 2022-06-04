@@ -41,6 +41,7 @@ import AuthFooter from './AuthFooter';
 import LogoComp from './Logo';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
+
 let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
 const Login = () => {
   const [cookies, setCookie] = useCookies();
@@ -376,6 +377,7 @@ const Login = () => {
               </div>
             )}
             <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
+              
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">

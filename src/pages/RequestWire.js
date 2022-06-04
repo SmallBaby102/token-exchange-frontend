@@ -269,7 +269,7 @@ const RequestWire = () => {
     if (saveTemplate){
       let indexOfName = data.findIndex((item) => item.template_name === templateName);
       if (indexOfName >= 0){
-        setErrorsMsg({...errorsStr, templatename: {status: true, message: "Template Name already exists"}})
+        setErrorsStr({...errorsStr, templatename: {status: true, message: "Template Name already exists"}})
         return;
       }
       let submittedData = {
@@ -289,7 +289,6 @@ const RequestWire = () => {
       });
     }
     
-    setFormData({...formData, beneficiary_country: submitFormData.beneficiary_country, bank_country: submitFormData.bank_country, intermediarybank_country: submitFormData.intermediarybank_country})
     setWireFinish(0);
     setModal({...modal, wireConfirm: true})
     

@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 
 import { parseISO } from 'date-fns';
+import DatePickerMobile from 'react-mobile-datepicker'
 import DatePicker from 'react-datepicker';
 import { useForm } from 'react-hook-form';
 import {
@@ -36,7 +37,12 @@ import {
 } from '../../../components/Component';
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
-
+import { dateFormatterAlt, dateFormatterWithdoutTime } from '../../../utils/Utils';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileName }) => {
   const dispatch = useDispatch();
   const myApi = myServerApi(); 
@@ -54,9 +60,9 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
     // individual relative state
     firstname: "",
     lastname: "",
-    birthday: "",
-    issue_date: "",
-    exp_date: "",
+    birthday: null,
+    issue_date: null,
+    exp_date: null,
     issue_country: "",
     title : "",
     gener : "",
@@ -221,9 +227,9 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
           // individual relative state
           firstname: user.firstname,
           lastname: user.lastname,
-          birthday: (user.birthday !== "" && user.birthday !== null) ? parseISO(user.birthday) : null,
-          issue_date: (user.issue_date !== "" && user.issue_date !== null) ? parseISO(user.issue_date) : null,
-          exp_date: (user.exp_date !== "" && user.exp_date !== null) ? parseISO(user.exp_date) : null,
+          birthday: (user.birthday !== "" && user.birthday !== null) ? new Date(user.birthday) : null,
+          issue_date: (user.issue_date !== "" && user.issue_date !== null) ? new Date(user.issue_date) : null,
+          exp_date: (user.exp_date !== "" && user.exp_date !== null) ? new Date(user.exp_date) : null,
           issue_country: user.issue_country,
           // title : user.title,
           gener : user.gener,
@@ -319,6 +325,36 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
       dispatch(setChecking(false));
       });
   }, []);
+  // For DatePicker
+  const [state, setState] = useState({
+    time: new Date(),
+    isOpen: false,
+    isOpen1: false,
+    isOpen2: false,
+    theme: 'default',
+  })
+
+  const handleToggle = (isOpen) => () => {
+      setState({ isOpen });
+  }
+  const handleToggle1 = (isOpen1) => () => {
+      setState({ isOpen1 });
+  }
+  const handleToggle2 = (isOpen2) => () => {
+      setState({ isOpen2 });
+  }
+  const handleThemeToggle = (theme) => () => {
+    if (verification_status === "0")
+      setState({ theme, isOpen: true });
+  }
+  const handleThemeToggle1 = (theme) => () => {
+    if (verification_status === "0")
+      setState({ theme, isOpen1: true });
+  }
+  const handleThemeToggle2 = (theme) => () => {
+    if (verification_status === "0")
+      setState({ theme, isOpen2: true });
+  }
   return (
     <React.Fragment>
       <Head title="User Profile"></Head>
@@ -443,16 +479,54 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             isDisabled= {verification_status !== "0"}
                             value={{value: formData.occupation, label: formData.occupation}}  name="occupation" onChange={(e) => setFormData({...formData, occupation: e.value})} placeholder="Select Occupation" className="form-control-outlined"/>
                 </FormGroup> */}
-                <FormGroup>
-                  <label className="form-label">Birthday</label>
-                  <DatePicker
-                            disabled= {verification_status !== "0"}
-                            style = {{"zIndex": "9999"}}
-                    selected={formData.birthday}
-                    className="form-control"
-                    dateFormat="dd/MM/yyyy"
-                    onChange={(date) => setFormData({ ...formData, birthday: date })}
-                  />
+                <FormGroup className="d-none d-md-block">
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <Stack spacing={3}>
+                        <DesktopDatePicker
+                          disabled= {verification_status !== "0"}
+                          label="Birthday"
+                          inputFormat="dd/MM/yyyy"
+                          value={formData.birthday}
+                          onChange={(date) => {setFormData({ ...formData, birthday: date }) }}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                        </Stack>
+                    </LocalizationProvider>
+                </FormGroup>
+                <FormGroup className='d-md-none'>
+                    <label className="form-label">Birthday</label>
+                    <input disabled= {verification_status !== "0"}
+                      className="form-control" value={dateFormatterWithdoutTime(formData.birthday, true)}/>
+                    <a
+                        style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
+                        className="select-btn sm"
+                        onClick={handleThemeToggle('default')}>
+                        Select Date
+                    </a>
+                    <DatePickerMobile
+                      theme={state.theme}
+                      isOpen={state.isOpen}
+                      // value={formData.birthday}
+                      showCaption
+                      dateConfig={{
+                          'year': {
+                              format: 'YYYY',
+                              caption: 'Year',
+                              step: 1,
+                          },
+                          'month': {
+                              format: 'M',
+                              caption: 'Month',
+                              step: 1,
+                          },
+                          'date': {
+                              format: 'D',
+                              caption: 'Day',
+                              step: 1,
+                          },
+                      }}
+                    onSelect={(date) => {setFormData({ ...formData, birthday: date }); setState({isOpen1:false})}}
+                    onCancel={handleToggle(false)} />
                 </FormGroup>
                 <FormGroup>
                   <Label htmlFor="default-5" className="form-label">
@@ -465,28 +539,106 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                 <FormGroup>
                   <Row className="gy-4">
                       <Col md="6">
-                          <FormGroup>
+                        <FormGroup className="d-none d-md-block">
+                          <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <Stack spacing={3}>
+                              <DesktopDatePicker
+                                disabled= {verification_status !== "0"}
+                                label="Issue Date"
+                                inputFormat="dd/MM/yyyy"
+                                value={formData.issue_date}
+                                onChange={(date) => {setFormData({ ...formData, issue_date: date }) }}
+                                renderInput={(params) => <TextField {...params} />}
+                              />
+                              </Stack>
+                          </LocalizationProvider>
+                        </FormGroup>
+                        <FormGroup className='d-md-none'>
                             <label className="form-label">Issue Date</label>
-                          <DatePicker
-                            disabled= {verification_status !== "0"}
-                            selected={formData.issue_date}
-                            className="form-control"
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => setFormData({ ...formData, issue_date: date })}
-                          />
+                            <input disabled= {verification_status !== "0"}
+                              className="form-control" value={dateFormatterWithdoutTime(formData.issue_date, true)}/>
+                            <a
+                                style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
+                                className="select-btn sm"
+                                onClick={handleThemeToggle1('default')}>
+                                Select Date
+                            </a>
+                            <DatePickerMobile
+                              theme={state.theme}
+                              isOpen={state.isOpen1}
+                              // value={formData.issue_date}
+                              showCaption
+                              dateConfig={{
+                                  'year': {
+                                      format: 'YYYY',
+                                      caption: 'Year',
+                                      step: 1,
+                                  },
+                                  'month': {
+                                      format: 'M',
+                                      caption: 'Month',
+                                      step: 1,
+                                  },
+                                  'date': {
+                                      format: 'D',
+                                      caption: 'Day',
+                                      step: 1,
+                                  },
+                              }}
+                            onSelect={(date) => {setFormData({ ...formData, issue_date: date }); setState({isOpen1:false})}}
+                            onCancel={handleToggle1(false)} />
                         </FormGroup>
                       </Col>
                       <Col md="6">
-                          <FormGroup>
-                          <label className="form-label">Expiration date</label>
-                          <DatePicker
-                          disabled= {verification_status !== "0"}
-                            selected={formData.exp_date}
-                            className="form-control"
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => setFormData({ ...formData, exp_date: date })}
-                          />
+                          <FormGroup className="d-none d-md-block">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                              <Stack spacing={3}>
+                                <DesktopDatePicker
+                                  disabled= {verification_status !== "0"}
+                                  label="Expireation Date"
+                                  inputFormat="dd/MM/yyyy"
+                                  value={formData.exp_date}
+                                  onChange={(date) => {setFormData({ ...formData, exp_date: date }) }}
+                                  renderInput={(params) => <TextField {...params} />}
+                                />
+                                </Stack>
+                            </LocalizationProvider>
                         </FormGroup>
+                        <FormGroup className='d-md-none'>
+                          <label className="form-label">Expiration date</label>
+                          <input disabled= {verification_status !== "0"}
+                            className="form-control" value={dateFormatterWithdoutTime(formData.exp_date, true)}/>
+                          <a
+                              style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
+                              className="select-btn sm"
+                              onClick={handleThemeToggle2('default')}>
+                              Select Date
+                          </a>
+                          <DatePickerMobile
+                            theme={state.theme}
+                            isOpen={state.isOpen2}
+                            showCaption
+                            // value={formData.exp_date}
+                            dateConfig={{
+                                'year': {
+                                    format: 'YYYY',
+                                    caption: 'Year',
+                                    step: 1,
+                                },
+                                'month': {
+                                    format: 'M',
+                                    caption: 'Month',
+                                    step: 1,
+                                },
+                                'date': {
+                                    format: 'D',
+                                    caption: 'Day',
+                                    step: 1,
+                                },
+                            }}
+                          onSelect={(date) => {setFormData({ ...formData, exp_date: date }); setState({isOpen1:false})}}
+                          onCancel={handleToggle2(false)} />
+                      </FormGroup>
                       </Col>
                   </Row>
                 </FormGroup>

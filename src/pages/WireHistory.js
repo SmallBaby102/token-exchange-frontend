@@ -52,7 +52,11 @@ import Helper from '../utils/Helper';
 import { useParams } from 'react-router';
 import DatePickerMobile from 'react-mobile-datepicker'
 import DatePicker from 'react-datepicker';
-
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 const WireHistory = () => {
   const params = useParams();
   const dispatch = useDispatch();
@@ -204,17 +208,18 @@ const WireHistory = () => {
                     <div className="card-title">
                       <h5 className="title">All History</h5>
                       <Row>
-                        <FormGroup style={{width:"30%"}} className="d-none d-md-block">
-                          <label className="form-label">Date(from)</label>
-                          <DatePicker
-                            style = {{"zIndex": "9999"}}
-                            selected={displaySetting.from}
-                            className="form-control"
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => {
-                                setDisplaySetting({ ...displaySetting, from: date }); 
-                              }}
-                          />
+                        <FormGroup style={{width:"30%"}} className="d-none d-md-block mt-3">
+                             <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                  <DesktopDatePicker
+                                    label="Date(From)"
+                                    inputFormat="dd/MM/yyyy"
+                                    value={displaySetting.from}
+                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                  />
+                                  </Stack>
+                              </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'>
                         <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
@@ -249,18 +254,20 @@ const WireHistory = () => {
                           }}
                           onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
                           onCancel={handleToggle(false)} />
-                      </FormGroup>
-                        <FormGroup style={{width:"30%", marginLeft:"20px"}} className="d-none d-md-block">
-                          <label className="form-label">Date(to)</label>
-                          <DatePicker
-                            style = {{"zIndex": "9999"}}
-                            selected={displaySetting.end}
-                            className="form-control"
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => {
-                                setDisplaySetting({ ...displaySetting, end: date }); 
-                              }}
-                          />
+                        </FormGroup>
+                        <FormGroup style={{width:"30%", marginLeft:"20px"}} className="d-none d-md-block mt-3">
+                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                  <DesktopDatePicker
+                                    label="Date(To)"
+                                    minDate={displaySetting.from}
+                                    inputFormat="dd/MM/yyyy"
+                                    value={displaySetting.end}
+                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                  />
+                                  </Stack>
+                              </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
                         <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
@@ -328,12 +335,12 @@ const WireHistory = () => {
                                   </Button>
                                 </div> */}
                               </div>
-                              <div className="dropdown-body dropdown-body-rg" style={{height: "250px", overflow: "scroll"}}>
+                              <div className="dropdown-body dropdown-body-rg" style={{height: "250px", overflowY: "scroll"}}>
                                 <Row className="gx-6 gy-4" >
                                   <Col size="6">
                                     <FormGroup>
                                       <label className="overline-title overline-title-alt">Status</label>
-                                      <RSelect options={filterStatusOptions} defaultValue={{value: displaySetting.status, label: displaySetting.status === "0" ? "Pending" : (displaySetting.status === "1" ? "Approved": displaySetting.status === "2" ? "Processing" : displaySetting.status === "3" ? "Completed" : "Decline")}} onChange={(e) => setDisplaySetting({...displaySetting, status: e.value})} placeholder="Any Status" />
+                                      <RSelect options={filterStatusOptions} defaultValue={{value: displaySetting.status, label: displaySetting.status === "0" ? "Pending" : (displaySetting.status === "1" ? "Approved": displaySetting.status === "2" ? "Processing" : displaySetting.status === "3" ? "Completed" : displaySetting.status === "All" ? "All" : "Decline")}} onChange={(e) => setDisplaySetting({...displaySetting, status: e.value})} placeholder="Any Status" />
                                     </FormGroup>
                                   </Col>
                                   {/* <Col size="6">

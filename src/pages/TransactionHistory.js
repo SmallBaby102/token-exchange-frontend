@@ -4,7 +4,7 @@ import React, {
 } from 'react';
 import DatePickerMobile from 'react-mobile-datepicker'
 import DatePicker from 'react-datepicker';
-
+import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import {
   DropdownItem,
@@ -51,7 +51,11 @@ import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Helper from '../utils/Helper';
-
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 const TransactionHistory = () => {
   const dispatch = useDispatch();
   const [onSearch, setonSearch] = useState(true);
@@ -231,46 +235,46 @@ const TransactionHistory = () => {
         dispatch(setChecking(false));
       }, []);
 
-    // Changing state value when searching name
-    useEffect(() => {
-      if ( orderData?.length > 0) {
-        if (displaySetting.from !== null || displaySetting.end !== null || displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
-            let filteredObject = orderData;
-            if (value === 1) {
-              filteredObject = orderDataUsd;
-            }
-            if (displaySetting.from !== null ) {
-              filteredObject = filteredObject.filter((item) => {
-                return displaySetting.from <=  item.datetemp ;
-              });  
-            } 
-            if (displaySetting.end !== null) {
-              filteredObject = filteredObject.filter((item) => {
-                return item.datetemp <= displaySetting.end ;
-              });  
-            }
-            if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
-              filteredObject = filteredObject.filter((item) => {
-                return item.entity_type.toLowerCase() == displaySetting.type.toLowerCase();
-              });  
-            }
-            if (displaySetting.currency !== "" &&  displaySetting.currency !== "All") {
-              filteredObject = filteredObject.filter((item) => {
-                return item.product_id.toLowerCase() == displaySetting.currency.toLowerCase();
-              });  
-            }
-            setData([...filteredObject]);
-        } else {
-           setData([...orderData]);
-           if (value === 1) {
-             setData([...orderDataUsd]);
+  // Changing state value when searching name
+  useEffect(() => {
+    if ( orderData?.length > 0) {
+      if (displaySetting.from !== null || displaySetting.end !== null || displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
+          let filteredObject = orderData;
+          if (value === 1) {
+            filteredObject = orderDataUsd;
+          }
+          if (displaySetting.from !== null ) {
+            filteredObject = filteredObject.filter((item) => {
+              return displaySetting.from <=  item.datetemp ;
+            });  
+          } 
+          if (displaySetting.end !== null) {
+            filteredObject = filteredObject.filter((item) => {
+              return item.datetemp <= displaySetting.end ;
+            });  
+          }
+          if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
+            filteredObject = filteredObject.filter((item) => {
+              return item.entity_type.toLowerCase() == displaySetting.type.toLowerCase();
+            });  
+          }
+          if (displaySetting.currency !== "" &&  displaySetting.currency !== "All") {
+            filteredObject = filteredObject.filter((item) => {
+              return item.product_id.toLowerCase() == displaySetting.currency.toLowerCase();
+            });  
+          }
+          setData([...filteredObject]);
+      } else {
+          setData([...orderData]);
+          if (value === 1) {
+            setData([...orderDataUsd]);
 
-           }
-        }  
-      }
-      
-  
-    }, [onSearchText, displaySetting]);
+          }
+      }  
+    }
+    
+
+  }, [onSearchText, displaySetting]);
   
   // onChange function for searching name
   const onFilterChange = (e) => {
@@ -281,21 +285,21 @@ const TransactionHistory = () => {
     isOpen: false,
     isOpen1: false,
     theme: 'default',
-})
+  })
 
-const handleToggle = (isOpen) => () => {
-    setState({ isOpen });
-}
-const handleToggle1 = (isOpen1) => () => {
-    setState({ isOpen1 });
-}
+  const handleToggle = (isOpen) => () => {
+      setState({ isOpen });
+  }
+  const handleToggle1 = (isOpen1) => () => {
+      setState({ isOpen1 });
+  }
 
-const handleThemeToggle = (theme) => () => {
-    setState({ theme, isOpen: true });
-}
-const handleThemeToggle1 = (theme) => () => {
-    setState({ theme, isOpen1: true });
-}
+  const handleThemeToggle = (theme) => () => {
+      setState({ theme, isOpen: true });
+  }
+  const handleThemeToggle1 = (theme) => () => {
+      setState({ theme, isOpen1: true });
+  }
 
 
   // Get current list, pagination
@@ -390,18 +394,18 @@ const handleThemeToggle1 = (theme) => () => {
                     <div className="card-title">
                       <h5 className="title">All History</h5>
                       <Row>
-                        <FormGroup style={{width:"30%"}} className="d-none d-md-block">
-                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label>
-                          
-                          <DatePicker
-                            style = {{"zIndex": "9999"}}
-                            selected={displaySetting.from}
-                            className="form-control d-none d-md-block"
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => {
-                                setDisplaySetting({ ...displaySetting, from: date }); 
-                              }}
-                          />
+                        <FormGroup style={{width:"30%"}} className="d-none d-md-block mt-3">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                  <DesktopDatePicker
+                                    label="Date(From)"
+                                    inputFormat="dd/MM/yyyy"
+                                    value={displaySetting.from}
+                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                  />
+                                  </Stack>
+                              </LocalizationProvider>
                           
 
                         </FormGroup>
@@ -439,16 +443,19 @@ const handleThemeToggle1 = (theme) => () => {
                             onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
                             onCancel={handleToggle(false)} />
                         </FormGroup>
-                        <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block">
-                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label>
-                          <DatePicker
-                            style = {{"zIndex": "9999"}}
-                            selected={displaySetting.end}
-                            className="form-control"
-                            dateFormat="dd/MM/yyyy"
-                            minDate={displaySetting.from}
-                            onChange={(date) => setDisplaySetting({ ...displaySetting, end: date })}
-                          />
+                        <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block mt-3">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                  <DesktopDatePicker
+                                    label="Date(To)"
+                                    inputFormat="dd/MM/yyyy"
+                                    minDate={displaySetting.from}
+                                    value={displaySetting.end}
+                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                  />
+                                  </Stack>
+                              </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
@@ -669,22 +676,22 @@ const handleThemeToggle1 = (theme) => () => {
                     <div className="card-title">
                       <h5 className="title">All History</h5>
                       <Row>
-                        <FormGroup style={{width:"30%"}} className="d-none d-md-block">
-                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label>
-                          
-                          <DatePicker
-                            style = {{"zIndex": "9999"}}
-                            selected={displaySetting.from}
-                            className="form-control d-none d-md-block"
-                            dateFormat="dd/MM/yyyy"
-                            onChange={(date) => {
-                                setDisplaySetting({ ...displaySetting, from: date }); 
-                                console.log(dateFormatterAlt(date, true));
-                              }}
-                          />
-                          
+                        <FormGroup style={{width:"30%"}} className="d-none d-md-block mt-3">
+                           <LocalizationProvider dateAdapter={AdapterDateFns}>
+                              <Stack spacing={3}>
+                                <DesktopDatePicker
+                                  label="Date(From)"
+                                  inputFormat="dd/MM/yyyy"
+                                  value={displaySetting.from}
+                                  onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); 
+                                  }}
+                                  renderInput={(params) => <TextField {...params} />}
+                                />
+                                </Stack>
+                            </LocalizationProvider>
 
                         </FormGroup>
+                       
                         <FormGroup className='d-md-none'>
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
                             <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
@@ -719,16 +726,19 @@ const handleThemeToggle1 = (theme) => () => {
                             onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
                             onCancel={handleToggle(false)} />
                         </FormGroup>
-                        <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block">
-                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label>
-                          <DatePicker
-                            style = {{"zIndex": "9999"}}
-                            selected={displaySetting.end}
-                            className="form-control"
-                            dateFormat="dd/MM/yyyy"
-                            minDate={displaySetting.from}
-                            onChange={(date) => setDisplaySetting({ ...displaySetting, end: date })}
-                          />
+                        <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block mt-3">
+                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                  <DesktopDatePicker
+                                    label="Date(To)"
+                                    inputFormat="dd/MM/yyyy"
+                                    minDate={displaySetting.from}
+                                    value={displaySetting.end}
+                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                  />
+                                  </Stack>
+                              </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
                             <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>

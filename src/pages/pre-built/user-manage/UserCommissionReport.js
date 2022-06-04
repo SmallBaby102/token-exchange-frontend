@@ -44,7 +44,12 @@ import {
   commissionStatusOptions,
   commissionPaidStatusOptions,
 } from '../../TransData';
- import DatePickerMobile from 'react-mobile-datepicker'
+ import DatePickerMobile from 'react-mobile-datepicker';
+ import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName }) => {
   const dispatch = useDispatch();
   // const [onSearch, setonSearch] = useState(true);
@@ -96,14 +101,14 @@ const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName 
     if ( orderData?.length > 0) {
       if (displaySetting.type !== "" || displaySetting.paidStatus !== "" || displaySetting.status !== "" || displaySetting.from !== null || displaySetting.end !== null) {
           let filteredObject = orderData;
-          if (displaySetting.from !== null ) {
+          if (displaySetting.from !== null) {
             filteredObject = filteredObject.filter((item) => {
-              return !dateCompare(dateFormatterAlt(displaySetting.from, true).toLowerCase(), fromStringTodateFormatter(item.dateinserted, true).toLowerCase());
+              return displaySetting.from <= new Date(item.dateinserted);
             });  
           } 
           if (displaySetting.end !== null) {
             filteredObject = filteredObject.filter((item) => {
-              return !dateCompare(fromStringTodateFormatter(item.dateinserted, true).toLowerCase(), dateFormatterAlt(displaySetting.end, true).toLowerCase());
+              return  new Date(item.dateinserted) <= displaySetting.end;
             });  
           }
           if (displaySetting.type !== "" &&  displaySetting.type !== "All") {
@@ -166,7 +171,6 @@ const handleThemeToggle1 = (theme) => () => {
   return (
     <React.Fragment>
       <Head title="Trasaction List"></Head>
-      <Content>
         <BlockHead size="sm">
         <BlockBetween>
           <BlockHeadContent>
@@ -195,18 +199,17 @@ const handleThemeToggle1 = (theme) => () => {
                   </div> 
                   <Row>
                     <FormGroup style={{width:"30%"}} className="d-none d-md-block">
-                      <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label>
-                      
-                      <DatePicker
-                        style = {{"zIndex": "9999"}}
-                        selected={displaySetting.from}
-                        className="form-control d-none d-md-block"
-                        dateFormat="dd/MM/yyyy"
-                        onChange={(date) => {
-                            setDisplaySetting({ ...displaySetting, from: date }); 
-                            console.log(dateFormatterAlt(date, true));
-                          }}
-                      />
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <Stack spacing={3}>
+                            <DesktopDatePicker
+                              label="Date(From)"
+                              inputFormat="dd/MM/yyyy"
+                              value={displaySetting.from}
+                              onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
+                            </Stack>
+                        </LocalizationProvider>
                      
 
                     </FormGroup>
@@ -245,15 +248,18 @@ const handleThemeToggle1 = (theme) => () => {
                         onCancel={handleToggle(false)} />
                     </FormGroup>
                     <FormGroup style={{width:"30%", marginLeft:"20px"}}  className="d-none d-md-block">
-                      <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label>
-                      <DatePicker
-                        style = {{"zIndex": "9999"}}
-                        selected={displaySetting.end}
-                        className="form-control"
-                        dateFormat="dd/MM/yyyy"
-                        minDate={displaySetting.from}
-                        onChange={(date) => setDisplaySetting({ ...displaySetting, end: date })}
-                      />
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <Stack spacing={3}>
+                            <DesktopDatePicker
+                              label="Date(To)"
+                              inputFormat="dd/MM/yyyy"
+                              value={displaySetting.end}
+                              minDate={displaySetting.from}
+                              onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                              renderInput={(params) => <TextField {...params} />}
+                            />
+                            </Stack>
+                        </LocalizationProvider>
                     </FormGroup>
                     <FormGroup className='d-md-none'  >
                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
@@ -665,7 +671,6 @@ const handleThemeToggle1 = (theme) => () => {
             </div>
           </div>
         </Block>
-      </Content>
     </React.Fragment>
   );
 };

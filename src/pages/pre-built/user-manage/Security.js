@@ -29,7 +29,7 @@ import { myServerApi } from '../../../utils/api';
 import { toast } from 'react-toastify';
 import Helper from '../../../utils/Helper';
 let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
-const SecurityLayout = () => {
+const Security = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");
   const myApi = myServerApi();
@@ -167,172 +167,170 @@ const SecurityLayout = () => {
 
   return (
     <React.Fragment>
-      <Head title="Trasaction List"></Head>
-      <Content > 
-        <BlockHead size="sm">
-          <BlockBetween> 
-            <BlockHeadContent>
-                <BlockTitle className="mt-5">2-FACTOR AUTHENTIFICATION SETTING</BlockTitle>
-                <BlockDes className="text-soft">
-              </BlockDes>
-             </BlockHeadContent>
-          </BlockBetween>
-        </BlockHead>
-        {security &&<Block className="pl-5">
-          <div className="nk-data data-list"> 
-          <Row>
-            <Col md={6}>
-                <label>Current status : </label>
-                <label className='ml-5' style={{fontWeight: "bold"}}> { security.status === 1 ? "Enable": "Disable"}</label>
+      <Head title="2-Factor Authenticator"></Head>
+      <BlockHead size="sm">
+        <BlockBetween> 
+          <BlockHeadContent>
+              <BlockTitle className="">2-FACTOR AUTHENTIFICATION SETTING</BlockTitle>
+              <BlockDes className="text-soft">
+            </BlockDes>
+            </BlockHeadContent>
+        </BlockBetween>
+      </BlockHead>
+      {security &&<Block className="pl-5">
+        <div className="nk-data data-list"> 
+        <Row>
+          <Col md={6}>
+              <label>Current status : </label>
+              <label className='ml-5' style={{fontWeight: "bold"}}> { security.status === 1 ? "Enable": "Disable"}</label>
+          </Col>
+        </Row>
+        {security.status === 0 ? <Row>          
+            <Col md={12}>
+                <label>1. Install Google Authenticator. (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
             </Col>
-          </Row>
-          {security.status === 0 ? <Row>          
-              <Col md={12}>
-                  <label>1. Install Google Authenticator. (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
-              </Col>
-              <Col md={12}>
-                  <label>2. Scan QR code or enter authenticator key</label>
-              </Col>
-              <Col md={6}>
-                  {/* {value && ( */}
-                    <FormGroup className="mt-3 text-center" >
-                      {/* <QRCode
-                        title="Security Code"
-                        value={value}
-                        bgColor={back}
-                        fgColor={fore}
-                        size={size === '' ? 0 : size}
-                      /> */}
-                      <img src = {enrollUrl} alt=""/>
-                    </FormGroup>
-                  {/* )} */}
-              </Col>
-              <Col md={12} className="mt-5">
-                  <label>3. Enter code from your Google Authenticator App and your login password again to confirm</label>
-              </Col>
-            </Row>: 
-            <Row>
-              <Col md={12}>
-                  <label>Change confirm setting</label>
-                  <Col md="12">
-                    <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          name="saveTemplate"
-                          className="custom-control-input form-control"
-                          id='login'
-                          checked={security.status}
-                          disabled={security.status}
-                          // checked={saveTemplate}
-                          onChange={e => {setSecurity({...security, login:  e.target.checked});}}
-                        />
-                          <label className="custom-control-label form-label" htmlFor="login">
-                          Login
-                        </label>
-                    </div>
-                  </Col>
-              </Col>
-              <Col md={12}>
-                  <Col md="12">
-                    <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          name="saveTemplate"
-                          className="custom-control-input form-control"
-                          id='withdraw'
-                          // checked={saveTemplate}
-                          onChange={e => {setSecurity({...security, withdraw:  e.target.checked});}}
-                        />
-                          <label className="custom-control-label form-label" htmlFor="withdraw">
-                          Withdraw crypto
-                        </label>
-                    </div>
-                  </Col>
-              </Col>
-              <Col md={12}>
-                  <Col md="12">
-                    <div className="custom-control custom-checkbox">
-                        <input
-                          type="checkbox"
-                          name="saveTemplate"
-                          className="custom-control-input form-control"
-                          id='request_wire'
-                          // checked={saveTemplate}
-                          onChange={e => {setSecurity({...security, request_wire:  e.target.checked});}}
-                        />
-                          <label className="custom-control-label form-label" htmlFor="request_wire">
-                          Request wire
-                        </label>
-                    </div>
-                  </Col>
-              </Col>
-              <Col md={12}>
-                  <FormGroup>
-                    <Button color="primary"  className="mt-3 ml-3"  onClick={() => updateStatus()}>
-                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
-                       
-                    </Button>
+            <Col md={12}>
+                <label>2. Scan QR code or enter authenticator key</label>
+            </Col>
+            <Col md={6}>
+                {/* {value && ( */}
+                  <FormGroup className="mt-3 text-center" >
+                    {/* <QRCode
+                      title="Security Code"
+                      value={value}
+                      bgColor={back}
+                      fgColor={fore}
+                      size={size === '' ? 0 : size}
+                    /> */}
+                    <img src = {enrollUrl} alt=""/>
                   </FormGroup>
-              </Col>
-            </Row>
-          }
-
-          <Row className="mt-3">
-            <div className='mb-3' style={{width: "100%", borderBottom: "1px solid darkgray"}}>
-              {/* <label className="">
-                  Disable 2FA
-              </label> */}
-            </div>
-            <Col md={6} >
-                <FormGroup style={{width: "70%"}}>
-                  <div className="form-label-group">
-                    <label className="form-label" htmlFor="default-01">
-                      Enter code from your Google Authenticator App
-                    </label>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control "
-                    placeholder=""
-                    value={authCode}
-                    onChange={e => setAuthCode(e.target.value)}
-                  />
-                </FormGroup>
+                {/* )} */}
             </Col>
-            {/* <Col md={6}>
-                <FormGroup style={{width: "70%"}}>
-                  <div className="form-label-group">
-                    <label className="form-label">
-                      Confirm your password
-                    </label>
-                  </div>
-                  <input
-                    type="text"
-                    className="form-control "
-                    placeholder=""
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                  />
-                </FormGroup>
-            </Col> */}
-            
-          </Row>
+            <Col md={12} className="mt-5">
+                <label>3. Enter code from your Google Authenticator App and your login password again to confirm</label>
+            </Col>
+          </Row>: 
           <Row>
-            <Col md={6}>
+            <Col md={12}>
+                <label>Change confirm setting</label>
+                <Col md="12">
+                  <div className="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        name="saveTemplate"
+                        className="custom-control-input form-control"
+                        id='login'
+                        checked={security.status}
+                        disabled={security.status}
+                        // checked={saveTemplate}
+                        onChange={e => {setSecurity({...security, login:  e.target.checked});}}
+                      />
+                        <label className="custom-control-label form-label" htmlFor="login">
+                        Login
+                      </label>
+                  </div>
+                </Col>
+            </Col>
+            <Col md={12}>
+                <Col md="12">
+                  <div className="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        name="saveTemplate"
+                        className="custom-control-input form-control"
+                        id='withdraw'
+                        // checked={saveTemplate}
+                        onChange={e => {setSecurity({...security, withdraw:  e.target.checked});}}
+                      />
+                        <label className="custom-control-label form-label" htmlFor="withdraw">
+                        Withdraw crypto
+                      </label>
+                  </div>
+                </Col>
+            </Col>
+            <Col md={12}>
+                <Col md="12">
+                  <div className="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        name="saveTemplate"
+                        className="custom-control-input form-control"
+                        id='request_wire'
+                        // checked={saveTemplate}
+                        onChange={e => {setSecurity({...security, request_wire:  e.target.checked});}}
+                      />
+                        <label className="custom-control-label form-label" htmlFor="request_wire">
+                        Request wire
+                      </label>
+                  </div>
+                </Col>
+            </Col>
+            <Col md={12}>
                 <FormGroup>
-                  <Button color="primary"  className="mt-3"  onClick={() => onChangeStatus()}>
-                    {security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
+                  <Button color="primary"  className="mt-3 ml-3"  onClick={() => updateStatus()}>
+                      {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                      
                   </Button>
                 </FormGroup>
             </Col>
           </Row>
-                   
+        }
+
+        <Row className="mt-3">
+          <div className='mb-3' style={{width: "100%", borderBottom: "1px solid darkgray"}}>
+            {/* <label className="">
+                Disable 2FA
+            </label> */}
           </div>
-        
-      </Block>}
-      </Content>
+          <Col md={6} >
+              <FormGroup style={{width: "70%"}}>
+                <div className="form-label-group">
+                  <label className="form-label" htmlFor="default-01">
+                    Enter code from your Google Authenticator App
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  className="form-control "
+                  placeholder=""
+                  value={authCode}
+                  onChange={e => setAuthCode(e.target.value)}
+                />
+              </FormGroup>
+          </Col>
+          {/* <Col md={6}>
+              <FormGroup style={{width: "70%"}}>
+                <div className="form-label-group">
+                  <label className="form-label">
+                    Confirm your password
+                  </label>
+                </div>
+                <input
+                  type="text"
+                  className="form-control "
+                  placeholder=""
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                />
+              </FormGroup>
+          </Col> */}
+          
+        </Row>
+        <Row>
+          <Col md={6}>
+              <FormGroup>
+                <Button color="primary"  className="mt-3"  onClick={() => onChangeStatus()}>
+                  {security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
+                </Button>
+              </FormGroup>
+          </Col>
+        </Row>
+                  
+        </div>
+      
+    </Block>}
     </React.Fragment>
   );
 };
 
-export default SecurityLayout;
+export default Security;

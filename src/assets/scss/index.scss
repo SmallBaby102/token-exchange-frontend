@@ -12,20 +12,10 @@ code {
         monospace;
 }
 
-.css-ahj2mt-MuiTypography-root{
-    color: #B8C5EC;
-}
-.meta-mask{
-    justify-content: space-between;
-}
-.metamask{
-    border-color: #630BF1;
-    color: white;
-}
-.skelton{
-    background-color: #1d1131!important;
-    height: 50px!important;
-}
+// .css-ahj2mt-MuiTypography-root{
+//     color: #B8C5EC;
+// }
+
 .smallskelton{
     background-color: #1d1131!important;
     height: 50px!important;
@@ -274,15 +264,11 @@ code {
   width: 94%!important;
 }
 .datepicker-modal{
-  position: absolute;
+  position: fixed;
   bottom: 100px!important; 
 }
 .col {
   overflow-wrap: anywhere;
-}
-.react-select__menu {
-  // z-index: 9999;
-  position: absolute;
 }
 
 @media (max-width: 575.98px){

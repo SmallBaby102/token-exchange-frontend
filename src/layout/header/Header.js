@@ -11,6 +11,7 @@ import MobileMenu from '../menu/MobileMenu';
 import Toggle from '../sidebar/Toggle';
 import Cwallet from './Cwallet';
 import User from './dropdown/user/User';
+import MobileUser from './dropdown/user/MobileUser';
 import Theme from './Theme';
 import { Link } from 'react-router-dom';
 import LogoLight2x from '../../images/logo02_c.png';
@@ -70,8 +71,11 @@ const Header = ({ fixed, theme, visibility, toggleSidebar, mobileView, className
                   <li className="notification-dropdown mr-n1">
                     {/* <Notification /> */}
                   </li>
-                  <li className="user-dropdown">
+                  <li className="user-dropdown d-none d-md-block">
                     <User />
+                  </li> 
+                  <li className="user-dropdown d-md-none">
+                    <MobileUser />
                   </li>
                   <li>
                     <Theme />
