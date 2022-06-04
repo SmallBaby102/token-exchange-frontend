@@ -231,7 +231,8 @@ const WireHistory = () => {
                               {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                           </a>
                           <DatePickerMobile
-                          // value={displaySetting.from}
+                          value={new Date(displaySetting.from)}
+                        // value={displaySetting.from}
                           theme={state.theme}
                           isOpen={state.isOpen}
                           showCaption
@@ -279,6 +280,7 @@ const WireHistory = () => {
                               {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
                           </a>
                           <DatePickerMobile
+                          value={new Date(displaySetting.end)}
                           theme={state.theme}
                           isOpen={state.isOpen1}
                           showCaption

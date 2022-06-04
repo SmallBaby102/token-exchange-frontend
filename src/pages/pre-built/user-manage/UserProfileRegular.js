@@ -506,7 +506,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                     <DatePickerMobile
                       theme={state.theme}
                       isOpen={state.isOpen}
-                      // value={formData.birthday}
+                      value={new Date(formData.birthday)}
                       showCaption
                       dateConfig={{
                           'year': {
@@ -566,7 +566,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             <DatePickerMobile
                               theme={state.theme}
                               isOpen={state.isOpen1}
-                              // value={formData.issue_date}
+                              value={new Date(formData.issue_date)}
                               showCaption
                               dateConfig={{
                                   'year': {
@@ -618,7 +618,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             theme={state.theme}
                             isOpen={state.isOpen2}
                             showCaption
-                            // value={formData.exp_date}
+                            value={new Date(formData.exp_date)}
                             dateConfig={{
                                 'year': {
                                     format: 'YYYY',

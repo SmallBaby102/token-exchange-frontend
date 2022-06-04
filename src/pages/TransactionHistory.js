@@ -419,7 +419,7 @@ const TransactionHistory = () => {
                                 {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                             </a>
                             <DatePickerMobile
-                            // value={displaySetting.from}
+                            value={new Date(displaySetting.from)}
                             theme={state.theme}
                             isOpen={state.isOpen}
                             showCaption
@@ -467,6 +467,7 @@ const TransactionHistory = () => {
                                 {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
                             </a>
                             <DatePickerMobile
+                            value={new Date(displaySetting.end)}
                             theme={state.theme}
                             isOpen={state.isOpen1}
                             showCaption
@@ -702,7 +703,7 @@ const TransactionHistory = () => {
                                 {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                             </a>
                             <DatePickerMobile
-                            // value={displaySetting.from}
+                            value={new Date(displaySetting.from)}
                             theme={state.theme}
                             isOpen={state.isOpen}
                             showCaption
@@ -750,6 +751,7 @@ const TransactionHistory = () => {
                                 {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
                             </a>
                             <DatePickerMobile
+                            value={new Date(displaySetting.end)}
                             theme={state.theme}
                             isOpen={state.isOpen1}
                             showCaption
