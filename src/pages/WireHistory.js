@@ -222,8 +222,8 @@ const WireHistory = () => {
                               </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'>
-                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
-                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
+                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                          <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                           <a
                               style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                               className="select-btn sm"

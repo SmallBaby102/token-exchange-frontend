@@ -21,11 +21,14 @@ import {
   LinkList,
 } from '../../../../components/links/Links';
 import UserAvatar from '../../../../components/user/UserAvatar';
-import { findUpper } from '../../../../utils/Utils';
+import {Navigation} from 'react-minimal-side-navigation';
+import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 
 const MobileUser = () => {
   const [open, setOpen] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
+  const toggleProfile = () => setOpenProfile((prevState) => !prevState);
   const dispatch = useDispatch();
   const history = useHistory();
   const currentUser = useSelector(state => state.user.user);
@@ -54,47 +57,90 @@ const MobileUser = () => {
             </div>
           </div>
         </div>
-        <div className="dropdown-inner">
-          <LinkList>
-            <LinkItem
-              link={window.location.pathname.split("/")[2] === "invest" ? "/invest/profile" : "/user-profile-regular"}
-              icon="user-alt"
-              onClick={toggle}
-            >
-              View Profile
-            </LinkItem>
-          </LinkList>
-        </div>
-        <div className="dropdown-inner">
-          <LinkList>
-            <LinkItem
-              link="/user-affiliate"
-              icon="tranx-fill"
-              onClick={toggle}
-            >
-              Affiliate
-            </LinkItem>
-          </LinkList>
-        </div>
-        <div className="dropdown-inner">
-          <LinkList>
-            <LinkItem
-              link="/security"
-              icon="shield"
-              onClick={toggle}
-            >
-              Security
-            </LinkItem>
-          </LinkList>
-        </div>
-        <div className="dropdown-inner">
-          <LinkList>
-            <Link to="#" onClick={() => { clearInterval(accountIntervalId); clearInterval(quoteIntervalId); dispatch(logout(history)); } }>
-              <Icon name="signout"></Icon>
-              <span>Sign Out</span>
-            </Link>
-          </LinkList>
-        </div>
+        <Navigation
+            // you can use your own router's api to get pathname
+            activeItemId={history.location.pathname}
+            onSelect={({ itemId }) => {
+              console.log("itemid", itemId)
+              if (itemId == "/signout")
+               {
+                clearInterval(accountIntervalId); 
+                clearInterval(quoteIntervalId); 
+                dispatch(logout(history)); 
+               }
+               else {
+                  if (itemId !== "/profile" && itemId !== "/affiliate" && itemId !== "/securityitem")
+                  {
+                    toggle();
+                    history.push(itemId);
+                  }
+               }
+            }}
+            items={[
+              {
+                title: 'View Profile',
+                itemId: '/profile',
+                // you can use your own custom Icon component as well
+                // icon is optional
+                elemBefore: () => <Icon name="user-alt" />,
+                subNav: [
+                  {
+                    title: 'Personal Information',
+                    itemId: '/user-profile-regular',
+                    elemBefore: () => <Icon name="user-fill-c" />,
+                  },
+                  {
+                    title: 'Profile Verification',
+                    itemId: '/user-profile-verification',
+                    elemBefore: () => <Icon name="shield" />,
+
+                  },
+                ],
+              },
+              {
+                title: 'Affiliate',
+                itemId: '/affiliate',
+                elemBefore: () => <Icon name="tranx-fill" />,
+                subNav: [
+                  {
+                    title: 'My Affiliate Link',
+                    itemId: '/user-affiliate',
+                    elemBefore: () => <Icon name="link" />,
+                  },
+                  {
+                    title: 'My user',
+                    itemId: '/user-myuser',
+                    elemBefore: () => <Icon name="users" />,
+                  },
+                  {
+                    title: 'Commission Report',
+                    itemId: '/user-commission-report',
+                    elemBefore: () => <Icon name="reports" />,
+                  },
+                ],
+              },
+              {
+                title: 'Security',
+                itemId: '/securityitem',
+                elemBefore: () => <Icon name="shield" />,
+                subNav: [
+                  {
+                    title: '2-Factor Authentication',
+                    itemId: '/security',
+                    elemBefore: () => <Icon name="shield" />,
+                  },
+                 
+                ],
+              },
+             
+              {
+                title: 'Sign Out',
+                itemId: '/signout',
+                elemBefore: () => <Icon name="signout" />,
+              },
+             
+            ]}
+          />
       </DropdownMenu>
     </Dropdown>
   );
