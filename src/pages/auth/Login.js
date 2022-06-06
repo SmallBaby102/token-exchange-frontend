@@ -183,21 +183,21 @@ const Login = () => {
           
               axios.request(options).then(function (response) {
                   setSecret_val(response.data);
-                  // const options = {
-                  //   method: 'GET',
-                  //   url: 'https://google-authenticator.p.rapidapi.com/enroll/',
-                  //   params: {secret: response.data, issuer: 'Cryptowire', account: email},
-                  //   headers: {
-                  //     'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
-                  //     'X-RapidAPI-Key': RapidAPIKey
-                  //   }
-                  // };
+                  const options = {
+                    method: 'GET',
+                    url: 'https://google-authenticator.p.rapidapi.com/enroll/',
+                    params: {secret: response.data, issuer: 'Cryptowire', account: email},
+                    headers: {
+                      'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+                      'X-RapidAPI-Key': RapidAPIKey
+                    }
+                  };
           
-                  // axios.request(options).then(function (res) {
-                  //     setEnrollUrl(res.data);
-                  // }).catch(function (error) {
-                  //   console.error(error);
-                  // });
+                  axios.request(options).then(function (res) {
+                      // setEnrollUrl(res.data);
+                  }).catch(function (error) {
+                    console.error(error);
+                  });
               }).catch(function (error) {
                 console.error(error);
               });
