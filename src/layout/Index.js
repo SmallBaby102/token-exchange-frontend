@@ -36,6 +36,7 @@ const Layout = () => {
   const viewChange = () => {
     if (window.innerWidth < 992) {
       setMobileView(true);
+      console.log("mobile view")
     } else {
       setMobileView(false);
       setVisibility(false);

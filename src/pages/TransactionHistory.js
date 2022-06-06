@@ -424,20 +424,20 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen}
                             showCaption
                             dateConfig={{
-                                'year': {
-                                    format: 'YYYY',
-                                    caption: 'Year',
-                                    step: 1,
+                              'date': {
+                                format: 'D',
+                                caption: 'Day',
+                                step: 1,
                                 },
                                 'month': {
                                     format: 'M',
                                     caption: 'Month',
                                     step: 1,
                                 },
-                                'date': {
-                                    format: 'D',
-                                    caption: 'Day',
-                                    step: 1,
+                                'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
                                 },
                             }}
                             onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
@@ -472,20 +472,20 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen1}
                             showCaption
                             dateConfig={{
-                                'year': {
-                                    format: 'YYYY',
-                                    caption: 'Year',
-                                    step: 1,
+                              'date': {
+                                format: 'D',
+                                caption: 'Day',
+                                step: 1,
                                 },
                                 'month': {
                                     format: 'M',
                                     caption: 'Month',
                                     step: 1,
                                 },
-                                'date': {
-                                    format: 'D',
-                                    caption: 'Day',
-                                    step: 1,
+                                'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
                                 },
                             }}
                             onSelect={(date) => {setDisplaySetting({ ...displaySetting, end: date }); setState({isOpen1:false})}}
@@ -708,20 +708,20 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen}
                             showCaption
                             dateConfig={{
-                                'year': {
-                                    format: 'YYYY',
-                                    caption: 'Year',
-                                    step: 1,
+                              'date': {
+                                format: 'D',
+                                caption: 'Day',
+                                step: 1,
                                 },
                                 'month': {
                                     format: 'M',
                                     caption: 'Month',
                                     step: 1,
                                 },
-                                'date': {
-                                    format: 'D',
-                                    caption: 'Day',
-                                    step: 1,
+                                'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
                                 },
                             }}
                             onSelect={(date) => {setDisplaySetting({ ...displaySetting, from: date }); setState({isOpen:false})}}
@@ -756,20 +756,20 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen1}
                             showCaption
                             dateConfig={{
-                                'year': {
-                                    format: 'YYYY',
-                                    caption: 'Year',
-                                    step: 1,
+                              'date': {
+                                format: 'D',
+                                caption: 'Day',
+                                step: 1,
                                 },
                                 'month': {
                                     format: 'M',
                                     caption: 'Month',
                                     step: 1,
                                 },
-                                'date': {
-                                    format: 'D',
-                                    caption: 'Day',
-                                    step: 1,
+                                'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
                                 },
                             }}
                             onSelect={(date) => {setDisplaySetting({ ...displaySetting, end: date }); setState({isOpen1:false})}}

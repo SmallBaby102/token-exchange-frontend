@@ -207,7 +207,7 @@ const Security = () => {
                 {/* )} */}
             </Col>
             <Col md={12} className="mt-5">
-                <label>3. Enter code from your Google Authenticator App and your login password again to confirm</label>
+                <label>3. Enter code from your Google Authenticator App to confirm</label>
             </Col>
           </Row>: 
           <Row>

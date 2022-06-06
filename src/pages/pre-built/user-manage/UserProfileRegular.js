@@ -509,20 +509,20 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                       value={new Date(formData.birthday)}
                       showCaption
                       dateConfig={{
-                          'year': {
-                              format: 'YYYY',
-                              caption: 'Year',
-                              step: 1,
+                        'date': {
+                          format: 'D',
+                          caption: 'Day',
+                          step: 1,
                           },
                           'month': {
                               format: 'M',
                               caption: 'Month',
                               step: 1,
                           },
-                          'date': {
-                              format: 'D',
-                              caption: 'Day',
-                              step: 1,
+                          'year': {
+                            format: 'YYYY',
+                            caption: 'Year',
+                            step: 1,
                           },
                       }}
                     onSelect={(date) => {setFormData({ ...formData, birthday: date }); setState({isOpen1:false})}}
@@ -569,20 +569,20 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               value={new Date(formData.issue_date)}
                               showCaption
                               dateConfig={{
-                                  'year': {
-                                      format: 'YYYY',
-                                      caption: 'Year',
-                                      step: 1,
+                                'date': {
+                                  format: 'D',
+                                  caption: 'Day',
+                                  step: 1,
                                   },
                                   'month': {
                                       format: 'M',
                                       caption: 'Month',
                                       step: 1,
                                   },
-                                  'date': {
-                                      format: 'D',
-                                      caption: 'Day',
-                                      step: 1,
+                                  'year': {
+                                    format: 'YYYY',
+                                    caption: 'Year',
+                                    step: 1,
                                   },
                               }}
                             onSelect={(date) => {setFormData({ ...formData, issue_date: date }); setState({isOpen1:false})}}
@@ -620,20 +620,20 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             showCaption
                             value={new Date(formData.exp_date)}
                             dateConfig={{
-                                'year': {
-                                    format: 'YYYY',
-                                    caption: 'Year',
-                                    step: 1,
+                              'date': {
+                                format: 'D',
+                                caption: 'Day',
+                                step: 1,
                                 },
                                 'month': {
                                     format: 'M',
                                     caption: 'Month',
                                     step: 1,
                                 },
-                                'date': {
-                                    format: 'D',
-                                    caption: 'Day',
-                                    step: 1,
+                                'year': {
+                                  format: 'YYYY',
+                                  caption: 'Year',
+                                  step: 1,
                                 },
                             }}
                           onSelect={(date) => {setFormData({ ...formData, exp_date: date }); setState({isOpen1:false})}}
