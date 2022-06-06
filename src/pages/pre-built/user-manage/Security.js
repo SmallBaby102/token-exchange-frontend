@@ -68,22 +68,20 @@ const Security = () => {
       return;
     }
     let status = 0;
-    let login = 0;
+    let login = 1;
     let withdraw = 0;
     let request_wire = 0;
     if(security.status === 1)  
       {
         setSecurity({...security, status: 0})
         status = 0;
-        login = 0;
-        withdraw = 0;
-        request_wire = 0;
+        // withdraw = 0;
+        // request_wire = 0;
       }
     else 
      {
       setSecurity({...security, status: 1})
       status = 1;
-      login = 1;
       // withdraw = 1;
       // request_wire = 1;
      }
@@ -220,8 +218,8 @@ const Security = () => {
                         name="saveTemplate"
                         className="custom-control-input form-control"
                         id='login'
-                        checked={security.status}
-                        disabled={security.status}
+                        checked={security.login}
+                        disabled={security.login}
                         // checked={saveTemplate}
                         onChange={e => {setSecurity({...security, login:  e.target.checked});}}
                       />
@@ -237,6 +235,7 @@ const Security = () => {
                       <input
                         type="checkbox"
                         name="saveTemplate"
+                        checked={security.withdraw}
                         className="custom-control-input form-control"
                         id='withdraw'
                         // checked={saveTemplate}
@@ -255,6 +254,7 @@ const Security = () => {
                         type="checkbox"
                         name="saveTemplate"
                         className="custom-control-input form-control"
+                        checked={security.request_wire}
                         id='request_wire'
                         // checked={saveTemplate}
                         onChange={e => {setSecurity({...security, request_wire:  e.target.checked});}}
