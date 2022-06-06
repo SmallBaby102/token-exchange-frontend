@@ -227,6 +227,7 @@ const handleThemeToggle1 = (theme) => () => {
                         theme={state.theme}
                         isOpen={state.isOpen}
                         showCaption
+                        headerFormat="DD/MM/YYYY"
                         dateConfig={{
                           'date': {
                             format: 'D',
@@ -275,8 +276,8 @@ const handleThemeToggle1 = (theme) => () => {
                         theme={state.theme}
                         isOpen={state.isOpen1}
                         showCaption
+                        headerFormat="DD/MM/YYYY"
                         dateConfig={{
-                           
                             'date': {
                                 format: 'D',
                                 caption: 'Day',

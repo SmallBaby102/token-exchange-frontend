@@ -423,7 +423,8 @@ const TransactionHistory = () => {
                             theme={state.theme}
                             isOpen={state.isOpen}
                             showCaption
-                            dateConfig={{
+                        headerFormat="DD/MM/YYYY"
+                        dateConfig={{
                               'date': {
                                 format: 'D',
                                 caption: 'Day',
@@ -471,6 +472,7 @@ const TransactionHistory = () => {
                             theme={state.theme}
                             isOpen={state.isOpen1}
                             showCaption
+                            headerFormat="DD/MM/YYYY"
                             dateConfig={{
                               'date': {
                                 format: 'D',
@@ -707,7 +709,8 @@ const TransactionHistory = () => {
                             theme={state.theme}
                             isOpen={state.isOpen}
                             showCaption
-                            dateConfig={{
+                        headerFormat="DD/MM/YYYY"
+                        dateConfig={{
                               'date': {
                                 format: 'D',
                                 caption: 'Day',
@@ -755,7 +758,8 @@ const TransactionHistory = () => {
                             theme={state.theme}
                             isOpen={state.isOpen1}
                             showCaption
-                            dateConfig={{
+                        headerFormat="DD/MM/YYYY"
+                        dateConfig={{
                               'date': {
                                 format: 'D',
                                 caption: 'Day',

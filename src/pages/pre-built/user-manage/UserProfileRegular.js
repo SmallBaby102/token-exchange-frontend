@@ -508,7 +508,8 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                       isOpen={state.isOpen}
                       value={new Date(formData.birthday)}
                       showCaption
-                      dateConfig={{
+                        headerFormat="DD/MM/YYYY"
+                        dateConfig={{
                         'date': {
                           format: 'D',
                           caption: 'Day',
@@ -568,7 +569,8 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               isOpen={state.isOpen1}
                               value={new Date(formData.issue_date)}
                               showCaption
-                              dateConfig={{
+                        headerFormat="DD/MM/YYYY"
+                        dateConfig={{
                                 'date': {
                                   format: 'D',
                                   caption: 'Day',
@@ -619,6 +621,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             isOpen={state.isOpen2}
                             showCaption
                             value={new Date(formData.exp_date)}
+                            headerFormat="DD/MM/YYYY"
                             dateConfig={{
                               'date': {
                                 format: 'D',
