@@ -43,7 +43,7 @@ const Security = () => {
   // const [back, setBack] = useState('#FFFFFF');
   // const [fore, setFore] = useState('#000000');
   // const [size, setSize] = useState(256);
-  const [enrollUrl, setEnrollUrl] = useState("");
+  const [enrollUrl, setEnrollUrl] = useState(null);
   // 
   const [security, setSecurity] = useState({})
 
@@ -121,8 +121,13 @@ const Security = () => {
   useEffect(async () => {
     dispatch(setChecking(true));
     let res = await myApi.get(`security/${email}`);
+    dispatch(setChecking(false));
     if (res.data.data)
-      setSecurity(res.data.data);
+    {
+       setSecurity(res.data.data);
+       setSecret_val(res.data.data.code_from_app);
+
+    }
     else
       setSecurity({
         status : 0,
@@ -208,7 +213,8 @@ const Security = () => {
                       fgColor={fore}
                       size={size === '' ? 0 : size}
                     /> */}
-                    <img src = {enrollUrl} alt=""/>
+                      {enrollUrl === null ? <Spinner size="sm" color="dark" /> : <img src = {enrollUrl} alt=""/>}
+                    
                   </FormGroup>
                 {/* )} */}
             </Col>
