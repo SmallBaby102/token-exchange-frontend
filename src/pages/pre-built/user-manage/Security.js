@@ -34,6 +34,7 @@ const Security = () => {
   const email = localStorage.getItem("username");
   const myApi = myServerApi();
   const [loading, setLoading] = useState(false);
+  const [loading2FA, setLoading2FA] = useState(false);
   // const [password, setPassword] = useState("")
   const [authCode, setAuthCode] = useState("")
   const [secret_val, setSecret_val] = useState("")
@@ -47,6 +48,7 @@ const Security = () => {
   const [security, setSecurity] = useState({})
 
   const onChangeStatus = async () => {
+    setLoading2FA(true);
     let flag = "False";
     // if (password !== "")
     // {
@@ -65,6 +67,7 @@ const Security = () => {
     // }
     if (flag === "False"){
       toast.warn("Please input correct credential");
+      setLoading2FA(false);
       return;
     }
     let status = 0;
@@ -89,13 +92,17 @@ const Security = () => {
       status,
       login,
       withdraw,
-      request_wire
+      request_wire,
+      code_from_app: secret_val
+
     } 
     myApi.post(`security/${email}`, data)
     .then(res => {
       dispatch(setChecking(false));
-    })
+      setLoading2FA(false);
+  })
     .catch(err => {
+      setLoading2FA(false);
       dispatch(setChecking(false));
     })
     
@@ -111,57 +118,58 @@ const Security = () => {
     })
     
   }
-  useEffect(() => {
+  useEffect(async () => {
     dispatch(setChecking(true));
-    myApi.get(`security/${email}`)
-    .then(res => {
-      if (res.data.data)
-        setSecurity(res.data.data);
-      else
-        setSecurity({
-          status : 0,
-          login : 0,
-          withdraw : 0,
-          request_wire : 0,
-        });
-
-      // setValue(res.data.data.code_from_app)
-      dispatch(setChecking(false));
-    })
-    .catch(err => {
-      dispatch(setChecking(false));
-      console.log("get commission user error", err)
-    })
-    const options = {
+    let res = await myApi.get(`security/${email}`);
+    if (res.data.data)
+      setSecurity(res.data.data);
+    else
+      setSecurity({
+        status : 0,
+        login : 0,
+        withdraw : 0,
+        request_wire : 0,
+      });
+  }, [])
+  useEffect(async () => {
+    if (security.status === 0)
+    {
+      const options = {
       method: 'GET',
       url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
       headers: {
         'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
         'X-RapidAPI-Key': RapidAPIKey
       }
-    };
+      };
 
+    dispatch(setChecking(true));
     axios.request(options).then(function (response) {
-        setSecret_val(response.data);
-        const options = {
-          method: 'GET',
-          url: 'https://google-authenticator.p.rapidapi.com/enroll/',
-          params: {secret: response.data, issuer: 'Cryptowire', account: email},
-          headers: {
-            'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
-            'X-RapidAPI-Key': RapidAPIKey
-          }
-        };
+          setSecret_val(response.data);
+          const options = {
+            method: 'GET',
+            url: 'https://google-authenticator.p.rapidapi.com/enroll/',
+            params: {secret: response.data, issuer: 'Cryptowire', account: email},
+            headers: {
+              'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
+              'X-RapidAPI-Key': RapidAPIKey
+            }
+          };
 
-        axios.request(options).then(function (res) {
-            setEnrollUrl(res.data);
-        }).catch(function (error) {
-          console.error(error);
-        });
-    }).catch(function (error) {
-      console.error(error);
-    });
-  }, [])
+          axios.request(options).then(function (res) {
+              setEnrollUrl(res.data);
+              dispatch(setChecking(false));
+
+          }).catch(function (error) {
+              dispatch(setChecking(false));
+              console.error(error);
+          });
+      }).catch(function (error) {
+        dispatch(setChecking(false));
+        console.error(error);
+      });
+    }
+  }, [security])
 
   return (
     <React.Fragment>
@@ -320,7 +328,8 @@ const Security = () => {
           <Col md={6}>
               <FormGroup>
                 <Button color="primary"  className="mt-3"  onClick={() => onChangeStatus()}>
-                  {security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
+                  {loading2FA ? <Spinner size="sm" color="light" /> :
+                   security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
                 </Button>
               </FormGroup>
           </Col>

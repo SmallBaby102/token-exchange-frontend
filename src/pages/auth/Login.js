@@ -60,6 +60,7 @@ const Login = () => {
   const [modal, setModal] = useState({
     auth: false,
   });
+  const [enrollUrl, setEnrollUrl] = useState("");
   const [authCode, setAuthCode] = useState("")
   const [errorsf, setErrorsf] = useState({
     emailfield: { status: false, message : "Please input correct email address",},
@@ -81,7 +82,9 @@ const Login = () => {
         'X-RapidAPI-Key': RapidAPIKey
       }
     };
+    setLoading(true)
     let response = await axios.request(options);
+    setLoading(false)
     flag =  response.data
     if (flag !== "False"){
         let res = tempForLogin;
@@ -172,35 +175,7 @@ const Login = () => {
             setLoading(false);
             if (twoFactor === 1){
               setModal({...modal, auth: true});
-              const options = {
-                method: 'GET',
-                url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
-                headers: {
-                  'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
-                  'X-RapidAPI-Key': RapidAPIKey
-                }
-              };
-          
-              axios.request(options).then(function (response) {
-                  setSecret_val(response.data);
-                  const options = {
-                    method: 'GET',
-                    url: 'https://google-authenticator.p.rapidapi.com/enroll/',
-                    params: {secret: response.data, issuer: 'Cryptowire', account: email},
-                    headers: {
-                      'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
-                      'X-RapidAPI-Key': RapidAPIKey
-                    }
-                  };
-          
-                  axios.request(options).then(function (res) {
-                      // setEnrollUrl(res.data);
-                  }).catch(function (error) {
-                    console.error(error);
-                  });
-              }).catch(function (error) {
-                console.error(error);
-              });
+              setSecret_val(security.data.data.code_from_app);
             } else {
                 Helper.storeUser(res);
                 // const role = res.data.user.role;
@@ -520,7 +495,7 @@ const Login = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="button" onClick={confirmLogin}>
-                          Confirm
+                          {loading ? <Spinner size="sm" color="light" /> : "Confirm"}
                         </Button>
                       </li>
                       <li>
