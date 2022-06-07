@@ -21,6 +21,7 @@ export default function CustomizedTimeline() {
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");
   const [wireHistory, setWireHistory] = useState(null)
+  const [mobileView, setMobileView] = useState(false);
   useEffect(async () => {
     dispatch(setChecking(true));
       // get report data from local db
@@ -36,7 +37,15 @@ export default function CustomizedTimeline() {
       console.log('error: ', err);
       });
 }, []);
-
+const viewChange = () => {
+  if (window.innerWidth < 992) {
+    setMobileView(true);
+  } else {
+    setMobileView(false);
+  }
+};
+window.addEventListener("load", viewChange);
+window.addEventListener("resize", viewChange);
 let color = {color: "#1976d2"};
 return (
     <Content >
@@ -337,18 +346,11 @@ return (
                 </TimelineContent>
               </TimelineItem>
               }
-               <TimelineItem>
-                  <TimelineOppositeContent
-                    sx={{ m: 'auto 0', mt: "34px" }}
-                    variant="body2"
-                    align="left"
-                    color="text.secondary"
-                  >
-                    <div className='d-flex' style={{wordBreak: "break-all", color: "#364a63", justifyContent:"center"}}>
+               <div style={mobileView === false ? {transform: "translate(calc(50% - 140px))"} : {transform: "translate(calc(50% - 100px))"}}>
+                    <div className='mt-4' style={{fontSize: "1.1rem", wordBreak: "break-all", color: "orange", width:"72%"}}>
                       {wireHistory.memo}
                   </div>
-                  </TimelineOppositeContent>
-                </TimelineItem>
+                </div>
               </Timeline>
             }
               

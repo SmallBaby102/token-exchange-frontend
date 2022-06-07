@@ -223,11 +223,13 @@ const handleThemeToggle1 = (theme) => () => {
                             {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                         </a>
                         <DatePickerMobile
-                        // value={displaySetting.from}
+                        value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
                         theme={state.theme}
                         isOpen={state.isOpen}
                         showCaption
                         headerFormat="DD/MM/YYYY"
+                        confirmText="Set"
+                        cancelText="Cancel"
                         dateConfig={{
                           'date': {
                             format: 'D',
@@ -273,9 +275,12 @@ const handleThemeToggle1 = (theme) => () => {
                         </a>
                         <DatePickerMobile
                         theme={state.theme}
+                        value={displaySetting.end !== null ? new Date(displaySetting.end) : new Date()}
                         isOpen={state.isOpen1}
                         showCaption
                         headerFormat="DD/MM/YYYY"
+                        confirmText="Set"
+                        cancelText="Cancel"
                         dateConfig={{
                           'date': {
                             format: 'D',

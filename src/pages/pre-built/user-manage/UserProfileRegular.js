@@ -506,9 +506,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                     <DatePickerMobile
                       theme={state.theme}
                       isOpen={state.isOpen}
-                      value={new Date(formData.birthday)}
+                      value={formData.birthday !== null ? new Date(formData.birthday) : new Date()}
                       showCaption
                         headerFormat="DD/MM/YYYY"
+                        confirmText="Set"
+                        cancelText="Cancel"
                         dateConfig={{
                         'date': {
                           format: 'D',
@@ -567,10 +569,12 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             <DatePickerMobile
                               theme={state.theme}
                               isOpen={state.isOpen1}
-                              value={new Date(formData.issue_date)}
+                              value={formData.issue_date !== null ? new Date(formData.issue_date) : new Date()}
                               showCaption
-                        headerFormat="DD/MM/YYYY"
-                        dateConfig={{
+                              headerFormat="DD/MM/YYYY"
+                              confirmText="Set"
+                              cancelText="Cancel"
+                              dateConfig={{
                                 'date': {
                                   format: 'D',
                                   caption: 'Day',
@@ -620,8 +624,10 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             theme={state.theme}
                             isOpen={state.isOpen2}
                             showCaption
-                            value={new Date(formData.exp_date)}
+                            value={formData.exp_date !== null ? new Date(formData.exp_date) : new Date()}
                             headerFormat="DD/MM/YYYY"
+                            confirmText="Set"
+                            cancelText="Cancel"
                             dateConfig={{
                               'date': {
                                 format: 'D',

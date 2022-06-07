@@ -225,6 +225,7 @@ const TransactionHistory = () => {
         });
         temp.forEach(element => {
           element.datetemp = new Date(element.date);
+          element.timestampMobile = dateFormatterWithdoutTime(element.date, true)
           element.timestamp = dateFormatterAlt(element.date, true)
         });
         temp = temp.sort((a, b) => {
@@ -233,7 +234,7 @@ const TransactionHistory = () => {
         setData(temp); 
         setOrderData(temp);
         dispatch(setChecking(false));
-      }, []);
+  }, []);
 
   // Changing state value when searching name
   useEffect(() => {
@@ -276,10 +277,6 @@ const TransactionHistory = () => {
 
   }, [onSearchText, displaySetting]);
   
-  // onChange function for searching name
-  const onFilterChange = (e) => {
-    setSearchText(e.target.value);
-  };
   const [state, setState] = useState({
     time: new Date(),
     isOpen: false,
@@ -419,12 +416,14 @@ const TransactionHistory = () => {
                                 {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                             </a>
                             <DatePickerMobile
-                            value={new Date(displaySetting.from)}
+                            value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
                             theme={state.theme}
                             isOpen={state.isOpen}
                             showCaption
-                        headerFormat="DD/MM/YYYY"
-                        dateConfig={{
+                            headerFormat="DD/MM/YYYY"
+                            confirmText="Set"
+                            cancelText="Cancel"
+                            dateConfig={{
                               'date': {
                                 format: 'D',
                                 caption: 'Day',
@@ -468,11 +467,13 @@ const TransactionHistory = () => {
                                 {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
                             </a>
                             <DatePickerMobile
-                            value={new Date(displaySetting.end)}
+                            value={displaySetting.end !== null ? new Date(displaySetting.end) : new Date()}
                             theme={state.theme}
                             isOpen={state.isOpen1}
                             showCaption
                             headerFormat="DD/MM/YYYY"
+                            confirmText="Set"
+                            cancelText="Cancel"
                             dateConfig={{
                               'date': {
                                 format: 'D',
@@ -584,8 +585,6 @@ const TransactionHistory = () => {
                 <DataTableBody bodyclass="nk-tb-tnx">
                   <DataTableHead>
                     <DataTableRow>
-                    </DataTableRow>
-                    <DataTableRow>
                       <span>Date</span>
                     </DataTableRow>
                     <DataTableRow >
@@ -605,17 +604,17 @@ const TransactionHistory = () => {
                     ? currentItems.map((item) => {
                         return (
                           <DataTableItem key={item.entity_id}>
-                            <DataTableRow>
+                            <DataTableRow size="sm">
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
+                                  <span className="tb-date">{item.timestamp}</span>
                                 </div>
                               </div>
                             </DataTableRow>
-                            <DataTableRow>
+                            <DataTableRow className="d-md-none">
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
-                                  <span className="tb-lead">{item.desc}</span>
-                                  <span className="tb-date">{item.timestamp}</span>
+                                  <span className="tb-date">{item.timestampMobile}</span>
                                 </div>
                               </div>
                             </DataTableRow>
@@ -705,12 +704,14 @@ const TransactionHistory = () => {
                                 {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                             </a>
                             <DatePickerMobile
-                            value={new Date(displaySetting.from)}
+                            value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
                             theme={state.theme}
                             isOpen={state.isOpen}
                             showCaption
-                        headerFormat="DD/MM/YYYY"
-                        dateConfig={{
+                            headerFormat="DD/MM/YYYY"
+                            confirmText="Set"
+                            cancelText="Cancel"
+                            dateConfig={{
                               'date': {
                                 format: 'D',
                                 caption: 'Day',
@@ -754,12 +755,14 @@ const TransactionHistory = () => {
                                 {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
                             </a>
                             <DatePickerMobile
-                            value={new Date(displaySetting.end)}
+                            value={displaySetting.end !== null ? new Date(displaySetting.end) : new Date()}
                             theme={state.theme}
                             isOpen={state.isOpen1}
                             showCaption
-                        headerFormat="DD/MM/YYYY"
-                        dateConfig={{
+                            headerFormat="DD/MM/YYYY"
+                            confirmText="Set"
+                            cancelText="Cancel"
+                            dateConfig={{
                               'date': {
                                 format: 'D',
                                 caption: 'Day',
@@ -891,10 +894,17 @@ const TransactionHistory = () => {
                     ? currentItems.map((item) => {
                         return (
                           <DataTableItem key={item.entity_id}>
-                            <DataTableRow>
+                            <DataTableRow size="sm">
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
                                   <span className="tb-date">{dateFormatterAlt(item.date, true)}</span>
+                                </div>
+                              </div>
+                            </DataTableRow>
+                            <DataTableRow className="d-md-none">
+                              <div className="nk-tnx-type">
+                                <div className="nk-tnx-type-text">
+                                  <span className="tb-date">{dateFormatterWithdoutTime(item.date, true)}</span>
                                 </div>
                               </div>
                             </DataTableRow>

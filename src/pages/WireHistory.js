@@ -231,12 +231,13 @@ const WireHistory = () => {
                               {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
                           </a>
                           <DatePickerMobile
-                          value={new Date(displaySetting.from)}
-                        // value={displaySetting.from}
+                          value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
                           theme={state.theme}
                           isOpen={state.isOpen}
                           showCaption
                           headerFormat="DD/MM/YYYY"
+                          confirmText="Set"
+                          cancelText="Cancel"
                           dateConfig={{
                             'date': {
                               format: 'D',
@@ -281,11 +282,13 @@ const WireHistory = () => {
                               {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
                           </a>
                           <DatePickerMobile
-                          value={new Date(displaySetting.end)}
+                          value={displaySetting.end !== null ? new Date(displaySetting.end) : new Date()}
                           theme={state.theme}
                           isOpen={state.isOpen1}
                           showCaption
                           headerFormat="DD/MM/YYYY"
+                          confirmText="Set"
+                          cancelText="Cancel"
                           dateConfig={{
                             'date': {
                               format: 'D',
