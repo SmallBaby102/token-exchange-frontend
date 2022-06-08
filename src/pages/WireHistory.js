@@ -3,7 +3,6 @@ import React, {
   useState,
 } from 'react';
 
-import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import {
   DropdownItem,
@@ -14,8 +13,8 @@ import {
 } from 'reactstrap';
 import {
   Link,
-  Route,
-  Switch,
+  // Route,
+  // Switch,
 } from 'react-router-dom';
 import { setChecking } from '../actions';
 import {
@@ -25,7 +24,7 @@ import {
   BlockHead,
   BlockHeadContent,
   BlockTitle,
-  Button,
+  // Button,
   Col,
   DataTable,
   DataTableBody,
@@ -42,16 +41,13 @@ import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
 import { dateFormatterWithdoutTime, dateFormatterAlt, fromStringTodateFormatter, fromStringTodatetimeFormatter } from '../utils/Utils';
 import {
-  cryptoActivityOptions,
   filterStatusOptions,
-  filterCoin,
 } from './TransData';
 // Tab
 import Box from '@mui/material/Box';
 import Helper from '../utils/Helper';
 import { useParams } from 'react-router';
 import DatePickerMobile from 'react-mobile-datepicker'
-import DatePicker from 'react-datepicker';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -60,25 +56,14 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 const WireHistory = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
   const email = localStorage.getItem("username");
 
   const [modal, setModal] = useState({
     add: false,
   });
-  const [modalDetail, setModalDetail] = useState(false);
   const [data, setData] = useState("");
-  const [detail, setDetail] = useState({});
   const [orderData, setOrderData] = useState("");
-  const [formData, setFormData] = useState({
-    orderType: "Deposit",
-    amountBTC: "",
-    amountUSD: "",
-    balanceBTC: "",
-    balanceUSD: "",
-    status: "PENDING",
-  });
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
   const [displaySetting, setDisplaySetting] = useState({

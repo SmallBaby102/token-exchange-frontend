@@ -355,7 +355,7 @@ const RequestWire = () => {
               accountId: usditem.id, 
               type:5, 
               amount: -(formData.amount), 
-              comment:"Sell_operation", 
+              comment:"Wire Request", 
               currency:"USD"
             }
             let data = {...formData, status: "0"};
@@ -434,7 +434,7 @@ const RequestWire = () => {
             accountId: usditem.id, 
             type:5, 
             amount: -(formData.amount), 
-            comment:"Sell_operation", 
+            comment:"Wire Request", 
             currency:"USD"
           }
           let data = {...formData, status: "0"};
