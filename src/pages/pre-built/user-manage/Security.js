@@ -223,6 +223,7 @@ const Security = () => {
             </Col>
           </Row>: 
           <Row>
+            <div className='mb-3' style={{width: "100%", borderTop: "1px solid darkgray"}}></div>
             <Col md={12}>
                 <label>Change confirm setting</label>
                 <Col md="12">
@@ -292,8 +293,8 @@ const Security = () => {
         }
 
         <Row className="mt-3">
-        { security.status === 1 &&<div className='mb-3' style={{width: "100%", borderBottom: "1px solid darkgray"}}>
-             <label className="fw-bold">
+        { security.status === 1 &&<div className='' style={{width: "100%", borderTop: "1px solid darkgray"}}>
+             <label className="fw-bold mt-3">
                 Disable 2FA function
             </label>
           </div>}
