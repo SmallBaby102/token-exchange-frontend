@@ -818,9 +818,16 @@ const MyWallet = () => {
     let security = await myApi.get(`security/${email}`)
     let twoFactor = security.data.data;
     setLoading(false);
+    if (twoFactor === null){
+      toast.warn("You must enable 2FA function");
+      // history.push("/security");
+      return;
+    }
+    setSecret_val(twoFactor.code_from_app);
+
     if (twoFactor.status !== 1){
       toast.warn("You must enable 2FA function");
-      history.push("/security");
+      // history.push("/security");
       return;
     }
     setWithdrawFinish(0);

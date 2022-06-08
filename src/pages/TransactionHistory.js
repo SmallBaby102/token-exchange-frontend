@@ -39,7 +39,7 @@ import {
 import Content from '../layout/content/Content';
 import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
-import { dateFormatterAlt, dateFormatterWithdoutTime } from '../utils/Utils';
+import { dateFormatterAlt, dateFormatterWithdoutTime, fromStringTodatetimeFormatter } from '../utils/Utils';
 import {
   cryptoActivityOptions,
   filterStatusOptions,
@@ -191,9 +191,9 @@ const TransactionHistory = () => {
                 element.status =  "Back";
                 // element.detail = `WID${element.id} was failed`;
               }
-              element.datetemp = new Date(element.date);
+              element.datetemp = new Date(fromStringTodatetimeFormatter(element.date, false));
               // element.datetemp.setTime(element.datetemp.getTime() + 3 * 60 * 60 * 1000)
-              element.date = new Date(element.date);
+              element.date = new Date(fromStringTodatetimeFormatter(element.date, false));
               
             });
            

@@ -175,7 +175,7 @@ export const fromStringTodatetimeFormatter = (date, reverse, string) => {
   let mm = date.getMinutes();
   if (mm < 10)
     mm = "0"+mm;
-  reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date = y + "/" + m + "/" + d);
+  reverse ? (date =  d + "/" + m + "/" + y + " " + hh + ":" + mm) : (date =  m + "/" + d + "/" + y + " " + hh + ":" + mm);
   return date;
 };
 

@@ -813,10 +813,15 @@ const Dashboard = () => {
       setLoading(false);
       let security = await myApi.get(`security/${email}`)
       let twoFactor = security.data.data;
-      setSecret_val(security.data.data.code_from_app);
+      if (twoFactor === null){
+        toast.warn("You must enable 2FA function");
+        // history.push("/security");
+        return;
+      }
+      setSecret_val(twoFactor.code_from_app);
       if (twoFactor.status !== 1){
         toast.warn("You must enable 2FA function");
-        history.push("/security");
+        // history.push("/security");
         return;
       }
       setWithdrawFinish(0);
