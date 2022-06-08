@@ -222,9 +222,9 @@ const Security = () => {
                 <label>3. Enter code from your Google Authenticator App to confirm</label>
             </Col>
           </Row>: 
-          <Row>
+          <div>
             <div className='mb-3' style={{width: "100%", borderTop: "1px solid darkgray"}}></div>
-            <Col md={12}>
+            <Row>
                 <label>Change confirm setting</label>
                 <Col md="12">
                   <div className="custom-control custom-checkbox">
@@ -243,8 +243,8 @@ const Security = () => {
                       </label>
                   </div>
                 </Col>
-            </Col>
-            <Col md={12}>
+            </Row>
+            <Row>
                 <Col md="12">
                   <div className="custom-control custom-checkbox">
                       <input
@@ -262,8 +262,8 @@ const Security = () => {
                       </label>
                   </div>
                 </Col>
-            </Col>
-            <Col md={12}>
+            </Row>
+            <Row>
                 <Col md="12">
                   <div className="custom-control custom-checkbox">
                       <input
@@ -280,21 +280,21 @@ const Security = () => {
                       </label>
                   </div>
                 </Col>
-            </Col>
-            <Col md={12}>
+            </Row>
+            <Row>
                 <FormGroup>
                   <Button color="primary"  className="mt-3 ml-3"  onClick={() => updateStatus()}>
                       {loading ? <Spinner size="sm" color="light" /> : "Update"}
                       
                   </Button>
                 </FormGroup>
-            </Col>
-          </Row>
+            </Row>
+          </div>
         }
 
         <Row className="mt-3">
         { security.status === 1 &&<div className='' style={{width: "100%", borderTop: "1px solid darkgray"}}>
-             <label className="fw-bold mt-3">
+             <label className="mt-3">
                 Disable 2FA function
             </label>
           </div>}

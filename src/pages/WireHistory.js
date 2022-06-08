@@ -40,7 +40,7 @@ import {
 import Content from '../layout/content/Content';
 import Head from '../layout/head/Head';
 import { getAuthenticatedApi, myServerApi } from '../utils/api';
-import { dateFormatterWithdoutTime, dateFormatterAlt, fromStringTodateFormatter } from '../utils/Utils';
+import { dateFormatterWithdoutTime, dateFormatterAlt, fromStringTodateFormatter, fromStringTodatetimeFormatter } from '../utils/Utils';
 import {
   cryptoActivityOptions,
   filterStatusOptions,
@@ -406,8 +406,6 @@ const WireHistory = () => {
                 <DataTableBody bodyclass="nk-tb-tnx">
                   <DataTableHead>
                     <DataTableRow>
-                    </DataTableRow>
-                    <DataTableRow>
                       <span>Date</span>
                     </DataTableRow>
                     <DataTableRow size="sm">
@@ -416,7 +414,7 @@ const WireHistory = () => {
                     <DataTableRow >
                       <span>Wire Id</span>
                     </DataTableRow>
-                    <DataTableRow className="text-right" size="sm">
+                    <DataTableRow className="text-right" >
                       <span>Amount</span>
                     </DataTableRow>
                     <DataTableRow className="">
@@ -431,13 +429,7 @@ const WireHistory = () => {
                             <DataTableRow>
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
-                                </div>
-                              </div>
-                            </DataTableRow>
-                            <DataTableRow>
-                              <div className="nk-tnx-type">
-                                <div className="nk-tnx-type-text">
-                                  <span className="tb-date">{fromStringTodateFormatter(item.date, true)}</span>
+                                  <span className="tb-date">{fromStringTodatetimeFormatter(item.date, true)}</span>
                                 </div>
                               </div>
                             </DataTableRow>
@@ -453,7 +445,7 @@ const WireHistory = () => {
                                      <Link to ={`/wirehistory/${item.wireid}`}>{item.wireid}</Link>
                               </span>
                             </DataTableRow>
-                            <DataTableRow className="text-right" size="sm">
+                            <DataTableRow className="text-right" >
                               <span className="tb-amount">
                                   {Helper.limitDecimal(item.amount, 2)} USD
                               </span>
