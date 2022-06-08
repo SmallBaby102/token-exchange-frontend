@@ -346,8 +346,8 @@ return (
                 </TimelineContent>
               </TimelineItem>
               }
-               <div style={mobileView === false ? {transform: "translate(calc(50% - 140px))"} : {transform: "translate(calc(50% - 100px))"}}>
-                    <div className='mt-4' style={{fontSize: "1.1rem", wordBreak: "break-all", color: "orange", width:"72%"}}>
+               <div style={mobileView === false ? {transform: "translate(calc(50% - 140px))"} : {transform: "translate(calc(50% - 75px))"}}>
+                    <div className='mt-4' style={mobileView === true ? {fontSize: "1.1rem", wordBreak: "break-all", color: "orange", width:"112%"}:{fontSize: "1.1rem", wordBreak: "break-all", color: "orange", width:"72%"}}>
                       {wireHistory.memo}
                   </div>
                 </div>

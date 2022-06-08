@@ -426,10 +426,17 @@ const WireHistory = () => {
                     ? currentItems.map((item) => {
                         return (
                           <DataTableItem key={item.entity_id}>
-                            <DataTableRow>
+                            <DataTableRow size="sm">
                               <div className="nk-tnx-type">
                                 <div className="nk-tnx-type-text">
                                   <span className="tb-date">{fromStringTodatetimeFormatter(item.date, true)}</span>
+                                </div>
+                              </div>
+                            </DataTableRow>
+                            <DataTableRow className="d-md-none">
+                              <div className="nk-tnx-type">
+                                <div className="nk-tnx-type-text">
+                                  <span className="tb-date">{fromStringTodateFormatter(item.date, true)}</span>
                                 </div>
                               </div>
                             </DataTableRow>
