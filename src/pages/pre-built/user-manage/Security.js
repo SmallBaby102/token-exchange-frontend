@@ -72,7 +72,7 @@ const Security = () => {
     }
     let status = 0;
     let login = 1;
-    let withdraw = 0;
+    let withdraw = 1;
     let request_wire = 0;
     if(security.status === 1)  
       {
@@ -196,7 +196,12 @@ const Security = () => {
               <label className='ml-5' style={{fontWeight: "bold"}}> { security.status === 1 ? "Enable": "Disable"}</label>
           </Col>
         </Row>
-        {security.status === 0 ? <Row>          
+        {security.status === 0 ? <Row>       
+            <div className='' style={{width: "100%", borderTop: "1px solid darkgray"}}>
+              { security.status === 0 && <label className="fw-bold mt-3">
+                  Enable 2FA function
+              </label>}   
+            </div>
             <Col md={12}>
                 <label>1. Install Google Authenticator. (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
             </Col>
@@ -250,6 +255,7 @@ const Security = () => {
                         type="checkbox"
                         name="saveTemplate"
                         checked={security.withdraw}
+                        disabled={security.withdraw}
                         className="custom-control-input form-control"
                         id='withdraw'
                         // checked={saveTemplate}
@@ -291,11 +297,11 @@ const Security = () => {
         }
 
         <Row className="mt-3">
-          <div className='mb-3' style={{width: "100%", borderBottom: "1px solid darkgray"}}>
-            {/* <label className="">
-                Disable 2FA
-            </label> */}
-          </div>
+        { security.status === 1 &&<div className='mb-3' style={{width: "100%", borderBottom: "1px solid darkgray"}}>
+             <label className="fw-bold">
+                Disable 2FA function
+            </label>
+          </div>}
           <Col md={6} >
               <FormGroup style={{width: "70%"}}>
                 <div className="form-label-group">

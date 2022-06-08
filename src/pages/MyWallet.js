@@ -220,79 +220,79 @@ const MyWallet = () => {
   const onWithdrawConfirmSubmit = async () => {
     if(loading)
         return;
-        const myApi = myServerApi();
-      let security = await myApi.get(`security/${email}`)
-      let twoFactor = security.data.data;
-      setLoading(false);
-      if (twoFactor.status === 1 && twoFactor.withdraw === 1){
+        // const myApi = myServerApi();
+      // let security = await myApi.get(`security/${email}`)
+      // let twoFactor = security.data.data;
+      // setLoading(false);
+      // if (twoFactor.status === 1 && twoFactor.withdraw === 1){
         setModal({...modal, auth: true});
-        setSecret_val(security.data.data.code_from_app);
+        // setSecret_val(security.data.data.code_from_app);
 
-      } else {
-        setModal({...modal, ...{withdrawConfirm : false}});
+      // } else {
+      //   setModal({...modal, ...{withdrawConfirm : false}});
       
-        const secureApi = getAuthenticatedApi();
-        let data = {
-          exchange: "PLUSQO",
-          product: formData.product,
-          amount:  formData.amount_withdraw,
-          address: formData.address_withdraw,
-          // code: '',
-          // network: "Stellar"
-        }
-        // dispatch(setChecking(true));
+      //   const secureApi = getAuthenticatedApi();
+      //   let data = {
+      //     exchange: "PLUSQO",
+      //     product: formData.product,
+      //     amount:  formData.amount_withdraw,
+      //     address: formData.address_withdraw,
+      //     // code: '',
+      //     // network: "Stellar"
+      //   }
+      //   // dispatch(setChecking(true));
     
-        setLoading(true)
-        secureApi.post(`/wallet/withdraw/create`, data).then(res => {
-            if (res && res.data && res.data.success) {
-              secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
-                setLoading(false)
-                if (response.data.success) {
-                  setWithdrawFinish(1);
+      //   setLoading(true)
+      //   secureApi.post(`/wallet/withdraw/create`, data).then(res => {
+      //       if (res && res.data && res.data.success) {
+      //         secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
+      //           setLoading(false)
+      //           if (response.data.success) {
+      //             setWithdrawFinish(1);
 
-                  toast.success("Successfully Withdrawed");
-                  // setModal({ withdraw: false });
-                  dispatch(setChecking(false))
-                  let exchange_access_token =localStorage.getItem("exchange_access_token")
-                  if (exchange_access_token !== null && exchange_access_token !== "") {
-                    Http.getAccounts(exchange_access_token)
-                    .then((response) => {
-                        if (response.message === "Unauthorized"){
-                          history.push("auth-login");
-                          dispatch(setChecking(false));
-                          return;
-                        }
-                        // setModal({ sell: false });
-                        setLoading(false);
-                        dispatch(setAccounts(response));
-                      })
-                  }else{
-                    // history.push("auth-login")
-                  }
-                  let withdrawInfo = {
-                      ...data,
-                      email: email,
-                  };
-                  myApi.post("/withdraw", withdrawInfo)
-                  .then( res => {
+      //             toast.success("Successfully Withdrawed");
+      //             // setModal({ withdraw: false });
+      //             dispatch(setChecking(false))
+      //             let exchange_access_token =localStorage.getItem("exchange_access_token")
+      //             if (exchange_access_token !== null && exchange_access_token !== "") {
+      //               Http.getAccounts(exchange_access_token)
+      //               .then((response) => {
+      //                   if (response.message === "Unauthorized"){
+      //                     history.push("auth-login");
+      //                     dispatch(setChecking(false));
+      //                     return;
+      //                   }
+      //                   // setModal({ sell: false });
+      //                   setLoading(false);
+      //                   dispatch(setAccounts(response));
+      //                 })
+      //             }else{
+      //               // history.push("auth-login")
+      //             }
+      //             let withdrawInfo = {
+      //                 ...data,
+      //                 email: email,
+      //             };
+      //             myApi.post("/withdraw", withdrawInfo)
+      //             .then( res => {
                     
-                  })
-                  .catch()
-                } else {
-                  setWithdrawFinish(2);
-                  toast.error("Server not response");
-                }
-                dispatch(setChecking(false))
+      //             })
+      //             .catch()
+      //           } else {
+      //             setWithdrawFinish(2);
+      //             toast.error("Server not response");
+      //           }
+      //           dispatch(setChecking(false))
 
-              })
-            }
-        }).catch(err => {
-          setWithdrawFinish(2);
-          toast.error(err.response.data.message);
-            setLoading(false)
-            console.log('error: ', err);
-        });
-      }
+      //         })
+      //       }
+      //   }).catch(err => {
+      //     setWithdrawFinish(2);
+      //     toast.error(err.response.data.message);
+      //       setLoading(false)
+      //       console.log('error: ', err);
+      //   });
+      // }
   };
   const confirmWithdraw = async () => {
     if(loading)
@@ -813,7 +813,16 @@ const MyWallet = () => {
 };
 
   // function to change the complete a project property
-  const withdrawClick = (id) => {
+  const withdrawClick = async (id) => {
+    const myApi = myServerApi();
+    let security = await myApi.get(`security/${email}`)
+    let twoFactor = security.data.data;
+    setLoading(false);
+    if (twoFactor.status !== 1){
+      toast.warn("You must enable 2FA function");
+      history.push("/security");
+      return;
+    }
     setWithdrawFinish(0);
 
     for (const key in accouts_arr) {
