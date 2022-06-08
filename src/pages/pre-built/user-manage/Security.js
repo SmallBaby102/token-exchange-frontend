@@ -148,7 +148,6 @@ const Security = () => {
       }
       };
 
-    dispatch(setChecking(true));
     axios.request(options).then(function (response) {
           setSecret_val(response.data);
           const options = {
@@ -163,14 +162,10 @@ const Security = () => {
 
           axios.request(options).then(function (res) {
               setEnrollUrl(res.data);
-              dispatch(setChecking(false));
-
           }).catch(function (error) {
-              dispatch(setChecking(false));
               console.error(error);
           });
       }).catch(function (error) {
-        dispatch(setChecking(false));
         console.error(error);
       });
     }
