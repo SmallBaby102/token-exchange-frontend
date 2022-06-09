@@ -214,7 +214,7 @@ const MyWallet = () => {
       })
       return;
     }
-    setModal({...modal, ...{ withdrawConfirm : true}});
+    setModal({...modal, withdrawConfirm : true});
     
   };
   const onWithdrawConfirmSubmit = async () => {
@@ -226,8 +226,7 @@ const MyWallet = () => {
         // setSecret_val(security.data.data.code_from_app);
 
       // } else {
-        setModal({...modal, withdrawConfirm : false});
-        setModal({...modal, auth: true});
+        setModal({...modal, auth: true, withdrawConfirm : false});
       
       //   const secureApi = getAuthenticatedApi();
       //   let data = {
@@ -312,7 +311,7 @@ const MyWallet = () => {
       toast.warn("Please input correct code");
       return;
     }
-      setModal({...modal, ...{auth : false}});
+      setModal({...modal, auth : false});
       const secureApi = getAuthenticatedApi();
       let data = {
         exchange: "PLUSQO",
@@ -1746,7 +1745,7 @@ const MyWallet = () => {
               href="#cancel"
               onClick={(ev) => {
                 ev.preventDefault();
-                setModal({ auth: false });
+                setModal({...modal, auth: false });
               }}
               className="close"
             >

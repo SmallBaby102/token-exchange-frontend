@@ -205,7 +205,7 @@ const Dashboard = () => {
         })
         return;
       }
-      setModal({...modal, ...{ withdrawConfirm : true}});
+      setModal({...modal, withdrawConfirm : true});
       
     };
     const onWithdrawConfirmSubmit = async () => {
@@ -218,8 +218,7 @@ const Dashboard = () => {
       // } else {
       //   toast.warn("You must enable 2FA function");
       //   history.push("/security");
-        setModal({...modal, withdrawConfirm : false});
-        setModal({...modal, auth: true});
+        setModal({...modal, auth: true, withdrawConfirm: false});
       
         // const secureApi = getAuthenticatedApi();
         // let data = {
@@ -855,7 +854,7 @@ const Dashboard = () => {
         }
       }
         
-      setModal({ withdraw: true }, { deposit: false });
+      setModal({...modal,  withdraw : true,  deposit : false });
      };
     // function to change the complete a project property
     const sellClick = (id) => {
@@ -1827,7 +1826,8 @@ const Dashboard = () => {
               href="#cancel"
               onClick={(ev) => {
                 ev.preventDefault();
-                setModal({ auth: false });
+                setModal({...modal, auth: false});
+
               }}
               className="close"
             >
