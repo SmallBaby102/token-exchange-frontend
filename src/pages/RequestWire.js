@@ -55,7 +55,7 @@ import Content from "../layout/content/Content";
 // import ProductH from "../../../images/product/h.png";
 import Dropzone from "react-dropzone";
 import SimpleBar from "simplebar-react";
-let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
+let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 // var formatter = new Intl.NumberFormat('en-US', {
 //   style: 'currency',
 //   currency: "USD",

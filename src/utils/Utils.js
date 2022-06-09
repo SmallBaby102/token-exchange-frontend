@@ -163,7 +163,7 @@ export const fromStringTodateFormatter = (date, reverse, string) => {
 };
 export const fromStringTodatetimeFormatter = (date, reverse, string) => {
   if (date === null || date === undefined) return "";
-  date = new Date(date);
+  date = new Date(date.replace(" ", "T"));
   let d = date.getDate();
   d = d < 10 ? "0" + d : d;
   let m = date.getMonth() + 1;

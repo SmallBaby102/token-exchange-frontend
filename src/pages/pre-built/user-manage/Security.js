@@ -28,7 +28,7 @@ import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
 import { toast } from 'react-toastify';
 import Helper from '../../../utils/Helper';
-let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
+let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 const Security = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");

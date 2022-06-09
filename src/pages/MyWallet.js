@@ -61,7 +61,7 @@ import axios from 'axios';
 
 import { projectData } from './ProjectData';
 import { Link } from 'react-router-dom';
-let RapidAPIKey = 'a796cf80b6msh2cd74f5c615d6fcp13183fjsnfec9e21ddbfe';
+let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 
 const MyWallet = () => {
   const history = useHistory();
