@@ -302,95 +302,68 @@ const RequestWire = () => {
     let security = await myApi.get(`security/${email}`)
     let twoFactor = security.data.data;
     setLoading(false);
-    if (twoFactor.status === 1 && twoFactor.request_wire === 1){
-      setModal({...modal, auth: true});
-      const options = {
-        method: 'GET',
-        url: 'https://google-authenticator.p.rapidapi.com/new_v2/',
-        headers: {
-          'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
-          'X-RapidAPI-Key': RapidAPIKey
+    if (twoFactor !== null){
+      if (twoFactor.status === 1 && twoFactor.request_wire === 1){
+        setSecret_val(twoFactor.code_from_app);
+        setModal({...modal, auth: true});
+        return;
+      } 
+    }
+    setLoading(true);
+    let configdata = {
+      exchange: "CONFIGURATOR_PLUSQO",
+      username: CONFIGURATOR_USERNAME,
+      password: CONFIGURATOR_PASSWORD
+    }
+    let headers = {
+      "Content-Type" : "application/json",
+    }
+    axios.post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken", configdata, { headers })
+    .then(res => {
+        let configurator_access_token = res.data.configurator_access_token;
+        const headers = {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${configurator_access_token}`,
+        };
+        let bodyData = {
+          userId: user_id, 
+          accountId: usditem.id, 
+          type:5, 
+          amount: -(formData.amount), 
+          comment:"Wire Request", 
+          currency:"USD"
         }
-      };
-  
-      axios.request(options).then(function (response) {
-          setSecret_val(response.data);
-          // const options = {
-          //   method: 'GET',
-          //   url: 'https://google-authenticator.p.rapidapi.com/enroll/',
-          //   params: {secret: response.data, issuer: 'Cryptowire', account: email},
-          //   headers: {
-          //     'X-RapidAPI-Host': 'google-authenticator.p.rapidapi.com',
-          //     'X-RapidAPI-Key': RapidAPIKey
-          //   }
-          // };
-  
-          // axios.request(options).then(function (res) {
-          //     setEnrollUrl(res.data);
-          // }).catch(function (error) {
-          //   console.error(error);
-          // });
-      }).catch(function (error) {
-        console.error(error);
-      });
-    } else {
-        setLoading(true);
-        let configdata = {
-          exchange: "CONFIGURATOR_PLUSQO",
-          username: CONFIGURATOR_USERNAME,
-          password: CONFIGURATOR_PASSWORD
+        let data = {...formData, status: "0"};
+        let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
+        let sellData = {
+          papFlag: true,
+          email: email,
+          bodyData: bodyData,
+          url: url,
+          amount1: -(formData.amount),
+          amount2: -(formData.amount),
+          balance1: usditem.balance.active_balance,
+          balance2: usditem.balance.active_balance,
+          formData: data,
+          headers: headers
         }
-        let headers = {
-          "Content-Type" : "application/json",
-        }
-        axios.post("https://authentication.cryptosrvc.com/api/configurator_authentication/configuratorToken", configdata, { headers })
-        .then(res => {
-            let configurator_access_token = res.data.configurator_access_token;
-            const headers = {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${configurator_access_token}`,
-            };
-            let bodyData = {
-              userId: user_id, 
-              accountId: usditem.id, 
-              type:5, 
-              amount: -(formData.amount), 
-              comment:"Wire Request", 
-              currency:"USD"
-            }
-            let data = {...formData, status: "0"};
-            let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
-            let sellData = {
-              papFlag: true,
-              email: email,
-              bodyData: bodyData,
-              url: url,
-              amount1: -(formData.amount),
-              amount2: -(formData.amount),
-              balance1: usditem.balance.active_balance,
-              balance2: usditem.balance.active_balance,
-              formData: data,
-              headers: headers
-            }
-            myApi.put("sell", sellData)
-            .then(result => {
-              setWireId(result.data.wireid);
-              toast.success("Successfully request wire");
-              setLoading(false); 
-              setWireFinish(1);
-              
-            }).catch( e => {
-              setWireId(null);
-              setLoading(false); 
-              setWireFinish(2);
-            })
-        })
-        .catch(e => {
-          setWireFinish(2);
+        myApi.put("sell", sellData)
+        .then(result => {
+          setWireId(result.data.wireid);
+          toast.success("Successfully request wire");
+          setLoading(false); 
+          setWireFinish(1);
           
+        }).catch( e => {
+          setWireId(null);
+          setLoading(false); 
+          setWireFinish(2);
         })
-      }
-    
+    })
+    .catch(e => {
+      setWireFinish(2);
+      
+    })
   };
   const confirmWire = async () => {
     if(loading)
@@ -412,7 +385,7 @@ const RequestWire = () => {
       toast.warn("Please input correct code");
       return;
     }
-    setModal({...modal, ...{auth : false}});
+    setModal({...modal, auth : false});
     setLoading(true);
       let configdata = {
         exchange: "CONFIGURATOR_PLUSQO",

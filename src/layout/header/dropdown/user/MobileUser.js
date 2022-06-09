@@ -34,6 +34,7 @@ const MobileUser = () => {
   const currentUser = useSelector(state => state.user.user);
   const accountIntervalId = useSelector(state => state.user.accountIntervalId);
   const quoteIntervalId = useSelector(state => state.user.quoteIntervalId);
+  const prrofileProgressState = useSelector(state => state.user.prrofileProgressState);
   return (
     <Dropdown isOpen={open} className="user-dropdown" toggle={toggle}>
       <DropdownToggle
@@ -69,6 +70,11 @@ const MobileUser = () => {
                 dispatch(logout(history)); 
                }
                else {
+                 if (itemId === "/user-profile-verification" && prrofileProgressState === false){
+                  toast.warn("Please input all details of profile.");
+                  history.push("/user-profile-regular");
+                  return;
+                 }
                   if (itemId !== "/profile" && itemId !== "/affiliate" && itemId !== "/securityitem")
                   {
                     toggle();

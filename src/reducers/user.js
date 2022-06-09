@@ -13,6 +13,7 @@ const initialState = {
     usdt_address: null,
     eth_address: null,
     currentPath: null,
+    prrofileProgressState: false,
 }
 const user = (state = initialState, action) => {
     switch (action.type) {

@@ -161,6 +161,7 @@ const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress,
     .catch(err => {
       // toast.error("Database not found");
       console.log('error: ', err);
+      history.push("user-profile-regular")
       dispatch(setChecking(false));
       });
   }, []);
