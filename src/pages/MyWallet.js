@@ -223,11 +223,11 @@ const MyWallet = () => {
       // let twoFactor = security.data.data;
       // setLoading(false);
       // if (twoFactor.status === 1 && twoFactor.withdraw === 1){
-        setModal({...modal, auth: true});
         // setSecret_val(security.data.data.code_from_app);
 
       // } else {
-        setModal({...modal, ...{withdrawConfirm : false}});
+        setModal({...modal, withdrawConfirm : false});
+        setModal({...modal, auth: true});
       
       //   const secureApi = getAuthenticatedApi();
       //   let data = {

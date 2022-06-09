@@ -235,7 +235,7 @@ const Security = () => {
                           className="custom-control-input form-control"
                           id='login'
                           checked={security.login}
-                          disabled={security.login}
+                          disabled={security.status}
                           // checked={saveTemplate}
                           onChange={e => {setSecurity({...security, login:  e.target.checked});}}
                         />
@@ -252,7 +252,7 @@ const Security = () => {
                           type="checkbox"
                           name="saveTemplate"
                           checked={security.withdraw}
-                          disabled={security.withdraw}
+                          disabled={security.status}
                           className="custom-control-input form-control"
                           id='withdraw'
                           // checked={saveTemplate}

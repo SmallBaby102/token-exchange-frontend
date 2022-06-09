@@ -214,12 +214,12 @@ const Dashboard = () => {
       // let twoFactor = security.data.data;
       // setLoading(false);
       // if (twoFactor.status === 1 && twoFactor.withdraw === 1){
-        setModal({...modal, auth: true});
         // setSecret_val(security.data.data.code_from_app);
       // } else {
       //   toast.warn("You must enable 2FA function");
       //   history.push("/security");
-        setModal({...modal, ...{withdrawConfirm : false}});
+        setModal({...modal, withdrawConfirm : false});
+        setModal({...modal, auth: true});
       
         // const secureApi = getAuthenticatedApi();
         // let data = {
