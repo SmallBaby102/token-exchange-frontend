@@ -209,8 +209,6 @@ const Dashboard = () => {
       
     };
     const onWithdrawConfirmSubmit = async () => {
-      if(loading)
-          return;
       // const myApi = myServerApi();
       // let security = await myApi.get(`security/${email}`)
       // let twoFactor = security.data.data;
@@ -221,7 +219,7 @@ const Dashboard = () => {
       // } else {
       //   toast.warn("You must enable 2FA function");
       //   history.push("/security");
-        // setModal({...modal, ...{withdrawConfirm : false}});
+        setModal({...modal, ...{withdrawConfirm : false}});
       
         // const secureApi = getAuthenticatedApi();
         // let data = {
@@ -301,6 +299,7 @@ const Dashboard = () => {
       };
       let response = await axios.request(options);
       flag =  response.data
+      setAuthCode("");
       if (flag === "False")
       {
         toast.warn("Please input correct code");

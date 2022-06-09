@@ -83,8 +83,11 @@ const Login = () => {
       }
     };
     setLoading(true)
+
     let response = await axios.request(options);
     setLoading(false)
+    setAuthCode("");
+
     flag =  response.data
     if (flag !== "False"){
         let res = tempForLogin;

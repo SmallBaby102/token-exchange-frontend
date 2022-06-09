@@ -65,6 +65,7 @@ const Security = () => {
       let res = await axios.request(options);
       flag =  res.data
     // }
+    setAuthCode("");
     if (flag === "False"){
       toast.warn("Please input correct credential");
       setLoading2FA(false);

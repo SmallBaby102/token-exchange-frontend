@@ -218,8 +218,6 @@ const MyWallet = () => {
     
   };
   const onWithdrawConfirmSubmit = async () => {
-    if(loading)
-        return;
         // const myApi = myServerApi();
       // let security = await myApi.get(`security/${email}`)
       // let twoFactor = security.data.data;
@@ -229,7 +227,7 @@ const MyWallet = () => {
         // setSecret_val(security.data.data.code_from_app);
 
       // } else {
-      //   setModal({...modal, ...{withdrawConfirm : false}});
+        setModal({...modal, ...{withdrawConfirm : false}});
       
       //   const secureApi = getAuthenticatedApi();
       //   let data = {
@@ -295,8 +293,6 @@ const MyWallet = () => {
       // }
   };
   const confirmWithdraw = async () => {
-    if(loading)
-        return;
     let flag = "False";
     const options = {
       method: 'GET',
@@ -308,7 +304,9 @@ const MyWallet = () => {
       }
     };
     let response = await axios.request(options);
-    flag =  response.data
+    flag =  response.data;
+    setAuthCode("");
+
     if (flag === "False")
     {
       toast.warn("Please input correct code");
