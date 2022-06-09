@@ -23,6 +23,7 @@ import {
 import UserAvatar from '../../../../components/user/UserAvatar';
 import {Navigation} from 'react-minimal-side-navigation';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
+import { toast } from 'react-toastify';
 
 const MobileUser = () => {
   const [open, setOpen] = useState(false);
