@@ -124,7 +124,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
       // id_cardtype: formData.id_cardtype, 
       id_number: formData.id_number,
       issue_date: formData.issue_date,
-      exp_date: formData.issue_date,
+      exp_date: formData.exp_date,
       issue_country: formData.issue_country,
       // id_issuer: formData.id_issuer,
       country: formData.country,
