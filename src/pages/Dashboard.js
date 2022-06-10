@@ -130,6 +130,7 @@ const Dashboard = () => {
     authfield: { status: false, message : "Must be only alphabetic characters",},
   });
   const [loading, setLoading] = useState(false);
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [formData, setFormData] = useState({
     product: "",
     amount_withdraw: 0,
@@ -284,7 +285,7 @@ const Dashboard = () => {
       // }
     };
     const confirmWithdraw = async () => {
-      if(loading)
+      if(loadingConfirm)
           return;
       let flag = "False";
       const options = {
@@ -305,6 +306,7 @@ const Dashboard = () => {
         return;
       }
         setModal({...modal, ...{auth : false}});
+        setLoadingConfirm(false);
         const secureApi = getAuthenticatedApi();
         let data = {
           exchange: "PLUSQO",
@@ -1875,8 +1877,9 @@ const Dashboard = () => {
                  <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="button" onClick={confirmWithdraw}>
-                          Confirm
+                        <Button color="primary" size="md" type="submit" >
+                         {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
+
                         </Button>
                       </li>
                       <li>

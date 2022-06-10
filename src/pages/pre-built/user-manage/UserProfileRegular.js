@@ -378,199 +378,253 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
       </BlockHead>
       <Block>
         <div className="nk-data data-list">
-        <form className="is-alter" onSubmit={handleSubmit(handleFormSubmit)}>
-          <Row className="gy-4">
-              <Col md="6">
-              <FormGroup>
-                    <Row className="gy-4">
-                    <Col md="4">
-                      <div className="g">
-                        <div className="custom-control custom-control-lg custom-radio">
-                          <input
-                            disabled= {verification_status !== "0"}
-                            type="radio"
-                            className="custom-control-input form-control"
-                            name="department"
-                            id="Individual"
-                            checked = {formData.department === "Individual" ? true: false}
-                            onChange={(e) => {setFormData({...formData,  department: "Individual"}); } }
-                          />
-                          <label className="custom-control-label" htmlFor="Individual">
-                            Individual
-                          </label>
+          <form className="is-alter" onSubmit={handleSubmit(handleFormSubmit)}>
+            <Row className="gy-4">
+                <Col md="6">
+                <FormGroup>
+                      <Row className="gy-4">
+                      <Col md="4">
+                        <div className="g">
+                          <div className="custom-control custom-control-lg custom-radio">
+                            <input
+                              disabled= {verification_status !== "0"}
+                              type="radio"
+                              className="custom-control-input form-control"
+                              name="department"
+                              id="Individual"
+                              checked = {formData.department === "Individual" ? true: false}
+                              onChange={(e) => {setFormData({...formData,  department: "Individual"}); } }
+                            />
+                            <label className="custom-control-label" htmlFor="Individual">
+                              Individual
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      </Col>
-                      <Col md="8">
-                      <div className="g">
-                        <div className="custom-control custom-control-lg custom-radio">
-                          <input
-                            disabled= {verification_status !== "0"}
-                            type="radio"
-                            className="custom-control-input form-control"
-                            name="department"
-                            id="Corporate"
-                            checked = {formData.department === "Corporate" ? true: false}
-                            onChange={(e) => setFormData({...formData, department: "Corporate"})}
-                          />
-                          <label className="custom-control-label" htmlFor="Corporate">
-                              Corporate
-                          </label>
+                        </Col>
+                        <Col md="8">
+                        <div className="g">
+                          <div className="custom-control custom-control-lg custom-radio">
+                            <input
+                              disabled= {verification_status !== "0"}
+                              type="radio"
+                              className="custom-control-input form-control"
+                              name="department"
+                              id="Corporate"
+                              checked = {formData.department === "Corporate" ? true: false}
+                              onChange={(e) => setFormData({...formData, department: "Corporate"})}
+                            />
+                            <label className="custom-control-label" htmlFor="Corporate">
+                                Corporate
+                            </label>
+                          </div>
                         </div>
-                      </div>
-                      </Col>
-                    </Row>
-                </FormGroup>
-                {/* <FormGroup>
-                  <Label className="form-label">
-                    Title
-                  </Label>
-                  <RSelect options={profileOptions.title} 
-                            isDisabled= {verification_status !== "0"}
-                            value={{value: formData.title, label: formData.title}}  onChange={(e) => setFormData({...formData, title: e.value})} placeholder="Select Title" className="form-control-outlined"/>
-                </FormGroup> */}
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                      First Name
-                  </Label>
-                  <input 
-                    disabled= {verification_status !== "0"}
-                    className="form-control " name="firstname" value={formData.firstname} 
-                    onChange = { e => { 
-                      if (e.target.value.match(/^[A-Za-z ]+$/) != null || e.target.value === "" ) {
-                        setFormData({...formData, firstname: e.target.value}) ;
-                      }}}
-                    placeholder="Enter first name" />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                      Last Name
-                  </Label>
-                  <input className="form-control " 
+                        </Col>
+                      </Row>
+                  </FormGroup>
+                  {/* <FormGroup>
+                    <Label className="form-label">
+                      Title
+                    </Label>
+                    <RSelect options={profileOptions.title} 
+                              isDisabled= {verification_status !== "0"}
+                              value={{value: formData.title, label: formData.title}}  onChange={(e) => setFormData({...formData, title: e.value})} placeholder="Select Title" className="form-control-outlined"/>
+                  </FormGroup> */}
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                        First Name
+                    </Label>
+                    <input 
+                      disabled= {verification_status !== "0"}
+                      className="form-control " name="firstname" value={formData.firstname} 
+                      onChange = { e => { 
+                        if (e.target.value.match(/^[A-Za-z ]+$/) != null || e.target.value === "" ) {
+                          setFormData({...formData, firstname: e.target.value}) ;
+                        }}}
+                      placeholder="Enter first name" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                        Last Name
+                    </Label>
+                    <input className="form-control " 
+                              disabled= {verification_status !== "0"}
+                              name="lastname" value={formData.lastname} 
+                              onChange = { e => { 
+                                if (e.target.value.match(/^[A-Za-z ]+$/) != null || e.target.value === "" ) {
+                                  setFormData({...formData, lastname: e.target.value}) ;
+                                }}}
+                              placeholder="Enter last name" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Gener
+                    </Label>
+                    <RSelect options={profileOptions.gener} 
+                              isDisabled= {verification_status !== "0"}
+                              value={{value: formData.gener, label: formData.gener}}  onChange={(e) => setFormData({...formData, gener: e.value})} placeholder="Select gener" className="form-control-outlined"/>
+                  </FormGroup>
+                  {/* <FormGroup>
+                    <Label className="form-label">
+                      Marriage
+                    </Label>
+                      <RSelect options={profileOptions.marriage} 
+                              isDisabled= {verification_status !== "0"}
+                              name="marriage" value={{value: formData.marriage, label: formData.marriage}} onChange={(e) => setFormData({...formData, marriage: e.value})} placeholder="Select Marriage status" className="form-control-outlined"/>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Occupation
+                    </Label>
+                      <RSelect options={profileOptions.occupation} 
+                              isDisabled= {verification_status !== "0"}
+                              value={{value: formData.occupation, label: formData.occupation}}  name="occupation" onChange={(e) => setFormData({...formData, occupation: e.value})} placeholder="Select Occupation" className="form-control-outlined"/>
+                  </FormGroup> */}
+                  <FormGroup className="d-none d-md-block">
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <Stack spacing={3}>
+                          <DesktopDatePicker
                             disabled= {verification_status !== "0"}
-                            name="lastname" value={formData.lastname} 
-                            onChange = { e => { 
-                              if (e.target.value.match(/^[A-Za-z ]+$/) != null || e.target.value === "" ) {
-                                setFormData({...formData, lastname: e.target.value}) ;
-                              }}}
-                            placeholder="Enter last name" />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Gener
-                  </Label>
-                  <RSelect options={profileOptions.gener} 
-                            isDisabled= {verification_status !== "0"}
-                            value={{value: formData.gener, label: formData.gener}}  onChange={(e) => setFormData({...formData, gener: e.value})} placeholder="Select gener" className="form-control-outlined"/>
-                </FormGroup>
-                {/* <FormGroup>
-                  <Label className="form-label">
-                    Marriage
-                  </Label>
-                    <RSelect options={profileOptions.marriage} 
-                            isDisabled= {verification_status !== "0"}
-                            name="marriage" value={{value: formData.marriage, label: formData.marriage}} onChange={(e) => setFormData({...formData, marriage: e.value})} placeholder="Select Marriage status" className="form-control-outlined"/>
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Occupation
-                  </Label>
-                    <RSelect options={profileOptions.occupation} 
-                            isDisabled= {verification_status !== "0"}
-                            value={{value: formData.occupation, label: formData.occupation}}  name="occupation" onChange={(e) => setFormData({...formData, occupation: e.value})} placeholder="Select Occupation" className="form-control-outlined"/>
-                </FormGroup> */}
-                <FormGroup className="d-none d-md-block">
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                      <Stack spacing={3}>
-                        <DesktopDatePicker
-                          disabled= {verification_status !== "0"}
-                          label="Birthday"
-                          inputFormat="dd/MM/yyyy"
-                          value={formData.birthday}
-                          onChange={(date) => {setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
-                          renderInput={(params) => <TextField {...params} />}
-                        />
-                        </Stack>
-                    </LocalizationProvider>
-                </FormGroup>
-                <FormGroup className='d-md-none'>
-                    <label className="form-label">Birthday</label>
-                    <input disabled= {verification_status !== "0"}
-                      className="form-control" value={fromStringTodateFormatter(formData.birthday, true)}/>
-                    <a
-                        style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
-                        className="select-btn sm"
-                        onClick={handleThemeToggle('default')}>
-                        Select Date
-                    </a>
-                    <DatePickerMobile
-                      theme={state.theme}
-                      isOpen={state.isOpen}
-                      value={formData.birthday !== null ? new Date(formData.birthday) : new Date()}
-                      showCaption
-                        headerFormat="DD/MM/YYYY"
-                        confirmText="Set"
-                        cancelText="Cancel"
-                        dateConfig={{
-                        'date': {
-                          format: 'D',
-                          caption: 'Day',
-                          step: 1,
-                          },
-                          'month': {
-                              format: 'M',
-                              caption: 'Month',
-                              step: 1,
-                          },
-                          'year': {
-                            format: 'YYYY',
-                            caption: 'Year',
+                            label="Birthday"
+                            inputFormat="dd/MM/yyyy"
+                            value={formData.birthday}
+                            onChange={(date) => {setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
+                            renderInput={(params) => <TextField {...params} />}
+                          />
+                          </Stack>
+                      </LocalizationProvider>
+                  </FormGroup>
+                  <FormGroup className='d-md-none'>
+                      <label className="form-label">Birthday</label>
+                      <input disabled= {verification_status !== "0"}
+                        className="form-control" value={fromStringTodateFormatter(formData.birthday, true)}/>
+                      <a
+                          style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
+                          className="select-btn sm"
+                          onClick={handleThemeToggle('default')}>
+                          Select Date
+                      </a>
+                      <DatePickerMobile
+                        theme={state.theme}
+                        isOpen={state.isOpen}
+                        value={formData.birthday !== null ? new Date(formData.birthday) : new Date()}
+                        showCaption
+                          headerFormat="DD/MM/YYYY"
+                          confirmText="Set"
+                          cancelText="Cancel"
+                          dateConfig={{
+                          'date': {
+                            format: 'D',
+                            caption: 'Day',
                             step: 1,
-                          },
-                      }}
-                    onSelect={(date) => {setFormData({ ...formData, birthday: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
-                    onCancel={handleToggle(false)} />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                     Id Number (Passport/Drivers License/National ID) 
-                  </Label>
-                  <input className="form-control " 
-                            disabled= {verification_status !== "0"}
-                            name="id_number" value={formData.id_number} onChange={(e) => setFormData({...formData, id_number: e.target.value})} placeholder="Enter Id number" type="text" />
-                </FormGroup>
-                <FormGroup>
-                  <Row className="gy-4">
-                      <Col md="6">
-                        <FormGroup className="d-none d-md-block">
-                          <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <Stack spacing={3}>
-                              <DesktopDatePicker
-                                disabled= {verification_status !== "0"}
-                                label="Issue Date"
-                                inputFormat="dd/MM/yyyy"
-                                value={formData.issue_date}
-                                onChange={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
-                                renderInput={(params) => <TextField {...params} />}
-                              />
-                              </Stack>
-                          </LocalizationProvider>
-                        </FormGroup>
-                        <FormGroup className='d-md-none'>
-                            <label className="form-label">Issue Date</label>
+                            },
+                            'month': {
+                                format: 'M',
+                                caption: 'Month',
+                                step: 1,
+                            },
+                            'year': {
+                              format: 'YYYY',
+                              caption: 'Year',
+                              step: 1,
+                            },
+                        }}
+                      onSelect={(date) => {setFormData({ ...formData, birthday: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
+                      onCancel={handleToggle(false)} />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      Id Number (Passport/Drivers License/National ID) 
+                    </Label>
+                    <input className="form-control " 
+                              disabled= {verification_status !== "0"}
+                              name="id_number" value={formData.id_number} onChange={(e) => setFormData({...formData, id_number: e.target.value})} placeholder="Enter Id number" type="text" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Row className="gy-4">
+                        <Col md="6">
+                          <FormGroup className="d-none d-md-block">
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                              <Stack spacing={3}>
+                                <DesktopDatePicker
+                                  disabled= {verification_status !== "0"}
+                                  label="Issue Date"
+                                  inputFormat="dd/MM/yyyy"
+                                  value={formData.issue_date}
+                                  onChange={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
+                                  renderInput={(params) => <TextField {...params} />}
+                                />
+                                </Stack>
+                            </LocalizationProvider>
+                          </FormGroup>
+                          <FormGroup className='d-md-none'>
+                              <label className="form-label">Issue Date</label>
+                              <input disabled= {verification_status !== "0"}
+                                className="form-control" value={fromStringTodateFormatter(formData.issue_date, true)}/>
+                              <a
+                                  style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
+                                  className="select-btn sm"
+                                  onClick={handleThemeToggle1('default')}>
+                                  Select Date
+                              </a>
+                              <DatePickerMobile
+                                theme={state.theme}
+                                isOpen={state.isOpen1}
+                                value={formData.issue_date !== null ? new Date(formData.issue_date) : new Date()}
+                                showCaption
+                                headerFormat="DD/MM/YYYY"
+                                confirmText="Set"
+                                cancelText="Cancel"
+                                dateConfig={{
+                                  'date': {
+                                    format: 'D',
+                                    caption: 'Day',
+                                    step: 1,
+                                    },
+                                    'month': {
+                                        format: 'M',
+                                        caption: 'Month',
+                                        step: 1,
+                                    },
+                                    'year': {
+                                      format: 'YYYY',
+                                      caption: 'Year',
+                                      step: 1,
+                                    },
+                                }}
+                              onSelect={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
+                              onCancel={handleToggle1(false)} />
+                          </FormGroup>
+                        </Col>
+                        <Col md="6">
+                            <FormGroup className="d-none d-md-block">
+                              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <Stack spacing={3}>
+                                  <DesktopDatePicker
+                                    disabled= {verification_status !== "0"}
+                                    label="Expireation Date"
+                                    inputFormat="dd/MM/yyyy"
+                                    value={formData.exp_date}
+                                    onChange={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                  />
+                                  </Stack>
+                              </LocalizationProvider>
+                          </FormGroup>
+                          <FormGroup className='d-md-none'>
+                            <label className="form-label">Expiration date</label>
                             <input disabled= {verification_status !== "0"}
-                              className="form-control" value={fromStringTodateFormatter(formData.issue_date, true)}/>
+                              className="form-control" value={fromStringTodateFormatter(formData.exp_date, true)}/>
                             <a
                                 style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                                 className="select-btn sm"
-                                onClick={handleThemeToggle1('default')}>
+                                onClick={handleThemeToggle2('default')}>
                                 Select Date
                             </a>
                             <DatePickerMobile
                               theme={state.theme}
-                              isOpen={state.isOpen1}
-                              value={formData.issue_date !== null ? new Date(formData.issue_date) : new Date()}
+                              isOpen={state.isOpen2}
                               showCaption
+                              value={formData.exp_date !== null ? new Date(formData.exp_date) : new Date()}
                               headerFormat="DD/MM/YYYY"
                               confirmText="Set"
                               cancelText="Cancel"
@@ -591,874 +645,820 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                     step: 1,
                                   },
                               }}
-                            onSelect={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
-                            onCancel={handleToggle1(false)} />
+                            onSelect={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
+                            onCancel={handleToggle2(false)} />
                         </FormGroup>
-                      </Col>
-                      <Col md="6">
-                          <FormGroup className="d-none d-md-block">
-                            <LocalizationProvider dateAdapter={AdapterDateFns}>
-                              <Stack spacing={3}>
-                                <DesktopDatePicker
-                                  disabled= {verification_status !== "0"}
-                                  label="Expireation Date"
-                                  inputFormat="dd/MM/yyyy"
-                                  value={formData.exp_date}
-                                  onChange={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
-                                  renderInput={(params) => <TextField {...params} />}
-                                />
-                                </Stack>
-                            </LocalizationProvider>
-                        </FormGroup>
-                        <FormGroup className='d-md-none'>
-                          <label className="form-label">Expiration date</label>
-                          <input disabled= {verification_status !== "0"}
-                            className="form-control" value={fromStringTodateFormatter(formData.exp_date, true)}/>
-                          <a
-                              style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
-                              className="select-btn sm"
-                              onClick={handleThemeToggle2('default')}>
-                              Select Date
-                          </a>
-                          <DatePickerMobile
-                            theme={state.theme}
-                            isOpen={state.isOpen2}
-                            showCaption
-                            value={formData.exp_date !== null ? new Date(formData.exp_date) : new Date()}
-                            headerFormat="DD/MM/YYYY"
-                            confirmText="Set"
-                            cancelText="Cancel"
-                            dateConfig={{
-                              'date': {
-                                format: 'D',
-                                caption: 'Day',
-                                step: 1,
-                                },
-                                'month': {
-                                    format: 'M',
-                                    caption: 'Month',
-                                    step: 1,
-                                },
-                                'year': {
-                                  format: 'YYYY',
-                                  caption: 'Year',
-                                  step: 1,
-                                },
-                            }}
-                          onSelect={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
-                          onCancel={handleToggle2(false)} />
+                        </Col>
+                    </Row>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Issue Country
+                    </Label>
+                        <div className="form-control-wrap">
+                            <select id="issue_country" name="issue_country" 
+                            disabled= {verification_status !== "0"}
+                            value={formData.issue_country} onChange={(e) => setFormData({...formData, issue_country: e.target.value})} className="form-control"
+                              // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
+                            >
+                                <option value="noselect" >Select Country</option>
+                                <option value="United States">United States</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="Albania">Albania</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Armenia">Armenia</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Azerbaijan">Azerbaijan</option>
+                                <option value="Bahamas">Bahamas</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="Barbados">Barbados</option>
+                                <option value="Belarus">Belarus</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Belize">Belize</option>
+                                <option value="Benin">Benin</option>
+                                <option value="Bhutan">Bhutan</option>
+                                <option value="Bolivia">Bolivia</option>
+                                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Brunei">Brunei</option>
+                                <option value="Bulgaria">Bulgaria</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cabo Verde">Cabo Verde</option>
+                                <option value="Cambodia">Cambodia</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Central African Republic">Central African Republic</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Chile">Chile</option>
+                                <option value="China">China</option>
+                                <option value="Colombia">Colombia</option>
+                                <option value="Comoros">Comoros</option>
+                                <option value="Congo">Congo</option>
+                                <option value="Costa Rica">Costa Rica</option>
+                                <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+                                <option value="Croatia">Croatia</option>
+                                <option value="Cuba">Cuba</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Czech Republic">Czech Republic</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Dominica">Dominica</option>
+                                <option value="Dominican Republic">Dominican Republic</option>
+                                <option value="East Timor">East Timor</option>
+                                <option value="Ecuador">Ecuador</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="El Salvador">El Salvador</option>
+                                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                <option value="Eritrea">Eritrea</option>
+                                <option value="Estonia">Estonia</option>
+                                <option value="Fiji">Fiji</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambia">Gambia</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Grenada">Grenada</option>
+                                <option value="Guatemala">Guatemala</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                <option value="Guyana">Guyana</option>
+                                <option value="Haiti">Haiti</option>
+                                <option value="Honduras">Honduras</option>
+                                <option value="Hungary">Hungary</option>
+                                <option value="Iceland">Iceland</option>
+                                <option value="India">India</option>
+                                <option value="Indonesia">Indonesia</option>
+                                <option value="Iraq">Iraq</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Israel">Israel</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Jamaica">Jamaica</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Kiribati">Kiribati</option>
+                                <option value="South Korea">South Korea </option>
+                                <option value="Kosovo">Kosovo</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                <option value="Laos">Laos</option>
+                                <option value="Latvia">Latvia</option>
+                                <option value="Lebanon">Lebanon</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libya">Libya</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Macedonia">Macedonia</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Maldives">Maldives</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Marshall Islands">Marshall Islands</option>
+                                <option value="Mauritania">Mauritania</option>
+                                <option value="Mauritius">Mauritius</option>
+                                <option value="Mexico">Mexico</option>
+                                <option value="Federated States of Micronesia">Federated States of Micronesia</option>
+                                <option value="Moldova">Moldova</option>
+                                <option value="Monaco">Monaco</option>
+                                <option value="Mongolia">Mongolia</option>
+                                <option value="Montenegro">Montenegro</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Myanmar">Myanmar</option>
+                                <option value="Namibia">Namibia</option>
+                                <option value="Nauru">Nauru</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Nicaragua">Nicaragua</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Palau">Palau</option>
+                                <option value="Panama">Panama</option>
+                                <option value="Papua New Guinea">Papua New Guinea</option>
+                                <option value="Paraguay">Paraguay</option>
+                                <option value="Peru">Peru</option>
+                                <option value="Philippines">Philippines</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Qatar">Qatar</option>
+                                <option value="Romania">Romania</option>
+                                <option value="Russia">Russia</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                <option value="Saint Lucia">Saint Lucia</option>
+                                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                                <option value="Samoa">Samoa</option>
+                                <option value="San Marino">San Marino</option>
+                                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Slovakia">Slovakia</option>
+                                <option value="Slovenia">Slovenia</option>
+                                <option value="Solomon Islands">Solomon Islands</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sudan">Sudan</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Suriname">Suriname</option>
+                                <option value="Swaziland">Swaziland</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Taiwan">Taiwan</option>
+                                <option value="Tajikistan">Tajikistan</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tonga">Tonga</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Turkmenistan">Turkmenistan</option>
+                                <option value="Tuvalu">Tuvalu</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Uruguay">Uruguay</option>
+                                <option value="Uzbekistan">Uzbekistan</option>
+                                <option value="Vanuatu">Vanuatu</option>
+                                <option value="Vatican City">Vatican City</option>
+                                <option value="Venezela">Venezuela</option>
+                                <option value="Vietnam">Vietnam</option>
+                                <option value="Zambia">Zambia</option>
+                          </select>
+                          {/* {errors.country && <span className="invalid">{errors.country.message}</span>} */}
+                        </div>
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                    Home Address
+                    </Label>
+                    <input className="form-control " 
+                    disabled= {verification_status !== "0"}
+                    name="address" onChange={(e) => setFormData({...formData, address: e.target.value})} value={formData.address} placeholder="Enter the home address" />
+                  </FormGroup>
+                  {/* <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      City/Municipality
+                    </Label>
+                    <input className="form-control " 
+                    disabled= {verification_status !== "0"}
+                    name="city" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})}  placeholder="Enter City/Municipality" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      Prefecture
+                    </Label>
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="prefecture" value={formData.prefecture} onChange={(e) => setFormData({...formData, prefecture: e.target.value})} placeholder="Enter Prefecture" />
+                  </FormGroup> */}
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      Postal Code
+                    </Label>
+                    <input className="form-control " 
+                    disabled= {verification_status !== "0"}
+                    name="postal_code" value={formData.postal_code} placeholder="Enter Postal Code"  onChange={(e) => setFormData({...formData, postal_code: e.target.value})} type="text" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Country
+                    </Label>
+                        <div className="form-control-wrap">
+                            <select id="country" name="country" 
+                    disabled= {verification_status !== "0"}
+                    value={formData.country} onChange={(e) => setFormData({...formData, country: e.target.value})} className="form-control"
+                              // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
+                            >
+                                <option value="noselect" >Select Country</option>
+                                <option value="United States">United States</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="Albania">Albania</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Armenia">Armenia</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Azerbaijan">Azerbaijan</option>
+                                <option value="Bahamas">Bahamas</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="Barbados">Barbados</option>
+                                <option value="Belarus">Belarus</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Belize">Belize</option>
+                                <option value="Benin">Benin</option>
+                                <option value="Bhutan">Bhutan</option>
+                                <option value="Bolivia">Bolivia</option>
+                                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Brunei">Brunei</option>
+                                <option value="Bulgaria">Bulgaria</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cabo Verde">Cabo Verde</option>
+                                <option value="Cambodia">Cambodia</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Central African Republic">Central African Republic</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Chile">Chile</option>
+                                <option value="China">China</option>
+                                <option value="Colombia">Colombia</option>
+                                <option value="Comoros">Comoros</option>
+                                <option value="Congo">Congo</option>
+                                <option value="Costa Rica">Costa Rica</option>
+                                <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+                                <option value="Croatia">Croatia</option>
+                                <option value="Cuba">Cuba</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Czech Republic">Czech Republic</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Dominica">Dominica</option>
+                                <option value="Dominican Republic">Dominican Republic</option>
+                                <option value="East Timor">East Timor</option>
+                                <option value="Ecuador">Ecuador</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="El Salvador">El Salvador</option>
+                                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                <option value="Eritrea">Eritrea</option>
+                                <option value="Estonia">Estonia</option>
+                                <option value="Fiji">Fiji</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambia">Gambia</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Grenada">Grenada</option>
+                                <option value="Guatemala">Guatemala</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                <option value="Guyana">Guyana</option>
+                                <option value="Haiti">Haiti</option>
+                                <option value="Honduras">Honduras</option>
+                                <option value="Hungary">Hungary</option>
+                                <option value="Iceland">Iceland</option>
+                                <option value="India">India</option>
+                                <option value="Indonesia">Indonesia</option>
+                                <option value="Iraq">Iraq</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Israel">Israel</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Jamaica">Jamaica</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Kiribati">Kiribati</option>
+                                <option value="South Korea">South Korea </option>
+                                <option value="Kosovo">Kosovo</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                <option value="Laos">Laos</option>
+                                <option value="Latvia">Latvia</option>
+                                <option value="Lebanon">Lebanon</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libya">Libya</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Macedonia">Macedonia</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Maldives">Maldives</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Marshall Islands">Marshall Islands</option>
+                                <option value="Mauritania">Mauritania</option>
+                                <option value="Mauritius">Mauritius</option>
+                                <option value="Mexico">Mexico</option>
+                                <option value="Federated States of Micronesia">Federated States of Micronesia</option>
+                                <option value="Moldova">Moldova</option>
+                                <option value="Monaco">Monaco</option>
+                                <option value="Mongolia">Mongolia</option>
+                                <option value="Montenegro">Montenegro</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Myanmar">Myanmar</option>
+                                <option value="Namibia">Namibia</option>
+                                <option value="Nauru">Nauru</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Nicaragua">Nicaragua</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Palau">Palau</option>
+                                <option value="Panama">Panama</option>
+                                <option value="Papua New Guinea">Papua New Guinea</option>
+                                <option value="Paraguay">Paraguay</option>
+                                <option value="Peru">Peru</option>
+                                <option value="Philippines">Philippines</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Qatar">Qatar</option>
+                                <option value="Romania">Romania</option>
+                                <option value="Russia">Russia</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                <option value="Saint Lucia">Saint Lucia</option>
+                                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                                <option value="Samoa">Samoa</option>
+                                <option value="San Marino">San Marino</option>
+                                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Slovakia">Slovakia</option>
+                                <option value="Slovenia">Slovenia</option>
+                                <option value="Solomon Islands">Solomon Islands</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sudan">Sudan</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Suriname">Suriname</option>
+                                <option value="Swaziland">Swaziland</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Taiwan">Taiwan</option>
+                                <option value="Tajikistan">Tajikistan</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tonga">Tonga</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Turkmenistan">Turkmenistan</option>
+                                <option value="Tuvalu">Tuvalu</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Uruguay">Uruguay</option>
+                                <option value="Uzbekistan">Uzbekistan</option>
+                                <option value="Vanuatu">Vanuatu</option>
+                                <option value="Vatican City">Vatican City</option>
+                                <option value="Venezela">Venezuela</option>
+                                <option value="Vietnam">Vietnam</option>
+                                <option value="Zambia">Zambia</option>
+                          </select>
+                          {/* {errors.country && <span className="invalid">{errors.country.message}</span>} */}
+                        </div>
+                  </FormGroup>
+                  {/* <FormGroup>
+                      <Label className="form-label">
+                        ID CARD TYPE
+                      </Label>
+                      <Row className="gy-4">
+                      <Col md="4">
+                        <div className="g">
+                          <div className="custom-control custom-control-lg custom-radio">
+                            <input
+                              type="radio"
+                              className="custom-control-input form-control"
+                              name="id_cardtype"
+                              id="customRadio5"
+                              checked = {formData.id_cardtype === "passport" ? true: false}
+                              onChange={(e) => {setFormData({...formData,  id_cardtype: "passport"}); } }
+                            />
+                            <label className="custom-control-label" htmlFor="customRadio5">
+                              Passport
+                            </label>
+                          </div>
+                        </div>
+                        </Col>
+                        <Col md="8">
+                        <div className="g">
+                          <div className="custom-control custom-control-lg custom-radio">
+                            <input
+                              type="radio"
+                              className="custom-control-input form-control"
+                              name="id_cardtype"
+                              id="customRadio6"
+                              checked = {formData.id_cardtype === "driving_license" ? true: false}
+                              onChange={(e) => setFormData({...formData, id_cardtype: "driving_license"})}
+                            />
+                            <label className="custom-control-label" htmlFor="customRadio6">
+                                ID(Driving License,etc.)
+                            </label>
+                          </div>
+                        </div>
+                        </Col>
+                      </Row>
+                  </FormGroup> */}
+                  <Row>
+                    <Col md="6">
+                      <FormGroup>
+                        <Label htmlFor="default-5" className="form-label">
+                          Phone Number
+                        </Label>
+                        <RSelect options={country_code_arr}
+                    isDisabled= {verification_status !== "0"}
+                    value={{value: formData.country_code, label: formData.country_code}}  onChange={(e) =>  setFormData({...formData, country_code: e.label})} placeholder="Select phone Country Code" className="form-control-outlined"/>
                       </FormGroup>
+                    </Col>
+                      <Col md="6" >
+                        <FormGroup style={{marginTop: "8px"}}>
+                          <Label htmlFor="default-5" className="form-label">
+                          </Label>
+                          <input className="form-control "
+                            disabled= {verification_status !== "0"}
+                            name="cellphone_number" value={formData.cellphone_number} placeholder="Enter the phone Number"  
+                            onKeyPress= { (evt) =>
+                              {
+                                if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+                                {
+                                    evt.preventDefault();
+                                }
+                              }
+                            }
+                            onChange={(e) => setFormData({...formData, cellphone_number: e.target.value})} type="number" />
+                        </FormGroup>
                       </Col>
                   </Row>
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Issue Country
-                  </Label>
-                      <div className="form-control-wrap">
-                          <select id="issue_country" name="issue_country" 
-                          disabled= {verification_status !== "0"}
-                          value={formData.issue_country} onChange={(e) => setFormData({...formData, issue_country: e.target.value})} className="form-control"
-                            // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
-                          >
-                              <option value="noselect" >Select Country</option>
-                              <option value="United States">United States</option>
-                              <option value="Afghanistan">Afghanistan</option>
-                              <option value="Albania">Albania</option>
-                              <option value="Algeria">Algeria</option>
-                              <option value="Andorra">Andorra</option>
-                              <option value="Angola">Angola</option>
-                              <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                              <option value="Argentina">Argentina</option>
-                              <option value="Armenia">Armenia</option>
-                              <option value="Australia">Australia</option>
-                              <option value="Austria">Austria</option>
-                              <option value="Azerbaijan">Azerbaijan</option>
-                              <option value="Bahamas">Bahamas</option>
-                              <option value="Bahrain">Bahrain</option>
-                              <option value="Bangladesh">Bangladesh</option>
-                              <option value="Barbados">Barbados</option>
-                              <option value="Belarus">Belarus</option>
-                              <option value="Belgium">Belgium</option>
-                              <option value="Belize">Belize</option>
-                              <option value="Benin">Benin</option>
-                              <option value="Bhutan">Bhutan</option>
-                              <option value="Bolivia">Bolivia</option>
-                              <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                              <option value="Botswana">Botswana</option>
-                              <option value="Brazil">Brazil</option>
-                              <option value="Brunei">Brunei</option>
-                              <option value="Bulgaria">Bulgaria</option>
-                              <option value="Burkina Faso">Burkina Faso</option>
-                              <option value="Burundi">Burundi</option>
-                              <option value="Cabo Verde">Cabo Verde</option>
-                              <option value="Cambodia">Cambodia</option>
-                              <option value="Cameroon">Cameroon</option>
-                              <option value="Canada">Canada</option>
-                              <option value="Central African Republic">Central African Republic</option>
-                              <option value="Chad">Chad</option>
-                              <option value="Chile">Chile</option>
-                              <option value="China">China</option>
-                              <option value="Colombia">Colombia</option>
-                              <option value="Comoros">Comoros</option>
-                              <option value="Congo">Congo</option>
-                              <option value="Costa Rica">Costa Rica</option>
-                              <option value="Cote d'Ivoire">Cote d'Ivoire</option>
-                              <option value="Croatia">Croatia</option>
-                              <option value="Cuba">Cuba</option>
-                              <option value="Cyprus">Cyprus</option>
-                              <option value="Czech Republic">Czech Republic</option>
-                              <option value="Denmark">Denmark</option>
-                              <option value="Djibouti">Djibouti</option>
-                              <option value="Dominica">Dominica</option>
-                              <option value="Dominican Republic">Dominican Republic</option>
-                              <option value="East Timor">East Timor</option>
-                              <option value="Ecuador">Ecuador</option>
-                              <option value="Egypt">Egypt</option>
-                              <option value="El Salvador">El Salvador</option>
-                              <option value="Equatorial Guinea">Equatorial Guinea</option>
-                              <option value="Eritrea">Eritrea</option>
-                              <option value="Estonia">Estonia</option>
-                              <option value="Fiji">Fiji</option>
-                              <option value="Finland">Finland</option>
-                              <option value="France">France</option>
-                              <option value="Gabon">Gabon</option>
-                              <option value="Gambia">Gambia</option>
-                              <option value="Georgia">Georgia</option>
-                              <option value="Germany">Germany</option>
-                              <option value="Ghana">Ghana</option>
-                              <option value="Greece">Greece</option>
-                              <option value="Grenada">Grenada</option>
-                              <option value="Guatemala">Guatemala</option>
-                              <option value="Guinea">Guinea</option>
-                              <option value="Guinea-Bissau">Guinea-Bissau</option>
-                              <option value="Guyana">Guyana</option>
-                              <option value="Haiti">Haiti</option>
-                              <option value="Honduras">Honduras</option>
-                              <option value="Hungary">Hungary</option>
-                              <option value="Iceland">Iceland</option>
-                              <option value="India">India</option>
-                              <option value="Indonesia">Indonesia</option>
-                              <option value="Iraq">Iraq</option>
-                              <option value="Ireland">Ireland</option>
-                              <option value="Israel">Israel</option>
-                              <option value="Italy">Italy</option>
-                              <option value="Jamaica">Jamaica</option>
-                              <option value="Japan">Japan</option>
-                              <option value="Jordan">Jordan</option>
-                              <option value="Kazakhstan">Kazakhstan</option>
-                              <option value="Kenya">Kenya</option>
-                              <option value="Kiribati">Kiribati</option>
-                              <option value="South Korea">South Korea </option>
-                              <option value="Kosovo">Kosovo</option>
-                              <option value="Kuwait">Kuwait</option>
-                              <option value="Kyrgyzstan">Kyrgyzstan</option>
-                              <option value="Laos">Laos</option>
-                              <option value="Latvia">Latvia</option>
-                              <option value="Lebanon">Lebanon</option>
-                              <option value="Lesotho">Lesotho</option>
-                              <option value="Liberia">Liberia</option>
-                              <option value="Libya">Libya</option>
-                              <option value="Liechtenstein">Liechtenstein</option>
-                              <option value="Lithuania">Lithuania</option>
-                              <option value="Luxembourg">Luxembourg</option>
-                              <option value="Macedonia">Macedonia</option>
-                              <option value="Madagascar">Madagascar</option>
-                              <option value="Malawi">Malawi</option>
-                              <option value="Malaysia">Malaysia</option>
-                              <option value="Maldives">Maldives</option>
-                              <option value="Mali">Mali</option>
-                              <option value="Malta">Malta</option>
-                              <option value="Marshall Islands">Marshall Islands</option>
-                              <option value="Mauritania">Mauritania</option>
-                              <option value="Mauritius">Mauritius</option>
-                              <option value="Mexico">Mexico</option>
-                              <option value="Federated States of Micronesia">Federated States of Micronesia</option>
-                              <option value="Moldova">Moldova</option>
-                              <option value="Monaco">Monaco</option>
-                              <option value="Mongolia">Mongolia</option>
-                              <option value="Montenegro">Montenegro</option>
-                              <option value="Morocco">Morocco</option>
-                              <option value="Mozambique">Mozambique</option>
-                              <option value="Myanmar">Myanmar</option>
-                              <option value="Namibia">Namibia</option>
-                              <option value="Nauru">Nauru</option>
-                              <option value="Nepal">Nepal</option>
-                              <option value="Netherlands">Netherlands</option>
-                              <option value="New Zealand">New Zealand</option>
-                              <option value="Nicaragua">Nicaragua</option>
-                              <option value="Niger">Niger</option>
-                              <option value="Nigeria">Nigeria</option>
-                              <option value="Norway">Norway</option>
-                              <option value="Oman">Oman</option>
-                              <option value="Palau">Palau</option>
-                              <option value="Panama">Panama</option>
-                              <option value="Papua New Guinea">Papua New Guinea</option>
-                              <option value="Paraguay">Paraguay</option>
-                              <option value="Peru">Peru</option>
-                              <option value="Philippines">Philippines</option>
-                              <option value="Poland">Poland</option>
-                              <option value="Portugal">Portugal</option>
-                              <option value="Qatar">Qatar</option>
-                              <option value="Romania">Romania</option>
-                              <option value="Russia">Russia</option>
-                              <option value="Rwanda">Rwanda</option>
-                              <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                              <option value="Saint Lucia">Saint Lucia</option>
-                              <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-                              <option value="Samoa">Samoa</option>
-                              <option value="San Marino">San Marino</option>
-                              <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-                              <option value="Saudi Arabia">Saudi Arabia</option>
-                              <option value="Senegal">Senegal</option>
-                              <option value="Seychelles">Seychelles</option>
-                              <option value="Sierra Leone">Sierra Leone</option>
-                              <option value="Singapore">Singapore</option>
-                              <option value="Slovakia">Slovakia</option>
-                              <option value="Slovenia">Slovenia</option>
-                              <option value="Solomon Islands">Solomon Islands</option>
-                              <option value="Somalia">Somalia</option>
-                              <option value="South Africa">South Africa</option>
-                              <option value="Spain">Spain</option>
-                              <option value="Sudan">Sudan</option>
-                              <option value="South Sudan">South Sudan</option>
-                              <option value="Suriname">Suriname</option>
-                              <option value="Swaziland">Swaziland</option>
-                              <option value="Sweden">Sweden</option>
-                              <option value="Switzerland">Switzerland</option>
-                              <option value="Taiwan">Taiwan</option>
-                              <option value="Tajikistan">Tajikistan</option>
-                              <option value="Tanzania">Tanzania</option>
-                              <option value="Thailand">Thailand</option>
-                              <option value="Togo">Togo</option>
-                              <option value="Tonga">Tonga</option>
-                              <option value="Turkey">Turkey</option>
-                              <option value="Turkmenistan">Turkmenistan</option>
-                              <option value="Tuvalu">Tuvalu</option>
-                              <option value="Uganda">Uganda</option>
-                              <option value="Ukraine">Ukraine</option>
-                              <option value="United Arab Emirates">United Arab Emirates</option>
-                              <option value="United Kingdom">United Kingdom</option>
-                              <option value="Uruguay">Uruguay</option>
-                              <option value="Uzbekistan">Uzbekistan</option>
-                              <option value="Vanuatu">Vanuatu</option>
-                              <option value="Vatican City">Vatican City</option>
-                              <option value="Venezela">Venezuela</option>
-                              <option value="Vietnam">Vietnam</option>
-                              <option value="Zambia">Zambia</option>
-                        </select>
-                        {/* {errors.country && <span className="invalid">{errors.country.message}</span>} */}
-                      </div>
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                   Home Address
-                  </Label>
-                  <input className="form-control " 
-                  disabled= {verification_status !== "0"}
-                  name="address" onChange={(e) => setFormData({...formData, address: e.target.value})} value={formData.address} placeholder="Enter the home address" />
-                </FormGroup>
-                {/* <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                    City/Municipality
-                  </Label>
-                  <input className="form-control " 
-                  disabled= {verification_status !== "0"}
-                  name="city" value={formData.city} onChange={(e) => setFormData({...formData, city: e.target.value})}  placeholder="Enter City/Municipality" />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                    Prefecture
-                  </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="prefecture" value={formData.prefecture} onChange={(e) => setFormData({...formData, prefecture: e.target.value})} placeholder="Enter Prefecture" />
-                </FormGroup> */}
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                    Postal Code
-                  </Label>
-                  <input className="form-control " 
-                  disabled= {verification_status !== "0"}
-                  name="postal_code" value={formData.postal_code} placeholder="Enter Postal Code"  onChange={(e) => setFormData({...formData, postal_code: e.target.value})} type="text" />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Country
-                  </Label>
-                      <div className="form-control-wrap">
-                          <select id="country" name="country" 
-                  disabled= {verification_status !== "0"}
-                  value={formData.country} onChange={(e) => setFormData({...formData, country: e.target.value})} className="form-control"
-                            // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
-                          >
-                              <option value="noselect" >Select Country</option>
-                              <option value="United States">United States</option>
-                              <option value="Afghanistan">Afghanistan</option>
-                              <option value="Albania">Albania</option>
-                              <option value="Algeria">Algeria</option>
-                              <option value="Andorra">Andorra</option>
-                              <option value="Angola">Angola</option>
-                              <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                              <option value="Argentina">Argentina</option>
-                              <option value="Armenia">Armenia</option>
-                              <option value="Australia">Australia</option>
-                              <option value="Austria">Austria</option>
-                              <option value="Azerbaijan">Azerbaijan</option>
-                              <option value="Bahamas">Bahamas</option>
-                              <option value="Bahrain">Bahrain</option>
-                              <option value="Bangladesh">Bangladesh</option>
-                              <option value="Barbados">Barbados</option>
-                              <option value="Belarus">Belarus</option>
-                              <option value="Belgium">Belgium</option>
-                              <option value="Belize">Belize</option>
-                              <option value="Benin">Benin</option>
-                              <option value="Bhutan">Bhutan</option>
-                              <option value="Bolivia">Bolivia</option>
-                              <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                              <option value="Botswana">Botswana</option>
-                              <option value="Brazil">Brazil</option>
-                              <option value="Brunei">Brunei</option>
-                              <option value="Bulgaria">Bulgaria</option>
-                              <option value="Burkina Faso">Burkina Faso</option>
-                              <option value="Burundi">Burundi</option>
-                              <option value="Cabo Verde">Cabo Verde</option>
-                              <option value="Cambodia">Cambodia</option>
-                              <option value="Cameroon">Cameroon</option>
-                              <option value="Canada">Canada</option>
-                              <option value="Central African Republic">Central African Republic</option>
-                              <option value="Chad">Chad</option>
-                              <option value="Chile">Chile</option>
-                              <option value="China">China</option>
-                              <option value="Colombia">Colombia</option>
-                              <option value="Comoros">Comoros</option>
-                              <option value="Congo">Congo</option>
-                              <option value="Costa Rica">Costa Rica</option>
-                              <option value="Cote d'Ivoire">Cote d'Ivoire</option>
-                              <option value="Croatia">Croatia</option>
-                              <option value="Cuba">Cuba</option>
-                              <option value="Cyprus">Cyprus</option>
-                              <option value="Czech Republic">Czech Republic</option>
-                              <option value="Denmark">Denmark</option>
-                              <option value="Djibouti">Djibouti</option>
-                              <option value="Dominica">Dominica</option>
-                              <option value="Dominican Republic">Dominican Republic</option>
-                              <option value="East Timor">East Timor</option>
-                              <option value="Ecuador">Ecuador</option>
-                              <option value="Egypt">Egypt</option>
-                              <option value="El Salvador">El Salvador</option>
-                              <option value="Equatorial Guinea">Equatorial Guinea</option>
-                              <option value="Eritrea">Eritrea</option>
-                              <option value="Estonia">Estonia</option>
-                              <option value="Fiji">Fiji</option>
-                              <option value="Finland">Finland</option>
-                              <option value="France">France</option>
-                              <option value="Gabon">Gabon</option>
-                              <option value="Gambia">Gambia</option>
-                              <option value="Georgia">Georgia</option>
-                              <option value="Germany">Germany</option>
-                              <option value="Ghana">Ghana</option>
-                              <option value="Greece">Greece</option>
-                              <option value="Grenada">Grenada</option>
-                              <option value="Guatemala">Guatemala</option>
-                              <option value="Guinea">Guinea</option>
-                              <option value="Guinea-Bissau">Guinea-Bissau</option>
-                              <option value="Guyana">Guyana</option>
-                              <option value="Haiti">Haiti</option>
-                              <option value="Honduras">Honduras</option>
-                              <option value="Hungary">Hungary</option>
-                              <option value="Iceland">Iceland</option>
-                              <option value="India">India</option>
-                              <option value="Indonesia">Indonesia</option>
-                              <option value="Iraq">Iraq</option>
-                              <option value="Ireland">Ireland</option>
-                              <option value="Israel">Israel</option>
-                              <option value="Italy">Italy</option>
-                              <option value="Jamaica">Jamaica</option>
-                              <option value="Japan">Japan</option>
-                              <option value="Jordan">Jordan</option>
-                              <option value="Kazakhstan">Kazakhstan</option>
-                              <option value="Kenya">Kenya</option>
-                              <option value="Kiribati">Kiribati</option>
-                              <option value="South Korea">South Korea </option>
-                              <option value="Kosovo">Kosovo</option>
-                              <option value="Kuwait">Kuwait</option>
-                              <option value="Kyrgyzstan">Kyrgyzstan</option>
-                              <option value="Laos">Laos</option>
-                              <option value="Latvia">Latvia</option>
-                              <option value="Lebanon">Lebanon</option>
-                              <option value="Lesotho">Lesotho</option>
-                              <option value="Liberia">Liberia</option>
-                              <option value="Libya">Libya</option>
-                              <option value="Liechtenstein">Liechtenstein</option>
-                              <option value="Lithuania">Lithuania</option>
-                              <option value="Luxembourg">Luxembourg</option>
-                              <option value="Macedonia">Macedonia</option>
-                              <option value="Madagascar">Madagascar</option>
-                              <option value="Malawi">Malawi</option>
-                              <option value="Malaysia">Malaysia</option>
-                              <option value="Maldives">Maldives</option>
-                              <option value="Mali">Mali</option>
-                              <option value="Malta">Malta</option>
-                              <option value="Marshall Islands">Marshall Islands</option>
-                              <option value="Mauritania">Mauritania</option>
-                              <option value="Mauritius">Mauritius</option>
-                              <option value="Mexico">Mexico</option>
-                              <option value="Federated States of Micronesia">Federated States of Micronesia</option>
-                              <option value="Moldova">Moldova</option>
-                              <option value="Monaco">Monaco</option>
-                              <option value="Mongolia">Mongolia</option>
-                              <option value="Montenegro">Montenegro</option>
-                              <option value="Morocco">Morocco</option>
-                              <option value="Mozambique">Mozambique</option>
-                              <option value="Myanmar">Myanmar</option>
-                              <option value="Namibia">Namibia</option>
-                              <option value="Nauru">Nauru</option>
-                              <option value="Nepal">Nepal</option>
-                              <option value="Netherlands">Netherlands</option>
-                              <option value="New Zealand">New Zealand</option>
-                              <option value="Nicaragua">Nicaragua</option>
-                              <option value="Niger">Niger</option>
-                              <option value="Nigeria">Nigeria</option>
-                              <option value="Norway">Norway</option>
-                              <option value="Oman">Oman</option>
-                              <option value="Palau">Palau</option>
-                              <option value="Panama">Panama</option>
-                              <option value="Papua New Guinea">Papua New Guinea</option>
-                              <option value="Paraguay">Paraguay</option>
-                              <option value="Peru">Peru</option>
-                              <option value="Philippines">Philippines</option>
-                              <option value="Poland">Poland</option>
-                              <option value="Portugal">Portugal</option>
-                              <option value="Qatar">Qatar</option>
-                              <option value="Romania">Romania</option>
-                              <option value="Russia">Russia</option>
-                              <option value="Rwanda">Rwanda</option>
-                              <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                              <option value="Saint Lucia">Saint Lucia</option>
-                              <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-                              <option value="Samoa">Samoa</option>
-                              <option value="San Marino">San Marino</option>
-                              <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-                              <option value="Saudi Arabia">Saudi Arabia</option>
-                              <option value="Senegal">Senegal</option>
-                              <option value="Seychelles">Seychelles</option>
-                              <option value="Sierra Leone">Sierra Leone</option>
-                              <option value="Singapore">Singapore</option>
-                              <option value="Slovakia">Slovakia</option>
-                              <option value="Slovenia">Slovenia</option>
-                              <option value="Solomon Islands">Solomon Islands</option>
-                              <option value="Somalia">Somalia</option>
-                              <option value="South Africa">South Africa</option>
-                              <option value="Spain">Spain</option>
-                              <option value="Sudan">Sudan</option>
-                              <option value="South Sudan">South Sudan</option>
-                              <option value="Suriname">Suriname</option>
-                              <option value="Swaziland">Swaziland</option>
-                              <option value="Sweden">Sweden</option>
-                              <option value="Switzerland">Switzerland</option>
-                              <option value="Taiwan">Taiwan</option>
-                              <option value="Tajikistan">Tajikistan</option>
-                              <option value="Tanzania">Tanzania</option>
-                              <option value="Thailand">Thailand</option>
-                              <option value="Togo">Togo</option>
-                              <option value="Tonga">Tonga</option>
-                              <option value="Turkey">Turkey</option>
-                              <option value="Turkmenistan">Turkmenistan</option>
-                              <option value="Tuvalu">Tuvalu</option>
-                              <option value="Uganda">Uganda</option>
-                              <option value="Ukraine">Ukraine</option>
-                              <option value="United Arab Emirates">United Arab Emirates</option>
-                              <option value="United Kingdom">United Kingdom</option>
-                              <option value="Uruguay">Uruguay</option>
-                              <option value="Uzbekistan">Uzbekistan</option>
-                              <option value="Vanuatu">Vanuatu</option>
-                              <option value="Vatican City">Vatican City</option>
-                              <option value="Venezela">Venezuela</option>
-                              <option value="Vietnam">Vietnam</option>
-                              <option value="Zambia">Zambia</option>
-                        </select>
-                        {/* {errors.country && <span className="invalid">{errors.country.message}</span>} */}
-                      </div>
-                </FormGroup>
-                {/* <FormGroup>
+                  
+                  
+                  <div className="text-center pt-5">
+                      <FormGroup>
+                      <Button type="submit" 
+                        disabled= {verification_status !== "0"}
+                        color="primary" size="lg" className="btn-block">
+                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                      </Button>
+                      </FormGroup>
+                    </div>
+                </Col>
+                {/* corporate relative components */}
+                {formData.department === "Corporate" &&
+                <Col md="6"  >
+                  <FormGroup style={{marginTop:"53px"}}>
                     <Label className="form-label">
-                      ID CARD TYPE
+                      Company name
                     </Label>
-                    <Row className="gy-4">
-                    <Col md="4">
-                      <div className="g">
-                        <div className="custom-control custom-control-lg custom-radio">
-                          <input
-                            type="radio"
-                            className="custom-control-input form-control"
-                            name="id_cardtype"
-                            id="customRadio5"
-                            checked = {formData.id_cardtype === "passport" ? true: false}
-                            onChange={(e) => {setFormData({...formData,  id_cardtype: "passport"}); } }
-                          />
-                          <label className="custom-control-label" htmlFor="customRadio5">
-                            Passport
-                          </label>
-                        </div>
-                      </div>
-                      </Col>
-                      <Col md="8">
-                      <div className="g">
-                        <div className="custom-control custom-control-lg custom-radio">
-                          <input
-                            type="radio"
-                            className="custom-control-input form-control"
-                            name="id_cardtype"
-                            id="customRadio6"
-                            checked = {formData.id_cardtype === "driving_license" ? true: false}
-                            onChange={(e) => setFormData({...formData, id_cardtype: "driving_license"})}
-                          />
-                          <label className="custom-control-label" htmlFor="customRadio6">
-                              ID(Driving License,etc.)
-                          </label>
-                        </div>
-                      </div>
-                      </Col>
-                    </Row>
-                </FormGroup> */}
-                <Row>
-                   <Col md="6">
-                    <FormGroup>
-                      <Label htmlFor="default-5" className="form-label">
-                        Phone Number
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="company_name" onChange={(e) => setFormData({...formData, company_name: e.target.value})} value={formData.company_name} placeholder="Enter your company name" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Director Name
+                    </Label>
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="director_name" onChange={(e) => setFormData({...formData, director_name: e.target.value})} value={formData.director_name} placeholder="Enter the director name" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Company Address
                       </Label>
-                      <RSelect options={country_code_arr}
-                  isDisabled= {verification_status !== "0"}
-                  value={{value: formData.country_code, label: formData.country_code}}  onChange={(e) =>  setFormData({...formData, country_code: e.label})} placeholder="Select phone Country Code" className="form-control-outlined"/>
-                    </FormGroup>
-                   </Col>
-                    <Col md="6" >
-                      <FormGroup style={{marginTop: "8px"}}>
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="company_address" onChange={(e) => setFormData({...formData, company_address: e.target.value})} value={formData.company_address} placeholder="Enter the company address" />
+                  </FormGroup>
+                  {/* <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      City/Municipality
+                    </Label>
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="company_city" value={formData.company_city} onChange={(e) => setFormData({...formData, company_city: e.target.value})}  placeholder="Enter the company City/Municipality" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      Prefecture
+                    </Label>
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="company_prefecture" value={formData.company_prefecture} onChange={(e) => setFormData({...formData, company_prefecture: e.target.value})} placeholder="Enter the company Prefecture" />
+                  </FormGroup> */}
+                  <FormGroup>
+                    <Label htmlFor="default-5" className="form-label">
+                      Postal Code
+                    </Label>
+                    <input className="form-control "
+                    disabled= {verification_status !== "0"}
+                    name="company_postal_code" value={formData.company_postal_code} placeholder="Enter the company Postal Code"  onChange={(e) => setFormData({...formData, company_postal_code: e.target.value})} type="text" />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label className="form-label">
+                      Company Country
+                    </Label>
+                        <div className="form-control-wrap">
+                            <select id="company_country" 
+                    disabled= {verification_status !== "0"}
+                    name="company_country" value={formData.company_country} onChange={(e) => setFormData({...formData, company_country: e.target.value})} className="form-control"
+                              // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
+                            >
+                                <option value="noselect" >Select Country</option>
+                                <option value="United States">United States</option>
+                                <option value="Afghanistan">Afghanistan</option>
+                                <option value="Albania">Albania</option>
+                                <option value="Algeria">Algeria</option>
+                                <option value="Andorra">Andorra</option>
+                                <option value="Angola">Angola</option>
+                                <option value="Antigua and Barbuda">Antigua and Barbuda</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Armenia">Armenia</option>
+                                <option value="Australia">Australia</option>
+                                <option value="Austria">Austria</option>
+                                <option value="Azerbaijan">Azerbaijan</option>
+                                <option value="Bahamas">Bahamas</option>
+                                <option value="Bahrain">Bahrain</option>
+                                <option value="Bangladesh">Bangladesh</option>
+                                <option value="Barbados">Barbados</option>
+                                <option value="Belarus">Belarus</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Belize">Belize</option>
+                                <option value="Benin">Benin</option>
+                                <option value="Bhutan">Bhutan</option>
+                                <option value="Bolivia">Bolivia</option>
+                                <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
+                                <option value="Botswana">Botswana</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="Brunei">Brunei</option>
+                                <option value="Bulgaria">Bulgaria</option>
+                                <option value="Burkina Faso">Burkina Faso</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="Cabo Verde">Cabo Verde</option>
+                                <option value="Cambodia">Cambodia</option>
+                                <option value="Cameroon">Cameroon</option>
+                                <option value="Canada">Canada</option>
+                                <option value="Central African Republic">Central African Republic</option>
+                                <option value="Chad">Chad</option>
+                                <option value="Chile">Chile</option>
+                                <option value="China">China</option>
+                                <option value="Colombia">Colombia</option>
+                                <option value="Comoros">Comoros</option>
+                                <option value="Congo">Congo</option>
+                                <option value="Costa Rica">Costa Rica</option>
+                                <option value="Cote d'Ivoire">Cote d'Ivoire</option>
+                                <option value="Croatia">Croatia</option>
+                                <option value="Cuba">Cuba</option>
+                                <option value="Cyprus">Cyprus</option>
+                                <option value="Czech Republic">Czech Republic</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Djibouti">Djibouti</option>
+                                <option value="Dominica">Dominica</option>
+                                <option value="Dominican Republic">Dominican Republic</option>
+                                <option value="East Timor">East Timor</option>
+                                <option value="Ecuador">Ecuador</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="El Salvador">El Salvador</option>
+                                <option value="Equatorial Guinea">Equatorial Guinea</option>
+                                <option value="Eritrea">Eritrea</option>
+                                <option value="Estonia">Estonia</option>
+                                <option value="Fiji">Fiji</option>
+                                <option value="Finland">Finland</option>
+                                <option value="France">France</option>
+                                <option value="Gabon">Gabon</option>
+                                <option value="Gambia">Gambia</option>
+                                <option value="Georgia">Georgia</option>
+                                <option value="Germany">Germany</option>
+                                <option value="Ghana">Ghana</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Grenada">Grenada</option>
+                                <option value="Guatemala">Guatemala</option>
+                                <option value="Guinea">Guinea</option>
+                                <option value="Guinea-Bissau">Guinea-Bissau</option>
+                                <option value="Guyana">Guyana</option>
+                                <option value="Haiti">Haiti</option>
+                                <option value="Honduras">Honduras</option>
+                                <option value="Hungary">Hungary</option>
+                                <option value="Iceland">Iceland</option>
+                                <option value="India">India</option>
+                                <option value="Indonesia">Indonesia</option>
+                                <option value="Iraq">Iraq</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Israel">Israel</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Jamaica">Jamaica</option>
+                                <option value="Japan">Japan</option>
+                                <option value="Jordan">Jordan</option>
+                                <option value="Kazakhstan">Kazakhstan</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Kiribati">Kiribati</option>
+                                <option value="South Korea">South Korea </option>
+                                <option value="Kosovo">Kosovo</option>
+                                <option value="Kuwait">Kuwait</option>
+                                <option value="Kyrgyzstan">Kyrgyzstan</option>
+                                <option value="Laos">Laos</option>
+                                <option value="Latvia">Latvia</option>
+                                <option value="Lebanon">Lebanon</option>
+                                <option value="Lesotho">Lesotho</option>
+                                <option value="Liberia">Liberia</option>
+                                <option value="Libya">Libya</option>
+                                <option value="Liechtenstein">Liechtenstein</option>
+                                <option value="Lithuania">Lithuania</option>
+                                <option value="Luxembourg">Luxembourg</option>
+                                <option value="Macedonia">Macedonia</option>
+                                <option value="Madagascar">Madagascar</option>
+                                <option value="Malawi">Malawi</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="Maldives">Maldives</option>
+                                <option value="Mali">Mali</option>
+                                <option value="Malta">Malta</option>
+                                <option value="Marshall Islands">Marshall Islands</option>
+                                <option value="Mauritania">Mauritania</option>
+                                <option value="Mauritius">Mauritius</option>
+                                <option value="Mexico">Mexico</option>
+                                <option value="Federated States of Micronesia">Federated States of Micronesia</option>
+                                <option value="Moldova">Moldova</option>
+                                <option value="Monaco">Monaco</option>
+                                <option value="Mongolia">Mongolia</option>
+                                <option value="Montenegro">Montenegro</option>
+                                <option value="Morocco">Morocco</option>
+                                <option value="Mozambique">Mozambique</option>
+                                <option value="Myanmar">Myanmar</option>
+                                <option value="Namibia">Namibia</option>
+                                <option value="Nauru">Nauru</option>
+                                <option value="Nepal">Nepal</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Nicaragua">Nicaragua</option>
+                                <option value="Niger">Niger</option>
+                                <option value="Nigeria">Nigeria</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Oman">Oman</option>
+                                <option value="Palau">Palau</option>
+                                <option value="Panama">Panama</option>
+                                <option value="Papua New Guinea">Papua New Guinea</option>
+                                <option value="Paraguay">Paraguay</option>
+                                <option value="Peru">Peru</option>
+                                <option value="Philippines">Philippines</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Qatar">Qatar</option>
+                                <option value="Romania">Romania</option>
+                                <option value="Russia">Russia</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
+                                <option value="Saint Lucia">Saint Lucia</option>
+                                <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
+                                <option value="Samoa">Samoa</option>
+                                <option value="San Marino">San Marino</option>
+                                <option value="Sao Tome and Principe">Sao Tome and Principe</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Senegal">Senegal</option>
+                                <option value="Seychelles">Seychelles</option>
+                                <option value="Sierra Leone">Sierra Leone</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Slovakia">Slovakia</option>
+                                <option value="Slovenia">Slovenia</option>
+                                <option value="Solomon Islands">Solomon Islands</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sudan">Sudan</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Suriname">Suriname</option>
+                                <option value="Swaziland">Swaziland</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Taiwan">Taiwan</option>
+                                <option value="Tajikistan">Tajikistan</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="Togo">Togo</option>
+                                <option value="Tonga">Tonga</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="Turkmenistan">Turkmenistan</option>
+                                <option value="Tuvalu">Tuvalu</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Ukraine">Ukraine</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Uruguay">Uruguay</option>
+                                <option value="Uzbekistan">Uzbekistan</option>
+                                <option value="Vanuatu">Vanuatu</option>
+                                <option value="Vatican City">Vatican City</option>
+                                <option value="Venezela">Venezuela</option>
+                                <option value="Vietnam">Vietnam</option>
+                                <option value="Zambia">Zambia</option>
+                          </select>
+                          {/* {errors.country && <span className="invalid">{errors.country.message}</span>} */}
+                        </div>
+                  </FormGroup>
+                  <Row>
+                    <Col md="6">
+                      <FormGroup>
                         <Label htmlFor="default-5" className="form-label">
+                          Phone Number
                         </Label>
-                        <input className="form-control "
-                          disabled= {verification_status !== "0"}
-                          name="cellphone_number" value={formData.cellphone_number} placeholder="Enter the phone Number"  
-                          onKeyPress= { (evt) =>
-                            {
-                              if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
-                              {
-                                  evt.preventDefault();
-                              }
-                            }
+                        <RSelect options={country_code_arr} 
+                        isDisabled= {verification_status !== "0"}
+                        value={{value: formData.company_country_code, label: formData.company_country_code}}  
+                        onChange={(e) =>  
+                        {
+                          
+                              setFormData({...formData, company_country_code: e.label});
                           }
-                          onChange={(e) => setFormData({...formData, cellphone_number: e.target.value})} type="number" />
+                        } 
+                      placeholder="Select the company phone Country Code" className="form-control-outlined"/>
                       </FormGroup>
                     </Col>
-                </Row>
-                
-                
-                <div className="text-center pt-5">
-                    <FormGroup>
-                    <Button type="submit" 
-                      disabled= {verification_status !== "0"}
-                      color="primary" size="lg" className="btn-block">
-                      {loading ? <Spinner size="sm" color="light" /> : "Update"}
-                    </Button>
-                    </FormGroup>
-                  </div>
-              </Col>
-              {/* corporate relative components */}
-              {formData.department === "Corporate" &&
-              <Col md="6"  >
-                <FormGroup style={{marginTop:"53px"}}>
-                  <Label className="form-label">
-                    Company name
-                  </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="company_name" onChange={(e) => setFormData({...formData, company_name: e.target.value})} value={formData.company_name} placeholder="Enter your company name" />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Director Name
-                  </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="director_name" onChange={(e) => setFormData({...formData, director_name: e.target.value})} value={formData.director_name} placeholder="Enter the director name" />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Company Address
-                    </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="company_address" onChange={(e) => setFormData({...formData, company_address: e.target.value})} value={formData.company_address} placeholder="Enter the company address" />
-                </FormGroup>
-                {/* <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                    City/Municipality
-                  </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="company_city" value={formData.company_city} onChange={(e) => setFormData({...formData, company_city: e.target.value})}  placeholder="Enter the company City/Municipality" />
-                </FormGroup>
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                    Prefecture
-                  </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="company_prefecture" value={formData.company_prefecture} onChange={(e) => setFormData({...formData, company_prefecture: e.target.value})} placeholder="Enter the company Prefecture" />
-                </FormGroup> */}
-                <FormGroup>
-                  <Label htmlFor="default-5" className="form-label">
-                    Postal Code
-                  </Label>
-                  <input className="form-control "
-                  disabled= {verification_status !== "0"}
-                  name="company_postal_code" value={formData.company_postal_code} placeholder="Enter the company Postal Code"  onChange={(e) => setFormData({...formData, company_postal_code: e.target.value})} type="text" />
-                </FormGroup>
-                <FormGroup>
-                  <Label className="form-label">
-                    Company Country
-                  </Label>
-                      <div className="form-control-wrap">
-                          <select id="company_country" 
-                  disabled= {verification_status !== "0"}
-                  name="company_country" value={formData.company_country} onChange={(e) => setFormData({...formData, company_country: e.target.value})} className="form-control"
-                            // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
-                          >
-                              <option value="noselect" >Select Country</option>
-                              <option value="United States">United States</option>
-                              <option value="Afghanistan">Afghanistan</option>
-                              <option value="Albania">Albania</option>
-                              <option value="Algeria">Algeria</option>
-                              <option value="Andorra">Andorra</option>
-                              <option value="Angola">Angola</option>
-                              <option value="Antigua and Barbuda">Antigua and Barbuda</option>
-                              <option value="Argentina">Argentina</option>
-                              <option value="Armenia">Armenia</option>
-                              <option value="Australia">Australia</option>
-                              <option value="Austria">Austria</option>
-                              <option value="Azerbaijan">Azerbaijan</option>
-                              <option value="Bahamas">Bahamas</option>
-                              <option value="Bahrain">Bahrain</option>
-                              <option value="Bangladesh">Bangladesh</option>
-                              <option value="Barbados">Barbados</option>
-                              <option value="Belarus">Belarus</option>
-                              <option value="Belgium">Belgium</option>
-                              <option value="Belize">Belize</option>
-                              <option value="Benin">Benin</option>
-                              <option value="Bhutan">Bhutan</option>
-                              <option value="Bolivia">Bolivia</option>
-                              <option value="Bosnia and Herzegovina">Bosnia and Herzegovina</option>
-                              <option value="Botswana">Botswana</option>
-                              <option value="Brazil">Brazil</option>
-                              <option value="Brunei">Brunei</option>
-                              <option value="Bulgaria">Bulgaria</option>
-                              <option value="Burkina Faso">Burkina Faso</option>
-                              <option value="Burundi">Burundi</option>
-                              <option value="Cabo Verde">Cabo Verde</option>
-                              <option value="Cambodia">Cambodia</option>
-                              <option value="Cameroon">Cameroon</option>
-                              <option value="Canada">Canada</option>
-                              <option value="Central African Republic">Central African Republic</option>
-                              <option value="Chad">Chad</option>
-                              <option value="Chile">Chile</option>
-                              <option value="China">China</option>
-                              <option value="Colombia">Colombia</option>
-                              <option value="Comoros">Comoros</option>
-                              <option value="Congo">Congo</option>
-                              <option value="Costa Rica">Costa Rica</option>
-                              <option value="Cote d'Ivoire">Cote d'Ivoire</option>
-                              <option value="Croatia">Croatia</option>
-                              <option value="Cuba">Cuba</option>
-                              <option value="Cyprus">Cyprus</option>
-                              <option value="Czech Republic">Czech Republic</option>
-                              <option value="Denmark">Denmark</option>
-                              <option value="Djibouti">Djibouti</option>
-                              <option value="Dominica">Dominica</option>
-                              <option value="Dominican Republic">Dominican Republic</option>
-                              <option value="East Timor">East Timor</option>
-                              <option value="Ecuador">Ecuador</option>
-                              <option value="Egypt">Egypt</option>
-                              <option value="El Salvador">El Salvador</option>
-                              <option value="Equatorial Guinea">Equatorial Guinea</option>
-                              <option value="Eritrea">Eritrea</option>
-                              <option value="Estonia">Estonia</option>
-                              <option value="Fiji">Fiji</option>
-                              <option value="Finland">Finland</option>
-                              <option value="France">France</option>
-                              <option value="Gabon">Gabon</option>
-                              <option value="Gambia">Gambia</option>
-                              <option value="Georgia">Georgia</option>
-                              <option value="Germany">Germany</option>
-                              <option value="Ghana">Ghana</option>
-                              <option value="Greece">Greece</option>
-                              <option value="Grenada">Grenada</option>
-                              <option value="Guatemala">Guatemala</option>
-                              <option value="Guinea">Guinea</option>
-                              <option value="Guinea-Bissau">Guinea-Bissau</option>
-                              <option value="Guyana">Guyana</option>
-                              <option value="Haiti">Haiti</option>
-                              <option value="Honduras">Honduras</option>
-                              <option value="Hungary">Hungary</option>
-                              <option value="Iceland">Iceland</option>
-                              <option value="India">India</option>
-                              <option value="Indonesia">Indonesia</option>
-                              <option value="Iraq">Iraq</option>
-                              <option value="Ireland">Ireland</option>
-                              <option value="Israel">Israel</option>
-                              <option value="Italy">Italy</option>
-                              <option value="Jamaica">Jamaica</option>
-                              <option value="Japan">Japan</option>
-                              <option value="Jordan">Jordan</option>
-                              <option value="Kazakhstan">Kazakhstan</option>
-                              <option value="Kenya">Kenya</option>
-                              <option value="Kiribati">Kiribati</option>
-                              <option value="South Korea">South Korea </option>
-                              <option value="Kosovo">Kosovo</option>
-                              <option value="Kuwait">Kuwait</option>
-                              <option value="Kyrgyzstan">Kyrgyzstan</option>
-                              <option value="Laos">Laos</option>
-                              <option value="Latvia">Latvia</option>
-                              <option value="Lebanon">Lebanon</option>
-                              <option value="Lesotho">Lesotho</option>
-                              <option value="Liberia">Liberia</option>
-                              <option value="Libya">Libya</option>
-                              <option value="Liechtenstein">Liechtenstein</option>
-                              <option value="Lithuania">Lithuania</option>
-                              <option value="Luxembourg">Luxembourg</option>
-                              <option value="Macedonia">Macedonia</option>
-                              <option value="Madagascar">Madagascar</option>
-                              <option value="Malawi">Malawi</option>
-                              <option value="Malaysia">Malaysia</option>
-                              <option value="Maldives">Maldives</option>
-                              <option value="Mali">Mali</option>
-                              <option value="Malta">Malta</option>
-                              <option value="Marshall Islands">Marshall Islands</option>
-                              <option value="Mauritania">Mauritania</option>
-                              <option value="Mauritius">Mauritius</option>
-                              <option value="Mexico">Mexico</option>
-                              <option value="Federated States of Micronesia">Federated States of Micronesia</option>
-                              <option value="Moldova">Moldova</option>
-                              <option value="Monaco">Monaco</option>
-                              <option value="Mongolia">Mongolia</option>
-                              <option value="Montenegro">Montenegro</option>
-                              <option value="Morocco">Morocco</option>
-                              <option value="Mozambique">Mozambique</option>
-                              <option value="Myanmar">Myanmar</option>
-                              <option value="Namibia">Namibia</option>
-                              <option value="Nauru">Nauru</option>
-                              <option value="Nepal">Nepal</option>
-                              <option value="Netherlands">Netherlands</option>
-                              <option value="New Zealand">New Zealand</option>
-                              <option value="Nicaragua">Nicaragua</option>
-                              <option value="Niger">Niger</option>
-                              <option value="Nigeria">Nigeria</option>
-                              <option value="Norway">Norway</option>
-                              <option value="Oman">Oman</option>
-                              <option value="Palau">Palau</option>
-                              <option value="Panama">Panama</option>
-                              <option value="Papua New Guinea">Papua New Guinea</option>
-                              <option value="Paraguay">Paraguay</option>
-                              <option value="Peru">Peru</option>
-                              <option value="Philippines">Philippines</option>
-                              <option value="Poland">Poland</option>
-                              <option value="Portugal">Portugal</option>
-                              <option value="Qatar">Qatar</option>
-                              <option value="Romania">Romania</option>
-                              <option value="Russia">Russia</option>
-                              <option value="Rwanda">Rwanda</option>
-                              <option value="Saint Kitts and Nevis">Saint Kitts and Nevis</option>
-                              <option value="Saint Lucia">Saint Lucia</option>
-                              <option value="Saint Vincent and the Grenadines">Saint Vincent and the Grenadines</option>
-                              <option value="Samoa">Samoa</option>
-                              <option value="San Marino">San Marino</option>
-                              <option value="Sao Tome and Principe">Sao Tome and Principe</option>
-                              <option value="Saudi Arabia">Saudi Arabia</option>
-                              <option value="Senegal">Senegal</option>
-                              <option value="Seychelles">Seychelles</option>
-                              <option value="Sierra Leone">Sierra Leone</option>
-                              <option value="Singapore">Singapore</option>
-                              <option value="Slovakia">Slovakia</option>
-                              <option value="Slovenia">Slovenia</option>
-                              <option value="Solomon Islands">Solomon Islands</option>
-                              <option value="Somalia">Somalia</option>
-                              <option value="South Africa">South Africa</option>
-                              <option value="Spain">Spain</option>
-                              <option value="Sudan">Sudan</option>
-                              <option value="South Sudan">South Sudan</option>
-                              <option value="Suriname">Suriname</option>
-                              <option value="Swaziland">Swaziland</option>
-                              <option value="Sweden">Sweden</option>
-                              <option value="Switzerland">Switzerland</option>
-                              <option value="Taiwan">Taiwan</option>
-                              <option value="Tajikistan">Tajikistan</option>
-                              <option value="Tanzania">Tanzania</option>
-                              <option value="Thailand">Thailand</option>
-                              <option value="Togo">Togo</option>
-                              <option value="Tonga">Tonga</option>
-                              <option value="Turkey">Turkey</option>
-                              <option value="Turkmenistan">Turkmenistan</option>
-                              <option value="Tuvalu">Tuvalu</option>
-                              <option value="Uganda">Uganda</option>
-                              <option value="Ukraine">Ukraine</option>
-                              <option value="United Arab Emirates">United Arab Emirates</option>
-                              <option value="United Kingdom">United Kingdom</option>
-                              <option value="Uruguay">Uruguay</option>
-                              <option value="Uzbekistan">Uzbekistan</option>
-                              <option value="Vanuatu">Vanuatu</option>
-                              <option value="Vatican City">Vatican City</option>
-                              <option value="Venezela">Venezuela</option>
-                              <option value="Vietnam">Vietnam</option>
-                              <option value="Zambia">Zambia</option>
-                        </select>
-                        {/* {errors.country && <span className="invalid">{errors.country.message}</span>} */}
-                      </div>
-                </FormGroup>
-                <Row>
-                   <Col md="6">
-                    <FormGroup>
-                      <Label htmlFor="default-5" className="form-label">
-                        Phone Number
-                      </Label>
-                      <RSelect options={country_code_arr} 
-                      isDisabled= {verification_status !== "0"}
-                      value={{value: formData.company_country_code, label: formData.company_country_code}}  
-                      onChange={(e) =>  
-                      {
-                        
-                            setFormData({...formData, company_country_code: e.label});
-                        }
-                      } 
-                    placeholder="Select the company phone Country Code" className="form-control-outlined"/>
-                    </FormGroup>
-                   </Col>
-                    <Col md="6" >
-                      <FormGroup style={{marginTop: "8px"}}>
-                      <Label htmlFor="default-5" className="form-label" > 
-                      </Label>
-                        <input className="form-control "
-                          disabled= {verification_status !== "0"}
-                          name="company_cellphone_number" value={formData.company_cellphone_number} placeholder="Enter the company phone Number"  
-                          onChange={(e) => {
-                            setFormData({...formData, company_cellphone_number: e.target.value})
-                          }} 
-                          onKeyPress= { (evt) =>
-                            {
-                              if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+                      <Col md="6" >
+                        <FormGroup style={{marginTop: "8px"}}>
+                        <Label htmlFor="default-5" className="form-label" > 
+                        </Label>
+                          <input className="form-control "
+                            disabled= {verification_status !== "0"}
+                            name="company_cellphone_number" value={formData.company_cellphone_number} placeholder="Enter the company phone Number"  
+                            onChange={(e) => {
+                              setFormData({...formData, company_cellphone_number: e.target.value})
+                            }} 
+                            onKeyPress= { (evt) =>
                               {
-                                  evt.preventDefault();
+                                if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
+                                {
+                                    evt.preventDefault();
+                                }
                               }
                             }
-                          }
-                          type="number" />
-                      </FormGroup>
-                    </Col>
-                </Row>
+                            type="number" />
+                        </FormGroup>
+                      </Col>
+                  </Row>
+                  
                 
-               
-              </Col>
-              }
-          </Row>
+                </Col>
+                }
+            </Row>
           </form>
 
           

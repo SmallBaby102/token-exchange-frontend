@@ -71,6 +71,7 @@ const RequestWire = () => {
   const email = localStorage.getItem("username"); //useSelector((state) => state.user.user.username)
   const { errors, register, handleSubmit } = useForm();
   const [loading, setLoading] = useState(false);
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [availableAmount, setAvailableAmount] = useState(-1);
   const [minimumAmount, setMinimumAmount] = useState(10000);
   const [receiveAmount, setReceiveAmount] = useState(0);
@@ -366,7 +367,7 @@ const RequestWire = () => {
     })
   };
   const confirmWire = async () => {
-    if(loading)
+    if(loadingConfirm)
         return;
     let flag = "False";
     const options = {
@@ -386,7 +387,7 @@ const RequestWire = () => {
       return;
     }
     setModal({...modal, auth : false});
-    setLoading(true);
+    setLoadingConfirm(true);
       let configdata = {
         exchange: "CONFIGURATOR_PLUSQO",
         username: CONFIGURATOR_USERNAME,
@@ -428,12 +429,12 @@ const RequestWire = () => {
           .then(result => {
             setWireId(result.data.wireid);
             toast.success("'Successfully request wire");
-            setLoading(false); 
+            setLoadingConfirm(false); 
             setWireFinish(1);
             
           }).catch( e => {
             setWireId(null);
-            setLoading(false); 
+            setLoadingConfirm(false); 
             setWireFinish(2);
           })
       })
@@ -3133,8 +3134,8 @@ const RequestWire = () => {
                  <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="button" onClick={confirmWire}>
-                          Confirm
+                        <Button color="primary" size="md" type="submit">
+                            {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
                         </Button>
                       </li>
                       <li>

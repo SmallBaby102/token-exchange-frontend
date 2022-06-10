@@ -46,6 +46,7 @@ let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 const Login = () => {
   const [cookies, setCookie] = useCookies();
   const [loading, setLoading] = useState(false);
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
   const history = useHistory();
@@ -82,14 +83,14 @@ const Login = () => {
         'X-RapidAPI-Key': RapidAPIKey
       }
     };
-    setLoading(true)
+    setLoadingConfirm(true)
 
     let response = await axios.request(options);
-    setLoading(false)
+    setLoadingConfirm(false)
     setAuthCode("");
 
     flag =  response.data
-    if (flag !== "False"){
+    if (flag === "True"){
         let res = tempForLogin;
         Helper.storeUser(res);
         // const role = res.data.user.role;
@@ -497,8 +498,8 @@ const Login = () => {
                  <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="button" onClick={confirmLogin}>
-                          {loading ? <Spinner size="sm" color="light" /> : "Confirm"}
+                        <Button color="primary" size="md" type="submit" >
+                          {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
                         </Button>
                       </li>
                       <li>

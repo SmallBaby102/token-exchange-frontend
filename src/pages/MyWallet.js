@@ -95,6 +95,7 @@ const MyWallet = () => {
     auth: false,
   });
   const [loading, setLoading] = useState(false);
+  const [loadingConfirm, setLoadingConfirm] = useState(false);
   const [data, setData] = useState(projectData);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage] = useState(8);
@@ -292,6 +293,8 @@ const MyWallet = () => {
       // }
   };
   const confirmWithdraw = async () => {
+    if(loadingConfirm)
+    return;
     let flag = "False";
     const options = {
       method: 'GET',
@@ -312,6 +315,7 @@ const MyWallet = () => {
       return;
     }
       setModal({...modal, auth : false});
+      setLoadingConfirm(false);
       const secureApi = getAuthenticatedApi();
       let data = {
         exchange: "PLUSQO",
@@ -1793,8 +1797,9 @@ const MyWallet = () => {
                  <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
-                        <Button color="primary" size="md" type="button" onClick={confirmWithdraw}>
-                          Confirm
+                        <Button color="primary" size="md" type="submit">
+                         {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
+
                         </Button>
                       </li>
                       <li>
