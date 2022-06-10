@@ -305,8 +305,10 @@ return (
                 wireHistory.status === "3" && wireHistory.completed_date !== "Null" &&
               <TimelineItem>
                 <TimelineOppositeContent
-                  sx={{ m: 'auto 0', mt: "34px"  }}
+                  sx={{ m: 'auto 0'}}
                   color="text.primary"
+                  variant="body2"
+
                 >
                   {fromStringTodatetimeFormatter(wireHistory.completed_date, true)}
                 </TimelineOppositeContent>
