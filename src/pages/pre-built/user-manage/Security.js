@@ -84,7 +84,7 @@ const Security = () => {
       }
     else 
      {
-      setSecurity({...security, status: 1})
+      setSecurity({...security, status: 1, login: 1, withdraw: 1})
       status = 1;
       // withdraw = 1;
       // request_wire = 1;
