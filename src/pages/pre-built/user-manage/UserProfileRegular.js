@@ -37,7 +37,7 @@ import {
 } from '../../../components/Component';
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
-import { dateFormatterAlt, dateFormatterWithdoutTime } from '../../../utils/Utils';
+import { fromStringTodateFormatter, dateFormatterWithdoutTime } from '../../../utils/Utils';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -227,9 +227,9 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
           // individual relative state
           firstname: user.firstname,
           lastname: user.lastname,
-          birthday: (user.birthday !== "" && user.birthday !== null) ? new Date(user.birthday) : null,
-          issue_date: (user.issue_date !== "" && user.issue_date !== null) ? new Date(user.issue_date) : null,
-          exp_date: (user.exp_date !== "" && user.exp_date !== null) ? new Date(user.exp_date) : null,
+          birthday: (user.birthday !== "" && user.birthday !== null) ? (user.birthday) : null,
+          issue_date: (user.issue_date !== "" && user.issue_date !== null) ?(user.issue_date) : null,
+          exp_date: (user.exp_date !== "" && user.exp_date !== null) ? (user.exp_date) : null,
           issue_country: user.issue_country,
           // title : user.title,
           gener : user.gener,
@@ -487,7 +487,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                           label="Birthday"
                           inputFormat="dd/MM/yyyy"
                           value={formData.birthday}
-                          onChange={(date) => {setFormData({ ...formData, birthday: date }) }}
+                          onChange={(date) => {setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
                           renderInput={(params) => <TextField {...params} />}
                         />
                         </Stack>
@@ -496,7 +496,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                 <FormGroup className='d-md-none'>
                     <label className="form-label">Birthday</label>
                     <input disabled= {verification_status !== "0"}
-                      className="form-control" value={dateFormatterWithdoutTime(formData.birthday, true)}/>
+                      className="form-control" value={fromStringTodateFormatter(formData.birthday, true)}/>
                     <a
                         style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                         className="select-btn sm"
@@ -528,7 +528,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             step: 1,
                           },
                       }}
-                    onSelect={(date) => {setFormData({ ...formData, birthday: date }); setState({isOpen1:false})}}
+                    onSelect={(date) => {setFormData({ ...formData, birthday: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
                     onCancel={handleToggle(false)} />
                 </FormGroup>
                 <FormGroup>
@@ -550,7 +550,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                 label="Issue Date"
                                 inputFormat="dd/MM/yyyy"
                                 value={formData.issue_date}
-                                onChange={(date) => {setFormData({ ...formData, issue_date: date }) }}
+                                onChange={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
                                 renderInput={(params) => <TextField {...params} />}
                               />
                               </Stack>
@@ -559,7 +559,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                         <FormGroup className='d-md-none'>
                             <label className="form-label">Issue Date</label>
                             <input disabled= {verification_status !== "0"}
-                              className="form-control" value={dateFormatterWithdoutTime(formData.issue_date, true)}/>
+                              className="form-control" value={fromStringTodateFormatter(formData.issue_date, true)}/>
                             <a
                                 style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                                 className="select-btn sm"
@@ -591,7 +591,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                     step: 1,
                                   },
                               }}
-                            onSelect={(date) => {setFormData({ ...formData, issue_date: date }); setState({isOpen1:false})}}
+                            onSelect={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
                             onCancel={handleToggle1(false)} />
                         </FormGroup>
                       </Col>
@@ -604,7 +604,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                   label="Expireation Date"
                                   inputFormat="dd/MM/yyyy"
                                   value={formData.exp_date}
-                                  onChange={(date) => {setFormData({ ...formData, exp_date: date }) }}
+                                  onChange={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
                                   renderInput={(params) => <TextField {...params} />}
                                 />
                                 </Stack>
@@ -613,7 +613,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                         <FormGroup className='d-md-none'>
                           <label className="form-label">Expiration date</label>
                           <input disabled= {verification_status !== "0"}
-                            className="form-control" value={dateFormatterWithdoutTime(formData.exp_date, true)}/>
+                            className="form-control" value={fromStringTodateFormatter(formData.exp_date, true)}/>
                           <a
                               style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                               className="select-btn sm"
@@ -645,7 +645,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                   step: 1,
                                 },
                             }}
-                          onSelect={(date) => {setFormData({ ...formData, exp_date: date }); setState({isOpen1:false})}}
+                          onSelect={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
                           onCancel={handleToggle2(false)} />
                       </FormGroup>
                       </Col>

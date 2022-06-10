@@ -147,7 +147,8 @@ export const dateFormatter = (date, reverse, string) => {
   return date;
 };
 export const fromStringTodateFormatter = (date, reverse, string) => {
-  if (date === undefined) return "";
+  if (date === undefined || date === null) return "";
+  console.log(date);
   date = date.split(" ");
   date = date[0].split("T");
 
