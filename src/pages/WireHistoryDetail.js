@@ -197,7 +197,7 @@ return (
                 </Col>
               </Row>
             </Col>
-            <Col md="7" className='mt-2' style={mobileView === false ? {marginLeft: "-30px"} :{}}>
+            <Col md="7" className='mt-2' style={{marginLeft: "-30px"}}>
             {
             wireHistory &&
               <Timeline >
