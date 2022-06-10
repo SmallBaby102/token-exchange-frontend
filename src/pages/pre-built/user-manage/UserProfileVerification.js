@@ -86,7 +86,7 @@ const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress,
         {  
           setData({...data, ...{...user, name: (user.firstname && user.lastname) ? user.firstname + " " + user.lastname: "" ,
                 birthday: user.birthday?.toString(),
-                issue_date: user.birthday?.toString(),
+                issue_date: user.issue_date?.toString(),
                 exp_date: user.exp_date?.toString(),
                 verification_status: user.verification_status === "2"? "Completed": (user.verification_status==="1"? "Pending": "Not Approved")
           }});
