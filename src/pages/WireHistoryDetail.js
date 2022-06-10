@@ -68,7 +68,7 @@ return (
                   <span className="h6 fw-light">{wireHistory.beneficiary_name}</span>
                 </Col>
               </Row>
-              <Row className="">
+              {/* <Row className="">
                 <Col size={6}>
                   <span className="h6 fw-light">ACCOUNT TYPE</span>
                 </Col>
@@ -91,8 +91,8 @@ return (
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.beneficiary_postal_code}</span>
                 </Col>
-              </Row>
-              <Row className="">
+              </Row> */}
+              <Row className="mt-1">
                 <Col size={6}>
                   <span className="h6 fw-light">BANK NAME</span>
                 </Col>
@@ -100,7 +100,7 @@ return (
                   <span className="h6 fw-light">{wireHistory.bank_name}</span>
                 </Col>
               </Row>
-              <Row className="">
+              <Row className="mt-1">
                 <Col size={6}>
                   <span className="h6 fw-light">BANK ACCOUNT NUMBER</span>
                 </Col>
@@ -108,7 +108,7 @@ return (
                   <span className="h6 fw-light">{wireHistory.bankaccount_number}</span>
                 </Col>
               </Row>
-              <Row className="">
+              <Row className="mt-1">
                 <Col size={6}>
                   <span className="h6 fw-light">BANK COUNTRY</span>
                 </Col>
@@ -116,7 +116,7 @@ return (
                   <span className="h6 fw-light">{wireHistory.bank_country}</span>
                 </Col>
               </Row>
-              <Row className="">
+              {/* <Row className="">
                 <Col size={6}>
                   <span className="h6 fw-light">BANK ADDRESS</span>
                 </Col>
@@ -131,8 +131,8 @@ return (
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.bankpostal_code}</span>
                 </Col>
-              </Row>
-              <Row className="">
+              </Row> */}
+              <Row className="mt-1">
                 <Col size={6}>
                   <span className="h6 fw-light">SWIFT/BIC CODE</span>
                 </Col>
@@ -140,7 +140,7 @@ return (
                   <span className="h6 fw-light">{wireHistory.swift_code}</span>
                 </Col>
               </Row>
-              <Row className="">
+              <Row className="mt-1">
                 <Col size={6}>
                   <span className="h6 fw-light">REFERENCE CODE</span>
                 </Col>
@@ -148,7 +148,7 @@ return (
                   <span className="h6 fw-light">{wireHistory.reference_code}</span>
                 </Col>
               </Row>
-              <Row className="">
+              {/* <Row className="">
                 <Col size={6}>
                   <span className="h6 fw-light">INTERMEDIARY BANK NAME</span>
                 </Col>
@@ -187,8 +187,8 @@ return (
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.intermediarybank_swiftcode}</span>
                 </Col>
-              </Row>
-              <Row className="">
+              </Row> */}
+              <Row className="mt-1">
                 <Col size={6}>
                   <span className="h6 fw-light">AMOUNT</span>
                 </Col>
