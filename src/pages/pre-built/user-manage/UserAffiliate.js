@@ -115,7 +115,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
       <Block>
           <FormGroup>
               <Label style={{color:'#526484'}}>
-              When the user you referred to makes a USD wire, you will receive 1% of the USD amount as an affiliate commission. And rewards are multi-tiered system.  <a href=" https://cryptowire.vip/cryptowire-affiliate-program/" target="_blank">more</a>
+              When the user you referred to creates a USD wire, you will receive an affiliate commission.  <a href=" https://https://cryptowire.vip/affiliate-details/" target="_blank">more</a>
               </Label>
           </FormGroup>
       </Block>
