@@ -126,7 +126,7 @@ const Login = () => {
         dispatch(setCurrentUser({ ...res}));
         Http.getAccounts(res.exchange_access_token)
         .then((response) => {
-          if (response.message === "Unauthorized"){
+          if (response.status == 401){
             history.push("auth-login");
             dispatch(setChecking(false));
             return;
@@ -136,7 +136,7 @@ const Login = () => {
           
         })
         .catch(e =>{
-            toast.error(e.response.message);
+            // toast.error(e.response.message);
             dispatch(setChecking(false));
         })
         api.get("exchange/quotes?exchange=PLUSQO")
@@ -215,7 +215,7 @@ const Login = () => {
                 dispatch(setCurrentUser({ ...res}));
                 Http.getAccounts(res.exchange_access_token)
                 .then((response) => {
-                  if (response.message === "Unauthorized"){
+                  if (response.status == 401){
                     history.push("auth-login");
                     dispatch(setChecking(false));
                     return;
@@ -225,7 +225,7 @@ const Login = () => {
                   
                 })
                 .catch(e =>{
-                    toast.error(e.response.message);
+                    // toast.error(e.response.message);
                     dispatch(setChecking(false));
                 })
                 api.get("exchange/quotes?exchange=PLUSQO")
@@ -508,6 +508,7 @@ const Login = () => {
                         <Button
                           onClick={(ev) => {
                             ev.preventDefault();
+                            setModal({ auth: false })
                           }}
                           className="link link-light"
                         >

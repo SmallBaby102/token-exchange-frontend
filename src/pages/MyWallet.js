@@ -1791,7 +1791,7 @@ const MyWallet = () => {
                               })
                             }}
                           />
-                          {errorsf.authfield.status && <p className="invalid">This field is required</p>}
+                          {errorsf.authfield.status && <p className="invalid">{t('requried')}</p>}
                     
                         </div>
                     </FormGroup>
@@ -1800,7 +1800,7 @@ const MyWallet = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                         {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
+                         {loadingConfirm ? <Spinner size="sm" color="light" /> : t('confirm')}
 
                         </Button>
                       </li>
@@ -1808,6 +1808,7 @@ const MyWallet = () => {
                         <Button
                           onClick={(ev) => {
                             ev.preventDefault();
+                            setModal({ auth: false })
                           }}
                           className="link link-light"
                         >

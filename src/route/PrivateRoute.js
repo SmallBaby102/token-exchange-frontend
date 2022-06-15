@@ -57,7 +57,6 @@ const PrivateRoute = ({ exact, component: Component, ...rest }) => {
             const accountIntervalId = setInterval(() => {
                 Http.getAccounts(localStorage.getItem("exchange_access_token"))
                 .then((response) => {
-                  console.log("get account res", response)
                     if (response.status == 401){
                         history.push("auth-login");
                         // dispatch(setChecking(false));
