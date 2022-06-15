@@ -109,7 +109,7 @@ class Helper {
   }
   static limitDecimal(t, n){
     var s;
-    if (t === "") {
+    if (t === "" || t === null) {
       t = 0;
     }
     var string = String(t);

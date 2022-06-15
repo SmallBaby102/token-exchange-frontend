@@ -53,15 +53,12 @@ import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useTranslation } from 'react-i18next'
 const WireHistory = () => {
-  const params = useParams();
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const [onSearchText, setSearchText] = useState("");
   const email = localStorage.getItem("username");
-
-  const [modal, setModal] = useState({
-    add: false,
-  });
   const [data, setData] = useState("");
   const [orderData, setOrderData] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -111,7 +108,6 @@ const WireHistory = () => {
                 return new Date(item.date) <= new Date(displaySetting.end);
               });  
             }
-            console.log("Ss", displaySetting.status)
             if (displaySetting.status !== "" &&  displaySetting.status !== "All") {
               filteredObject = filteredObject.filter((item) => {
                 return item.status.toLowerCase() === displaySetting.status.toLowerCase();
@@ -163,7 +159,7 @@ const WireHistory = () => {
             <BlockHeadContent>
               <BlockTitle page>Wire History</BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total {data.length} history.</p>
+                <p>{t('desc', {total: data.length})}</p>
               </BlockDes>
             </BlockHeadContent>
             {/* <BlockHeadContent>
@@ -200,14 +196,14 @@ const WireHistory = () => {
                                     label="Date(From)"
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.from}
-                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
+                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
                               </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'>
-                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                          <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('from')})`}</label><br/>
                           <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                           <a
                               style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
@@ -251,14 +247,14 @@ const WireHistory = () => {
                                     minDate={displaySetting.from}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.end}
-                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, end: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
                               </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
-                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                        <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('to')})`}</label><br/>
                         <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                           <a
                             style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
@@ -402,6 +398,9 @@ const WireHistory = () => {
                     <DataTableRow className="text-right" >
                       <span>Amount</span>
                     </DataTableRow>
+                    <DataTableRow className="text-right" >
+                      <span>Reveived Amount</span>
+                    </DataTableRow>
                     <DataTableRow className="">
                       <span>Status</span>
                     </DataTableRow>
@@ -442,8 +441,13 @@ const WireHistory = () => {
                                   {Helper.limitDecimal(item.amount, 2)} USD
                               </span>
                             </DataTableRow>
+                            <DataTableRow className="text-right" >
+                              <span className="tb-amount">
+                                  {Helper.limitDecimal(item.receive_amount, 2)} USD
+                              </span>
+                            </DataTableRow>
                             <DataTableRow >
-                              {/* <div
+                              <div
                                 className={`dot dot-${
                                     item.status === "0"
                                     ? "warning"
@@ -453,7 +457,7 @@ const WireHistory = () => {
                                     ? "success"
                                     : "danger"
                                 } d-md-none`}
-                              ></div> */}
+                              ></div>
                               <span
                                 style={{width: "80px", justifyContent: "center"}}
                                 className={`badge badge-sm badge-dim badge-outline-${
@@ -464,7 +468,7 @@ const WireHistory = () => {
                                     : item.status === "3"
                                     ? "success"
                                     : "danger"
-                                } d-md-inline-flex`}
+                                } d-md-inline-flex d-none`}
                               >
                                 {item.status === "0" ? "Pending" : (item.status === "1" ? "Approved": item.status === "2" ? "Processing" : item.status === "3" ? "Completed" : "Decline")}
                               </span>

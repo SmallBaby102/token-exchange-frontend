@@ -24,8 +24,10 @@ import UserAvatar from '../../../../components/user/UserAvatar';
 import {Navigation} from 'react-minimal-side-navigation';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 import { toast } from 'react-toastify';
+import { useTranslation } from 'react-i18next'
 
 const MobileUser = () => {
+  const { t } = useTranslation(); 
   const [open, setOpen] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
@@ -85,19 +87,19 @@ const MobileUser = () => {
             }}
             items={[
               {
-                title: 'View Profile',
+                title: t('view_profile'),
                 itemId: '/profile',
                 // you can use your own custom Icon component as well
                 // icon is optional
                 elemBefore: () => <Icon name="user-alt" />,
                 subNav: [
                   {
-                    title: 'Personal Information',
+                    title: t('person_info'),
                     itemId: '/user-profile-regular',
                     elemBefore: () => <Icon name="user-fill-c" />,
                   },
                   {
-                    title: 'Profile Verification',
+                    title: t('profile_verification'),
                     itemId: '/user-profile-verification',
                     elemBefore: () => <Icon name="shield" />,
 
@@ -105,34 +107,34 @@ const MobileUser = () => {
                 ],
               },
               {
-                title: 'Affiliate',
+                title: t('affiliate'),
                 itemId: '/affiliate',
                 elemBefore: () => <Icon name="tranx-fill" />,
                 subNav: [
                   {
-                    title: 'My Affiliate Link',
+                    title: t('my_affiliate_link'),
                     itemId: '/user-affiliate',
                     elemBefore: () => <Icon name="link" />,
                   },
                   {
-                    title: 'My user',
+                    title: t('my_user'),
                     itemId: '/user-myuser',
                     elemBefore: () => <Icon name="users" />,
                   },
                   {
-                    title: 'Commission Report',
+                    title: t('commission_report'),
                     itemId: '/user-commission-report',
                     elemBefore: () => <Icon name="reports" />,
                   },
                 ],
               },
               {
-                title: 'Security',
+                title: t('security'),
                 itemId: '/securityitem',
                 elemBefore: () => <Icon name="shield" />,
                 subNav: [
                   {
-                    title: '2-Factor Authentication',
+                    title: t('2fa'),
                     itemId: '/security',
                     elemBefore: () => <Icon name="shield" />,
                   },
@@ -141,7 +143,7 @@ const MobileUser = () => {
               },
              
               {
-                title: 'Sign Out',
+                title: t('signout'),
                 itemId: '/signout',
                 elemBefore: () => <Icon name="signout" />,
               },

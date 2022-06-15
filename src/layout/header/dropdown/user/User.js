@@ -22,8 +22,10 @@ import {
 } from '../../../../components/links/Links';
 import UserAvatar from '../../../../components/user/UserAvatar';
 import { findUpper } from '../../../../utils/Utils';
+import { useTranslation } from 'react-i18next'
 
 const User = () => {
+  const { t } = useTranslation(); 
   const [open, setOpen] = useState(false);
   const toggle = () => setOpen((prevState) => !prevState);
   const dispatch = useDispatch();
@@ -61,7 +63,7 @@ const User = () => {
               icon="user-alt"
               onClick={toggle}
             >
-              View Profile
+              {t('view_profile')}
             </LinkItem>
           </LinkList>
         </div>
@@ -72,7 +74,7 @@ const User = () => {
               icon="tranx-fill"
               onClick={toggle}
             >
-              Affiliate
+              {t('affiliate')}
             </LinkItem>
           </LinkList>
         </div>
@@ -83,7 +85,7 @@ const User = () => {
               icon="shield"
               onClick={toggle}
             >
-              Security
+              {t('security')}
             </LinkItem>
           </LinkList>
         </div>
@@ -91,7 +93,7 @@ const User = () => {
           <LinkList>
             <Link to="#" onClick={() => { clearInterval(accountIntervalId); clearInterval(quoteIntervalId); dispatch(logout(history)); } }>
               <Icon name="signout"></Icon>
-              <span>Sign Out</span>
+              <span>{t('signout')}</span>
             </Link>
           </LinkList>
         </div>

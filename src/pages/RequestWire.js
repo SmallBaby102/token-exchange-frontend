@@ -346,6 +346,8 @@ const RequestWire = () => {
           balance1: usditem.balance.active_balance,
           balance2: usditem.balance.active_balance,
           formData: data,
+          fee: fees,
+          receiveAmount: receiveAmount,
           headers: headers
         }
         myApi.put("sell", sellData)

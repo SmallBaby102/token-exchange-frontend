@@ -53,7 +53,7 @@ const MenuItem = ({ item, headActive }) => {
                 ev.preventDefault();
               }}
             >
-              <span className="nk-menu-text">{text}</span>
+              <span className="nk-menu-text">{t(text)}</span>
             </a>
             <MenuSub subMenu={subMenu} />
           </React.Fragment>

@@ -485,7 +485,7 @@ const Register = () => {
                 </label>
                 <div className="form-control-wrap">
                     <select id="country" name="country" className="form-control-lg form-control"
-                      ref={register({ required: t('required'), validate: (value) => value !== "noselect" || `Please select a country` })}
+                      ref={register({ required: t('required'), validate: (value) => value !== "noselect" || t('country_error') })}
                     >
                         <option value="noselect" >{t('select_country')}</option>
                         <option value="United States">United States</option>

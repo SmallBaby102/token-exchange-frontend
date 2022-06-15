@@ -3,23 +3,17 @@ import React, {
   useState,
 } from 'react';
 
-import { parseISO } from 'date-fns';
-import DatePicker from 'react-datepicker';
-import { useForm } from 'react-hook-form';
 import {
   useDispatch,
   useSelector,
 } from 'react-redux';
-import { toast } from 'react-toastify';
 import {
   FormGroup,
   Label,
-  Spinner,
 } from 'reactstrap';
 
 import {
   setChecking,
-  setCurrentUser,
 } from '../../../actions';
 import {
   Block,
@@ -32,20 +26,16 @@ import {
   CodeBlock,
   Col,
   Icon,
-  Row,
-  RSelect,
-  PreviewAltCard,
-
 } from '../../../components/Component';
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
+import { useTranslation } from 'react-i18next'
 
-const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileName }) => {
+const UserProfileRegularPage = ({sm, updateSm}) => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const myApi = myServerApi(); 
-  const currentUser = useSelector((state) => state.user.user);
   const email = localStorage.getItem("username"); //useSelector((state) => state.user.user.username)
-  const [loading, setLoading] = useState(false);
   const [homepageUrl, setHomepageUrl] = useState("https://cryptowire.vip/?a_aid=")
   const [signinUrl, setSigninUrl] = useState("https://dashboard.cryptowire.vip/?a_aid=")
 
@@ -70,11 +60,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
   }, []);
   return (
     <React.Fragment>
-      <Head title="My Affiliate"></Head>
+      <Head title={t('my_affiliate_link')}></Head>
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle tag="h4">My Affiliate Link</BlockTitle>
+            <BlockTitle tag="h4">{t('my_affiliate_link')}</BlockTitle>
             <BlockDes>
               <p>These are your affiliate links. We provide 2 types of affiliate links, you can freely to Copy and Paste them 
                 to your website, blog or SNS to to promote for Cryptowire and get rewards.

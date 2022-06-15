@@ -20,8 +20,10 @@ import Content from '../../../layout/content/Content';
 import UserAffiliate from './UserAffiliate';
 import UserMyUser from './UserMyUser';
 import UserCommissionReport from './UserCommissionReport';
+import { useTranslation } from 'react-i18next'
 
 const UserProfileLayout = () => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
@@ -130,7 +132,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="link"></Icon>
-                        <span>My Affiliate Link</span>
+                        <span>{t('my_affiliate_link')}</span>
                       </Link>
                     </li>
                     <li onClick={() => { updateSm(false); }}>
@@ -143,7 +145,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="users"></Icon>
-                        <span>My User</span>
+                        <span>{t('my_user')}</span>
                       </Link>
                     </li>
                     <li onClick={() => { updateSm(false); }}>
@@ -156,7 +158,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="reports"></Icon>
-                        <span>Commission Report</span>
+                        <span>{t('commission_report')}</span>
                       </Link>
                     </li>
                     {/* 

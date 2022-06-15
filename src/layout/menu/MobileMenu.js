@@ -3,9 +3,11 @@ import Icon from "../../components/icon/Icon";
 import classNames from "classnames";
 import { NavLink, Link } from "react-router-dom";
 import usermenu from './UserMenuData';
+import { useTranslation } from 'react-i18next'
 
 const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, badge, ...props }) => {
   let currentUrl;
+  const { t } = useTranslation(); 
 
   if (window.location.pathname !== undefined) {
     currentUrl = window.location.pathname;
@@ -146,7 +148,7 @@ const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, ba
               <Icon name={icon} />
             </span>
           ) : null}
-          <span className="nk-menu-text">{text}</span>
+          <span className="nk-menu-text">{t(text)}</span>
         </Link>
       ) : (
         <NavLink
@@ -159,7 +161,7 @@ const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, ba
               <Icon name={icon} />
             </span>
           ) : null}
-          <span className="nk-menu-text">{text}</span>
+          <span className="nk-menu-text">{t(text)}</span>
           {badge && <span className="nk-menu-badge">{badge}</span>}
         </NavLink>
       )}

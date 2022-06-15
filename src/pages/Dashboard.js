@@ -59,6 +59,7 @@ import Http from '../utils/Http';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
 let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 var formatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -67,6 +68,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 const Dashboard = () => {
   //For affiliate  
+  const { t } = useTranslation(); 
   let search = window.location.search
   let aid = search.split("=")[1]
   const [cookies, setCookie, removeCookie] = useCookies(['aid']);
@@ -1074,7 +1076,7 @@ const Dashboard = () => {
   }, [amount_sell, btcPrice, btcBalance, usdBalance, usdtBalance, ethBalance, formData.product])
   return (
     <React.Fragment>
-      <Head title="Dashboard"></Head>
+      <Head title={t('Dashboard')}></Head>
       <Content size="lg">
         <Block>
             <Row>
@@ -1083,7 +1085,7 @@ const Dashboard = () => {
                 <div className="nk-iv-wg2">
                   <div className="nk-iv-wg2-title">
                     <h6 className="title">
-                    <Icon name="info"></Icon> Total balance 
+                    <Icon name="info"></Icon> {t('total')}
                     </h6>
                   </div>
                   <div className="nk-iv-wg2-text">

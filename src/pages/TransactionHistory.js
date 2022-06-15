@@ -56,7 +56,9 @@ import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useTranslation } from 'react-i18next'
 const TransactionHistory = () => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const [onSearch, setonSearch] = useState(true);
   const [onSearchText, setSearchText] = useState("");
@@ -349,14 +351,14 @@ const TransactionHistory = () => {
 
   return (
     <React.Fragment>
-      <Head title="Trasaction List"></Head>
+      <Head title={t('transaction_list')}></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page>Transaction History</BlockTitle>
+              <BlockTitle page>{t('Transaction History')}</BlockTitle>
               <BlockDes className="text-soft">
-                <p>You have total {data.length} history.</p>
+                <p>{t('desc', {total: data.length})}</p>
               </BlockDes>
             </BlockHeadContent>
             {/* <BlockHeadContent>
@@ -390,16 +392,16 @@ const TransactionHistory = () => {
                 <div className="card-inner">
                   <div className="card-title-group">
                     <div className="card-title">
-                      <h5 className="title">All History</h5>
+                      <h5 className="title">{t('all_history')}</h5>
                       <Row>
                         <FormGroup style={{width:"30%"}} className="d-none d-md-block mt-3">
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <Stack spacing={3}>
                                   <DesktopDatePicker
-                                    label="Date(From)"
+                                    label={`${t('date')}(${t('from')})`}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.from}
-                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
+                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
@@ -408,7 +410,7 @@ const TransactionHistory = () => {
 
                         </FormGroup>
                         <FormGroup className='d-md-none'>
-                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('from')})`}</label><br/>
                             <input style={{width:"60%"}}  readOnly={true} value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                             <a
                                 style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
@@ -422,8 +424,8 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen}
                             showCaption
                             headerFormat="DD/MM/YYYY"
-                            confirmText="Set"
-                            cancelText="Cancel"
+                            confirmText={t('set')}
+                            cancelText={t('cancel')}
                             dateConfig={{
                               'date': {
                                 format: 'D',
@@ -448,18 +450,18 @@ const TransactionHistory = () => {
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <Stack spacing={3}>
                                   <DesktopDatePicker
-                                    label="Date(To)"
+                                    label={`${t('date')}(${t('to')})`}
                                     inputFormat="dd/MM/yyyy"
                                     minDate={displaySetting.from}
                                     value={displaySetting.end}
-                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, end: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
                               </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
-                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('from')})`}</label><br/>
                             <input style={{width:"60%"}} readOnly={true} value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                             <a
                               style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
@@ -549,7 +551,7 @@ const TransactionHistory = () => {
                             <DropdownMenu right className="dropdown-menu-xs">
                               <ul className="link-check">
                                 <li>
-                                  <span>Show</span>
+                                  <span>{t('show')}</span>
                                 </li>
                                 <li className={itemPerPage === 10 ? "active" : ""}>
                                   <DropdownItem
@@ -586,16 +588,16 @@ const TransactionHistory = () => {
                 <DataTableBody bodyclass="nk-tb-tnx">
                   <DataTableHead>
                     <DataTableRow>
-                      <span>Date</span>
+                      <span>{t('date')}</span>
                     </DataTableRow>
                     <DataTableRow >
-                      <span>Type</span>
+                      <span>{t('type')}</span>
                     </DataTableRow>
                     <DataTableRow size="sm">
-                      <span>Currency</span>
+                      <span>{t('currency')}</span>
                     </DataTableRow>
                     <DataTableRow className="text-right">
-                      <span>Amount</span>
+                      <span>{t('amount')}</span>
                     </DataTableRow>
                     <DataTableRow size="sm" className="text-right">
                     </DataTableRow>
@@ -664,7 +666,7 @@ const TransactionHistory = () => {
                     />
                   ) : (
                     <div className="text-center">
-                      <span className="text-silent">No data found</span>
+                      <span className="text-silent">{t('nodata')}</span>
                     </div>
                   )}
                 </div>
@@ -677,16 +679,16 @@ const TransactionHistory = () => {
                 <div className="card-inner">
                   <div className="card-title-group">
                     <div className="card-title">
-                      <h5 className="title">All History</h5>
+                      <h5 className="title">{t('all_history')}</h5>
                       <Row>
                         <FormGroup style={{width:"30%"}} className="d-none d-md-block mt-3">
                            <LocalizationProvider dateAdapter={AdapterDateFns}>
                               <Stack spacing={3}>
                                 <DesktopDatePicker
-                                  label="Date(From)"
+                                    label={`${t('date')}(${t('from')})`}
                                   inputFormat="dd/MM/yyyy"
                                   value={displaySetting.from}
-                                  onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); 
+                                  onChange={(date) => { if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); 
                                   }}
                                   renderInput={(params) => <TextField {...params} />}
                                 />
@@ -696,7 +698,7 @@ const TransactionHistory = () => {
                         </FormGroup>
                        
                         <FormGroup className='d-md-none'>
-                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('from')})`}</label><br/>
                             <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                             <a
                                 style={{opacity: "0", width:"60%", position:"absolute", left: "0"}}
@@ -736,18 +738,18 @@ const TransactionHistory = () => {
                               <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <Stack spacing={3}>
                                   <DesktopDatePicker
-                                    label="Date(To)"
+                                    label={`${t('date')}(${t('to')})`}
                                     inputFormat="dd/MM/yyyy"
                                     minDate={displaySetting.from}
                                     value={displaySetting.end}
-                                    onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    onChange={(date) => { if(!date) return; setDisplaySetting({ ...displaySetting, end: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
                               </LocalizationProvider>
                         </FormGroup>
                         <FormGroup className='d-md-none'  >
-                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                            <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('to')})`}</label><br/>
                             <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                             <a
                               style={{opacity: "0", width:"60%", position:"absolute", left: "0"}}
@@ -838,7 +840,7 @@ const TransactionHistory = () => {
                             <DropdownMenu right className="dropdown-menu-xs">
                               <ul className="link-check">
                                 <li>
-                                  <span>Show</span>
+                                  <span>{t('show')}</span>
                                 </li>
                                 <li className={itemPerPage === 10 ? "active" : ""}>
                                   <DropdownItem
@@ -875,19 +877,19 @@ const TransactionHistory = () => {
                 <DataTableBody bodyclass="nk-tb-tnx">
                   <DataTableHead>
                     <DataTableRow>
-                      <span>Date</span>
+                      <span>{t('date')}</span>
                     </DataTableRow>
                     <DataTableRow size="sm">
-                      <span>Type</span>
+                      <span>{t('type')}</span>
                     </DataTableRow>
                     <DataTableRow >
-                      <span>Detail</span>
+                      <span>{t('detail')}</span>
                     </DataTableRow>
                     <DataTableRow className="text-right">
-                      <span>Amount</span>
+                      <span>{t('amount')}</span>
                     </DataTableRow>
                     <DataTableRow size="sm" className="text-right">
-                      <span>Balance</span>
+                      <span>{t('balance')}</span>
                     </DataTableRow>
                   </DataTableHead>
 

@@ -50,7 +50,9 @@ import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useTranslation } from 'react-i18next'
 const UserCommissionReport = ({setProfileProgress, sm, updateSm, setProfileName }) => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   // const [onSearch, setonSearch] = useState(true);
   // const [onSearchText, setSearchText] = useState("");
@@ -170,11 +172,11 @@ const handleThemeToggle1 = (theme) => () => {
 // }
   return (
     <React.Fragment>
-      <Head title="Trasaction List"></Head>
+      <Head title={t('commission_report')}></Head>
         <BlockHead size="sm">
         <BlockBetween>
           <BlockHeadContent>
-              <BlockTitle page>Commission Report</BlockTitle>
+              <BlockTitle page>{t('commission_report')}</BlockTitle>
           </BlockHeadContent>
           <BlockHeadContent className="align-self-start d-lg-none">
             <Button
@@ -192,9 +194,9 @@ const handleThemeToggle1 = (theme) => () => {
               <div className="card-title-group">
                 <div className="card-title">
                   <div className="justify-content-around " style={{ justifyContent:"space-around", display: "flex"}}>
-                      <label className="" style={{fontSize: "1rem"}}>Pending {total_commission_pending_approval? Helper.limitDecimal(total_commission_pending_approval, 2): "0.00"} USDT</label> 
-                      <label className="" style={{fontSize: "1rem"}}>Unpaid {total_commission_unpaid? Helper.limitDecimal(total_commission_unpaid, 2): "0.00"} USDT</label> 
-                      <label className="" style={{fontSize: "1rem"}}>Paid {total_commission_paid? Helper.limitDecimal(total_commission_paid, 2): "0.00"} USDT</label> 
+                      <label className="" style={{fontSize: "1rem"}}>{t('pending')} {total_commission_pending_approval? Helper.limitDecimal(total_commission_pending_approval, 2): "0.00"} USDT</label> 
+                      <label className="" style={{fontSize: "1rem"}}>{t('unpaid')} {total_commission_unpaid? Helper.limitDecimal(total_commission_unpaid, 2): "0.00"} USDT</label> 
+                      <label className="" style={{fontSize: "1rem"}}>{t('paid')} {total_commission_paid? Helper.limitDecimal(total_commission_paid, 2): "0.00"} USDT</label> 
 
                   </div> 
                   <Row>
@@ -202,10 +204,10 @@ const handleThemeToggle1 = (theme) => () => {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <Stack spacing={3}>
                             <DesktopDatePicker
-                              label="Date(From)"
+                              label={`${t('date')}(${t('from')})`}
                               inputFormat="dd/MM/yyyy"
                               value={displaySetting.from}
-                              onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
+                              onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); }}
                               renderInput={(params) => <TextField {...params} />}
                             />
                             </Stack>
@@ -214,13 +216,13 @@ const handleThemeToggle1 = (theme) => () => {
 
                     </FormGroup>
                     <FormGroup className='d-md-none'>
-                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('from')})`}</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                         <a
                             style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle('default')}>
-                            {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
+                            {displaySetting.from === null ? t('select_date') : dateFormatterAlt(displaySetting.from, true)}
                         </a>
                         <DatePickerMobile
                         value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
@@ -228,8 +230,8 @@ const handleThemeToggle1 = (theme) => () => {
                         isOpen={state.isOpen}
                         showCaption
                         headerFormat="DD/MM/YYYY"
-                        confirmText="Set"
-                        cancelText="Cancel"
+                        confirmText={t('set')}
+                        cancelText={t('cancel')}
                         dateConfig={{
                           'date': {
                             format: 'D',
@@ -254,24 +256,24 @@ const handleThemeToggle1 = (theme) => () => {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <Stack spacing={3}>
                             <DesktopDatePicker
-                              label="Date(To)"
+                              label={`${t('date')}(${t('to')})`}
                               inputFormat="dd/MM/yyyy"
                               value={displaySetting.end}
                               minDate={displaySetting.from}
-                              onChange={(date) => {setDisplaySetting({ ...displaySetting, end: date }); }}
+                              onChange={(date) => {if(!date) return;  setDisplaySetting({ ...displaySetting, end: date }); }}
                               renderInput={(params) => <TextField {...params} />}
                             />
                             </Stack>
                         </LocalizationProvider>
                     </FormGroup>
                     <FormGroup className='d-md-none'  >
-                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('to')})`}</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                         <a
                           style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle1('default')}>
-                            {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
+                            {displaySetting.end === null ? t('select_date') : dateFormatterAlt(displaySetting.end, true)}
                         </a>
                         <DatePickerMobile
                         value={displaySetting.end !== null ? new Date(displaySetting.end) : new Date()}
@@ -279,8 +281,8 @@ const handleThemeToggle1 = (theme) => () => {
                         isOpen={state.isOpen1}
                         showCaption
                         headerFormat="DD/MM/YYYY"
-                        confirmText="Set"
-                        cancelText="Cancel"
+                        confirmText={t('set')}
+                        cancelText={t('cancel')}
                         dateConfig={{
                             'date': {
                                 format: 'D',
@@ -328,26 +330,26 @@ const handleThemeToggle1 = (theme) => () => {
                           !closeDropdown && 
                         <DropdownMenu right className="filter-wg dropdown-menu-xl">
                           <div className="dropdown-head">
-                            <span className="sub-title dropdown-title">Advanced Filter</span>
+                            <span className="sub-title dropdown-title">{t('advanced_filter')}</span>
                           </div>
                           <div className="dropdown-body dropdown-body-rg" style={{height: "330px"}}>
                             <Row className="gx-6 gy-4" >
                               <Col size="6">
                                 <FormGroup>
-                                  <label className="overline-title overline-title-alt">Type</label>
-                                  <RSelect options={commissionTypeOptions} onChange={(e) => setDisplaySetting({...displaySetting, type: e.value})} placeholder="Any Type" />
+                                  <label className="overline-title overline-title-alt">{t('type')}</label>
+                                  <RSelect options={commissionTypeOptions} onChange={(e) => setDisplaySetting({...displaySetting, type: e.value})} placeholder="" />
                                 </FormGroup>
                               </Col>
                               <Col size="6">
                                 <FormGroup>
-                                  <label className="overline-title overline-title-alt">Status</label>
-                                  <RSelect options={commissionStatusOptions} onChange={(e) => setDisplaySetting({...displaySetting, status: e.value})} placeholder="Any Status" />
+                                  <label className="overline-title overline-title-alt">{t('status')}</label>
+                                  <RSelect options={commissionStatusOptions} onChange={(e) => setDisplaySetting({...displaySetting, status: e.value})} placeholder="" />
                                 </FormGroup>
                               </Col>
                                <Col size="6">
                                 <FormGroup className="form-group">
-                                  <label className="overline-title overline-title-alt">Paid Status</label>
-                                  {displaySetting.status === "Pending"? <RSelect isDisabled={true} placeholder="-" /> :<RSelect options={commissionPaidStatusOptions} onChange={(e) => setDisplaySetting({...displaySetting, paidStatus: e.value})}  placeholder="Any Status" />}
+                                  <label className="overline-title overline-title-alt">{t('paid_status')}</label>
+                                  {displaySetting.status === "Pending"? <RSelect isDisabled={true} placeholder="-" /> :<RSelect options={commissionPaidStatusOptions} onChange={(e) => setDisplaySetting({...displaySetting, paidStatus: e.value})}  placeholder="" />}
                                   
                                 </FormGroup>
                               </Col> 
@@ -372,7 +374,7 @@ const handleThemeToggle1 = (theme) => () => {
                         <DropdownMenu right className="dropdown-menu-xs">
                           <ul className="link-check">
                             <li>
-                              <span>Show</span>
+                              <span>{t('show')}</span>
                             </li>
                             <li className={itemPerPage === 10 ? "active" : ""}>
                               <DropdownItem
@@ -399,37 +401,7 @@ const handleThemeToggle1 = (theme) => () => {
                               </DropdownItem>
                             </li>
                           </ul>
-                          {/* <ul className="link-check">
-                            <li>
-                              <span>Order</span>
-                            </li>
-                            <li className={sort === "dsc" ? "active" : ""}>
-                              <DropdownItem
-                                tag="a"
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                  setSortState("dsc");
-                                  sortFunc("dsc");
-                                }}
-                              >
-                                DESC
-                              </DropdownItem>
-                            </li>
-                            <li className={sort === "asc" ? "active" : ""}>
-                              <DropdownItem
-                                tag="a"
-                                href="#dropdownitem"
-                                onClick={(ev) => {
-                                  ev.preventDefault();
-                                  setSortState("asc");
-                                  sortFunc("asc");
-                                }}
-                              >
-                                ASC
-                              </DropdownItem>
-                            </li>
-                          </ul> */}
+                       
                         </DropdownMenu>
                       </UncontrolledDropdown>
                     </li>
@@ -440,25 +412,25 @@ const handleThemeToggle1 = (theme) => () => {
             <div style={{overflow: "overlay"}} bodyclass="nk-tb-tnx">
               <DataTableHead>
                 <DataTableRow>
-                  <span>Date</span>
+                  <span>{t('date')}</span>
                 </DataTableRow>
                 <DataTableRow >
-                  <span>User</span>
+                  <span>{t('my_user')}</span>
                 </DataTableRow>
                 <DataTableRow class="nk-tb-col tb-col-lg">
-                  <span>Type</span>
+                  <span>{t('type')}</span>
                 </DataTableRow>
                 <DataTableRow className="text-right">
-                  <span>Wire Amount</span>
+                  <span>{t('wire_amount')}</span>
                 </DataTableRow>
                 <DataTableRow size="sm" className="text-right">
-                  <span>Commission</span>
+                  <span>{t('commission')}</span>
                 </DataTableRow>
                 <DataTableRow className="nk-tb-col-status">
-                  <span className="sub-text ">Status</span>
+                  <span className="sub-text ">{t('status')}</span>
                 </DataTableRow>
                 <DataTableRow className="nk-tb-col-status">
-                  <span className="sub-text ">Paid</span>
+                  <span className="sub-text ">{t('paid_status')}</span>
                 </DataTableRow>
                 <DataTableRow className="nk-tb-col-tools"></DataTableRow>
               </DataTableHead>

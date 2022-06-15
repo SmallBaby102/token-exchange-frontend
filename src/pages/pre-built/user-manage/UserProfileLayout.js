@@ -22,8 +22,10 @@ import UserProfileActivityPage from './UserProfileActivity';
 import UserProfileRegularPage from './UserProfileRegular';
 import UserProfileSettingPage from './UserProfileSetting';
 import UserProfileVerificationPage from './UserProfileVerification';
+import { useTranslation } from 'react-i18next'
 
 const UserProfileLayout = () => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const [sm, updateSm] = useState(false);
   const [mobileView, setMobileView] = useState(false);
@@ -136,7 +138,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="user-fill-c"></Icon>
-                        <span>Personal Information</span>
+                        <span>{t('person_info')}</span>
                       </Link>
                     </li>
                     <li onClick={() => { updateSm(false);  !profileProgress && toast.warn("Please input all details of profile."); }}>
@@ -149,7 +151,7 @@ const UserProfileLayout = () => {
                         }
                       >
                         <Icon name="shield"></Icon>
-                        <span>Profile Verification</span>
+                        <span>{t('profile_verification')}</span>
                       </Link>
                     </li>
                     {/* 

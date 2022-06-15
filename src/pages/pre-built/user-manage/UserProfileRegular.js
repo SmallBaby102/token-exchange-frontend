@@ -43,7 +43,9 @@ import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useTranslation } from 'react-i18next'
 const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileName }) => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const myApi = myServerApi(); 
   const currentUser = useSelector((state) => state.user.user);
@@ -357,13 +359,13 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
   }
   return (
     <React.Fragment>
-      <Head title="User Profile"></Head>
+      <Head title={t('user_profile')}></Head>
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle tag="h4">Personal Information</BlockTitle>
+            <BlockTitle tag="h4">{t('person_info')}</BlockTitle>
             <BlockDes>
-              <p>Basic info, like your name and address, that you use on Platform.</p>
+              <p>{t('basic_info')}</p>
             </BlockDes>
           </BlockHeadContent>
           <BlockHeadContent className="align-self-start d-lg-none">
@@ -396,7 +398,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               onChange={(e) => {setFormData({...formData,  department: "Individual"}); } }
                             />
                             <label className="custom-control-label" htmlFor="Individual">
-                              Individual
+                              {t('individual')}
                             </label>
                           </div>
                         </div>
@@ -413,8 +415,8 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               checked = {formData.department === "Corporate" ? true: false}
                               onChange={(e) => setFormData({...formData, department: "Corporate"})}
                             />
-                            <label className="custom-control-label" htmlFor="Corporate">
-                                Corporate
+                            <label className="custom-control-label" htmlFor="Corporate">                     
+                                {t('corporate')}
                             </label>
                           </div>
                         </div>
@@ -431,7 +433,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup> */}
                   <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
-                        First Name
+                        {t('firstname')}
                     </Label>
                     <input 
                       disabled= {verification_status !== "0"}
@@ -440,11 +442,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                         if (e.target.value.match(/^[A-Za-z ]+$/) != null || e.target.value === "" ) {
                           setFormData({...formData, firstname: e.target.value}) ;
                         }}}
-                      placeholder="Enter first name" />
+                      placeholder= {t('placeholder_firstname')} />
                   </FormGroup>
                   <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
-                        Last Name
+                    {t('lastname')}
                     </Label>
                     <input className="form-control " 
                               disabled= {verification_status !== "0"}
@@ -453,15 +455,15 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                 if (e.target.value.match(/^[A-Za-z ]+$/) != null || e.target.value === "" ) {
                                   setFormData({...formData, lastname: e.target.value}) ;
                                 }}}
-                              placeholder="Enter last name" />
+                              placeholder={t('placeholder_lastname')} />
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
-                      Gener
+                    {t('gener')}
                     </Label>
                     <RSelect options={profileOptions.gener} 
                               isDisabled= {verification_status !== "0"}
-                              value={{value: formData.gener, label: formData.gener}}  onChange={(e) => setFormData({...formData, gener: e.value})} placeholder="Select gener" className="form-control-outlined"/>
+                              value={{value: formData.gener, label: formData.gener}}  onChange={(e) => setFormData({...formData, gener: e.value})} placeholder={t('placeholder_gener')} className="form-control-outlined"/>
                   </FormGroup>
                   {/* <FormGroup>
                     <Label className="form-label">
@@ -484,24 +486,24 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                         <Stack spacing={3}>
                           <DesktopDatePicker
                             disabled= {verification_status !== "0"}
-                            label="Birthday"
+                            label={t('birthday')}
                             inputFormat="dd/MM/yyyy"
                             value={formData.birthday}
-                            onChange={(date) => {setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
+                            onChange={(date) => {if(!date) return; setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
                             renderInput={(params) => <TextField {...params} />}
                           />
                           </Stack>
                       </LocalizationProvider>
                   </FormGroup>
                   <FormGroup className='d-md-none'>
-                      <label className="form-label">Birthday</label>
+                      <label className="form-label"> {t('birthday')}</label>
                       <input disabled= {verification_status !== "0"}
                         className="form-control" value={fromStringTodateFormatter(formData.birthday, true)}/>
                       <a
                           style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                           className="select-btn sm"
                           onClick={handleThemeToggle('default')}>
-                          Select Date
+                          {t('select_date')}
                       </a>
                       <DatePickerMobile
                         theme={state.theme}
@@ -509,8 +511,8 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                         value={formData.birthday !== null ? new Date(formData.birthday) : new Date()}
                         showCaption
                           headerFormat="DD/MM/YYYY"
-                          confirmText="Set"
-                          cancelText="Cancel"
+                          confirmText= {t('set')}
+                          cancelText= {t('cancel')}
                           dateConfig={{
                           'date': {
                             format: 'D',
@@ -533,11 +535,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup>
                   <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
-                      Id Number (Passport/Drivers License/National ID) 
+                      {t('id_number')}
                     </Label>
                     <input className="form-control " 
                               disabled= {verification_status !== "0"}
-                              name="id_number" value={formData.id_number} onChange={(e) => setFormData({...formData, id_number: e.target.value})} placeholder="Enter Id number" type="text" />
+                              name="id_number" value={formData.id_number} onChange={(e) => setFormData({...formData, id_number: e.target.value})} placeholder={t('placeholder_id_number')} type="text" />
                   </FormGroup>
                   <FormGroup>
                     <Row className="gy-4">
@@ -547,24 +549,24 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               <Stack spacing={3}>
                                 <DesktopDatePicker
                                   disabled= {verification_status !== "0"}
-                                  label="Issue Date"
+                                  label= {t('issue_date')}
                                   inputFormat="dd/MM/yyyy"
                                   value={formData.issue_date}
-                                  onChange={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
+                                  onChange={(date) => {if(!date) return; setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
                                   renderInput={(params) => <TextField {...params} />}
                                 />
                                 </Stack>
                             </LocalizationProvider>
                           </FormGroup>
                           <FormGroup className='d-md-none'>
-                              <label className="form-label">Issue Date</label>
+                              <label className="form-label">{t('exp_date')}</label>
                               <input disabled= {verification_status !== "0"}
                                 className="form-control" value={fromStringTodateFormatter(formData.issue_date, true)}/>
                               <a
                                   style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                                   className="select-btn sm"
                                   onClick={handleThemeToggle1('default')}>
-                                  Select Date
+                                   {t('select_date')}
                               </a>
                               <DatePickerMobile
                                 theme={state.theme}
@@ -572,8 +574,8 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                 value={formData.issue_date !== null ? new Date(formData.issue_date) : new Date()}
                                 showCaption
                                 headerFormat="DD/MM/YYYY"
-                                confirmText="Set"
-                                cancelText="Cancel"
+                                confirmText={t('set')}
+                                cancelText={t('cancel')}
                                 dateConfig={{
                                   'date': {
                                     format: 'D',
@@ -591,7 +593,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                       step: 1,
                                     },
                                 }}
-                              onSelect={(date) => {setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
+                              onSelect={(date) => {if(!date) return; setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
                               onCancel={handleToggle1(false)} />
                           </FormGroup>
                         </Col>
@@ -601,24 +603,24 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                 <Stack spacing={3}>
                                   <DesktopDatePicker
                                     disabled= {verification_status !== "0"}
-                                    label="Expireation Date"
+                                    label={t('exp_date')}
                                     inputFormat="dd/MM/yyyy"
                                     value={formData.exp_date}
-                                    onChange={(date) => {setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
+                                    onChange={(date) => {if(!date) return; setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
                               </LocalizationProvider>
                           </FormGroup>
                           <FormGroup className='d-md-none'>
-                            <label className="form-label">Expiration date</label>
+                            <label className="form-label">{t('exp_date')}</label>
                             <input disabled= {verification_status !== "0"}
                               className="form-control" value={fromStringTodateFormatter(formData.exp_date, true)}/>
                             <a
                                 style={{opacity: "0", width:"100%", position:"absolute", bottom: "0", height: "40px"}}
                                 className="select-btn sm"
                                 onClick={handleThemeToggle2('default')}>
-                                Select Date
+                                {t('select_date')}
                             </a>
                             <DatePickerMobile
                               theme={state.theme}
@@ -626,8 +628,8 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               showCaption
                               value={formData.exp_date !== null ? new Date(formData.exp_date) : new Date()}
                               headerFormat="DD/MM/YYYY"
-                              confirmText="Set"
-                              cancelText="Cancel"
+                              confirmText={t('set')}
+                              cancelText={t('cancel')}
                               dateConfig={{
                                 'date': {
                                   format: 'D',
@@ -653,7 +655,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
-                      Issue Country
+                      {t('issue_country')}
                     </Label>
                         <div className="form-control-wrap">
                             <select id="issue_country" name="issue_country" 
@@ -661,7 +663,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             value={formData.issue_country} onChange={(e) => setFormData({...formData, issue_country: e.target.value})} className="form-control"
                               // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
                             >
-                                <option value="noselect" >Select Country</option>
+                                <option value="noselect" >{t('select_country')}</option>
                                 <option value="United States">United States</option>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Albania">Albania</option>
@@ -852,11 +854,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
-                    Home Address
+                    {t('home_address')}
                     </Label>
                     <input className="form-control " 
                     disabled= {verification_status !== "0"}
-                    name="address" onChange={(e) => setFormData({...formData, address: e.target.value})} value={formData.address} placeholder="Enter the home address" />
+                    name="address" onChange={(e) => setFormData({...formData, address: e.target.value})} value={formData.address} placeholder={t('placeholder_home_address')} />
                   </FormGroup>
                   {/* <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
@@ -876,7 +878,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup> */}
                   <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
-                      Postal Code
+                      {t('postal_code')}
                     </Label>
                     <input className="form-control " 
                     disabled= {verification_status !== "0"}
@@ -884,7 +886,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
-                      Country
+                    {t('country')}
                     </Label>
                         <div className="form-control-wrap">
                             <select id="country" name="country" 
@@ -892,7 +894,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                     value={formData.country} onChange={(e) => setFormData({...formData, country: e.target.value})} className="form-control"
                               // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
                             >
-                                <option value="noselect" >Select Country</option>
+                                <option value="noselect" >{t('select_country')}</option>
                                 <option value="United States">United States</option>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Albania">Albania</option>
@@ -1126,11 +1128,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                     <Col md="6">
                       <FormGroup>
                         <Label htmlFor="default-5" className="form-label">
-                          Phone Number
+                          {t('phone_number')}
                         </Label>
                         <RSelect options={country_code_arr}
                     isDisabled= {verification_status !== "0"}
-                    value={{value: formData.country_code, label: formData.country_code}}  onChange={(e) =>  setFormData({...formData, country_code: e.label})} placeholder="Select phone Country Code" className="form-control-outlined"/>
+                    value={{value: formData.country_code, label: formData.country_code}}  onChange={(e) =>  setFormData({...formData, country_code: e.label})} placeholder={t('phone_country_code')} className="form-control-outlined"/>
                       </FormGroup>
                     </Col>
                       <Col md="6" >
@@ -1139,7 +1141,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                           </Label>
                           <input className="form-control "
                             disabled= {verification_status !== "0"}
-                            name="cellphone_number" value={formData.cellphone_number} placeholder="Enter the phone Number"  
+                            name="cellphone_number" value={formData.cellphone_number} placeholder={t('placeholder_phone_number')}
                             onKeyPress= { (evt) =>
                               {
                                 if (evt.which != 8 && evt.which != 0 && evt.which < 48 || evt.which > 57)
@@ -1159,7 +1161,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                       <Button type="submit" 
                         disabled= {verification_status !== "0"}
                         color="primary" size="lg" className="btn-block">
-                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                        {loading ? <Spinner size="sm" color="light" /> : t('update')}
                       </Button>
                       </FormGroup>
                     </div>
@@ -1169,27 +1171,27 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                 <Col md="6"  >
                   <FormGroup style={{marginTop:"53px"}}>
                     <Label className="form-label">
-                      Company name
+                    {t('company_name')}
                     </Label>
                     <input className="form-control "
                     disabled= {verification_status !== "0"}
-                    name="company_name" onChange={(e) => setFormData({...formData, company_name: e.target.value})} value={formData.company_name} placeholder="Enter your company name" />
+                    name="company_name" onChange={(e) => setFormData({...formData, company_name: e.target.value})} value={formData.company_name} placeholder={t('placeholder_company_name')} />
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
-                      Director Name
+                      {t('director_name')}
                     </Label>
                     <input className="form-control "
                     disabled= {verification_status !== "0"}
-                    name="director_name" onChange={(e) => setFormData({...formData, director_name: e.target.value})} value={formData.director_name} placeholder="Enter the director name" />
+                    name="director_name" onChange={(e) => setFormData({...formData, director_name: e.target.value})} value={formData.director_name} placeholder={t('placeholder_director_name')} />
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
-                      Company Address
+                    {t('company_address')}
                       </Label>
                     <input className="form-control "
                     disabled= {verification_status !== "0"}
-                    name="company_address" onChange={(e) => setFormData({...formData, company_address: e.target.value})} value={formData.company_address} placeholder="Enter the company address" />
+                    name="company_address" onChange={(e) => setFormData({...formData, company_address: e.target.value})} value={formData.company_address} placeholder={t('placeholder_company_address')} />
                   </FormGroup>
                   {/* <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
@@ -1209,11 +1211,11 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                   </FormGroup> */}
                   <FormGroup>
                     <Label htmlFor="default-5" className="form-label">
-                      Postal Code
+                    {t('postal_code')}
                     </Label>
                     <input className="form-control "
                     disabled= {verification_status !== "0"}
-                    name="company_postal_code" value={formData.company_postal_code} placeholder="Enter the company Postal Code"  onChange={(e) => setFormData({...formData, company_postal_code: e.target.value})} type="text" />
+                    name="company_postal_code" value={formData.company_postal_code} placeholder= {t('placeholder_postal_code')}  onChange={(e) => setFormData({...formData, company_postal_code: e.target.value})} type="text" />
                   </FormGroup>
                   <FormGroup>
                     <Label className="form-label">
@@ -1225,7 +1227,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                     name="company_country" value={formData.company_country} onChange={(e) => setFormData({...formData, company_country: e.target.value})} className="form-control"
                               // ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
                             >
-                                <option value="noselect" >Select Country</option>
+                                <option value="noselect" >{t('select_country')}</option>
                                 <option value="United States">United States</option>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Albania">Albania</option>
@@ -1418,7 +1420,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                     <Col md="6">
                       <FormGroup>
                         <Label htmlFor="default-5" className="form-label">
-                          Phone Number
+                        {t('phone_number')}
                         </Label>
                         <RSelect options={country_code_arr} 
                         isDisabled= {verification_status !== "0"}
@@ -1429,7 +1431,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                               setFormData({...formData, company_country_code: e.label});
                           }
                         } 
-                      placeholder="Select the company phone Country Code" className="form-control-outlined"/>
+                      placeholder={t('placeholder_company_phone_country')} className="form-control-outlined"/>
                       </FormGroup>
                     </Col>
                       <Col md="6" >
@@ -1438,7 +1440,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                         </Label>
                           <input className="form-control "
                             disabled= {verification_status !== "0"}
-                            name="company_cellphone_number" value={formData.company_cellphone_number} placeholder="Enter the company phone Number"  
+                            name="company_cellphone_number" value={formData.company_cellphone_number} placeholder={t('placeholder_company_phone')}  
                             onChange={(e) => {
                               setFormData({...formData, company_cellphone_number: e.target.value})
                             }} 

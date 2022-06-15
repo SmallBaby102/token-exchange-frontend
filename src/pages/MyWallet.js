@@ -61,9 +61,11 @@ import axios from 'axios';
 
 import { projectData } from './ProjectData';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'
 let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 
 const MyWallet = () => {
+  const { t } = useTranslation(); 
   const history = useHistory();
   const user = useSelector((state) => state.user.user)
   const email = user?.username;
@@ -1028,12 +1030,12 @@ const MyWallet = () => {
 
   return (
     <React.Fragment>
-      <Head title="My Wallet"></Head>
+      <Head title={t('My Wallet')}></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page> Your Wallet</BlockTitle>
+              <BlockTitle page>{t('My Wallet')}</BlockTitle>
               {/* <BlockDes className="text-soft">You have following tokens</BlockDes> */}
             </BlockHeadContent>
             <BlockHeadContent>
@@ -1048,8 +1050,8 @@ const MyWallet = () => {
                   <ul className="nk-block-tools g-3">
                     {/* <li className="nk-block-tools-opt" > */}
                         <Button tag="a" onClick={(e) => {setHideWallet(!hideWallet)}} className="dropdown-toggle btn btn-white btn-dim btn-outline-light">
-                          {!hideWallet && <span>Hide wallet with 0 balance</span>}
-                          {hideWallet && <span>Show wallet with 0 balance</span>}
+                          {!hideWallet && <span>{t('hide_wallet')}</span>}
+                          {hideWallet && <span>{t('show_wallet')}</span>}
                         </Button>
                     {/* </li> */}
                     {/* <li className="nk-block-tools-opt" onClick={() => setModal()}>

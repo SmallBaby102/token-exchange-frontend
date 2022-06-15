@@ -44,7 +44,9 @@ import Stack from '@mui/material/Stack';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { useTranslation } from 'react-i18next'
 const UserMyUser = ({setProfileProgress, sm, updateSm, setProfileName }) => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   // const [onSearch, setonSearch] = useState(true);
   // const [onSearchText, setSearchText] = useState("");
@@ -178,9 +180,9 @@ const handleThemeToggle1 = (theme) => () => {
         <BlockHead size="sm">
           <BlockBetween> 
             <BlockHeadContent>
-                <BlockTitle page>My User</BlockTitle>
+                <BlockTitle page>{t('my_user')}</BlockTitle>
                 <BlockDes className="text-soft">
-                <p>You have total {data.length} users.</p>
+                <p>{t('desc_user', {total: data.length})}</p>
               </BlockDes>
              </BlockHeadContent>
             <BlockHeadContent className="align-self-start d-lg-none">
@@ -204,7 +206,7 @@ const handleThemeToggle1 = (theme) => () => {
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <Stack spacing={3}>
                             <DesktopDatePicker
-                              label="Date(From)"
+                              label={`${t('date')}(${t('from')})`}
                               inputFormat="dd/MM/yyyy"
                               value={displaySetting.from}
                               onChange={(date) => {setDisplaySetting({ ...displaySetting, from: date }); }}
@@ -214,13 +216,13 @@ const handleThemeToggle1 = (theme) => () => {
                         </LocalizationProvider>
                       </FormGroup>
                       <FormGroup className='d-md-none'>
-                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(From)</label><br/>
+                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('from')})`}</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.from, true)}/>
                         <a
                             style={{opacity: "0",width:"60%", zIndex:"9999", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle('default')}>
-                            {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
+                            {displaySetting.from === null ? t('select_date'): dateFormatterAlt(displaySetting.from, true)}
                         </a>
                         <DatePickerMobile
                         value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
@@ -228,8 +230,8 @@ const handleThemeToggle1 = (theme) => () => {
                         isOpen={state.isOpen}
                         showCaption
                         headerFormat="DD/MM/YYYY"
-                        confirmText="Set"
-                        cancelText="Cancel"
+                        confirmText={t('set')}
+                        cancelText={t('cancel')}
                         dateConfig={{
                           'date': {
                             format: 'D',
@@ -254,7 +256,7 @@ const handleThemeToggle1 = (theme) => () => {
                           <LocalizationProvider dateAdapter={AdapterDateFns}>
                           <Stack spacing={3}>
                             <DesktopDatePicker
-                              label="Date(To)"
+                              label={`${t('date')}(${t('to')})`}
                               inputFormat="dd/MM/yyyy"
                               minDate={displaySetting.from}
                               value={displaySetting.end}
@@ -265,13 +267,13 @@ const handleThemeToggle1 = (theme) => () => {
                         </LocalizationProvider>
                       </FormGroup>
                       <FormGroup className='d-md-none'  >
-                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>Date(To)</label><br/>
+                       <label className="" style={{marginBottom: 0, fontSize: ".8rem"}}>{`${t('date')}(${t('to')})`}</label><br/>
                        <input style={{width:"60%"}}  value={dateFormatterWithdoutTime(displaySetting.end, true)}/>
                         <a
                           style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                             className="select-btn sm"
                             onClick={handleThemeToggle1('default')}>
-                            {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
+                            {displaySetting.end === null ? t('select_date') : dateFormatterAlt(displaySetting.end, true)}
                         </a>
                         <DatePickerMobile
                         theme={state.theme}
@@ -279,8 +281,8 @@ const handleThemeToggle1 = (theme) => () => {
                         isOpen={state.isOpen1}
                         showCaption
                         headerFormat="DD/MM/YYYY"
-                        confirmText="Set"
-                        cancelText="Cancel"
+                        confirmText={t('set')}
+                        cancelText={t('cancel')}
                         dateConfig={{
                           'date': {
                             format: 'D',
@@ -314,18 +316,18 @@ const handleThemeToggle1 = (theme) => () => {
                         </DropdownToggle>
                         <DropdownMenu right className="filter-wg dropdown-menu-xl">
                           <div className="dropdown-head">
-                            <span className="sub-title dropdown-title">Advanced Filter</span>
+                            <span className="sub-title dropdown-title">{t('advanced_filter')}</span>
                           </div>
                           <div className="dropdown-body dropdown-body-rg pl-5" style={{height: "130px"}}>
                               <Row>
-                                  Type
+                              {t('type')}
                               </Row>
                               <div className="mt-2" style={{ justifyContent:"space-around", display: "flex", marginLeft: "-20px"}}>
                                 <FormGroup>
                                   <div className="custom-control custom-control-sm custom-checkbox">
                                     <input type="checkbox" className="custom-control-input" id="includeDel" checked={displaySetting.tier1} onChange={(e) => setDisplaySetting({...displaySetting, tier1: e.target.checked})}  />
                                     <label className="custom-control-label" htmlFor="includeDel">
-                                      Tier1
+                                      {t('tier1')}
                                     </label>
                                   </div>
                                 </FormGroup>
@@ -333,7 +335,7 @@ const handleThemeToggle1 = (theme) => () => {
                                   <div className="custom-control custom-control-sm custom-checkbox">
                                     <input type="checkbox" className="custom-control-input" id="includeDel2" checked={displaySetting.tier2} onChange={(e) => setDisplaySetting({...displaySetting, tier2: e.target.checked})} />
                                     <label className="custom-control-label" htmlFor="includeDel2">
-                                      Tier2
+                                    {t('tier2')}
                                     </label>
                                   </div>
                                 </FormGroup>
@@ -341,7 +343,7 @@ const handleThemeToggle1 = (theme) => () => {
                                   <div className="custom-control custom-control-sm custom-checkbox">
                                     <input type="checkbox" className="custom-control-input" id="includeDel3" checked={displaySetting.tier3} onChange={(e) => setDisplaySetting({...displaySetting, tier3: e.target.checked})} />
                                     <label className="custom-control-label" htmlFor="includeDel3">
-                                      Tier3
+                                    {t('tier3')}
                                     </label>
                                   </div>
                                 </FormGroup>
@@ -366,7 +368,7 @@ const handleThemeToggle1 = (theme) => () => {
                         <DropdownMenu right className="dropdown-menu-xs">
                           <ul className="link-check">
                             <li>
-                              <span>Show</span>
+                              <span>{t('show')}</span>
                             </li>
                             <li className={itemPerPage === 10 ? "active" : ""}>
                               <DropdownItem
@@ -405,13 +407,13 @@ const handleThemeToggle1 = (theme) => () => {
             <DataTableBody bodyclass="nk-tb-tnx">
               <DataTableHead>
                 <DataTableRow>
-                  <span>Register Date</span>
+                  <span>{t('register_date')}</span>
                 </DataTableRow>
                 <DataTableRow >
-                  <span>User</span>
+                  <span>{t('my_user')}</span>
                 </DataTableRow>
                 <DataTableRow >
-                  <span>Type</span>
+                  <span>{t('type')}</span>
                 </DataTableRow>
               </DataTableHead>
 
@@ -466,255 +468,12 @@ const handleThemeToggle1 = (theme) => () => {
                 />
               ) : (
                 <div className="text-center">
-                  <span className="text-silent">No data found</span>
+                  <span className="text-silent">{t('nodata')}</span>
                 </div>
               )}
             </div>
           </div>
         </Block>
-
-        {/* <Modal isOpen={modal.add} toggle={() => setModal({ add: false })} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#close"
-              onClick={(ev) => {
-                ev.preventDefault();
-                onFormCancel();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="p-2">
-              <h5 className="title">Add Transaction</h5>
-              <Form className="mt-4" onSubmit={handleSubmit(onFormSubmit)} noValidate>
-                <Row className="g-gs">
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Order Type</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={cryptoActivityOptions}
-                          defaultValue={[{ value: "deposit", label: "Deposit" }]}
-                          onChange={(e) => setFormData({ ...formData, orderType: e.value })}
-                        />
-                      </div>
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">Status</label>
-                      <div className="form-control-wrap">
-                        <RSelect
-                          options={filterStatusOptions}
-                          defaultValue={[{ value: "PENDING", label: "PENDING" }]}
-                          onChange={(e) => setFormData({ ...formData, status: e.value })}
-                        />
-                      </div>
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <OverlineTitle className="pt-4"> Amount </OverlineTitle>
-                <hr className="hr mt-2 border-light" />
-                <Row className="g-gs">
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">BTC</label>
-                      <input
-                        type="number"
-                        name="amountBTC"
-                        defaultValue={formData.amountBTC}
-                        className="form-control"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.amountBTC && <span className="invalid">{errors.amountBTC.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">USD</label>
-                      <input
-                        type="number"
-                        name="amountUSD"
-                        defaultValue={formData.amountUSD}
-                        className="form-control"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.amountUSD && <span className="invalid">{errors.amountUSD.message}</span>}
-                    </FormGroup>
-                  </Col>
-                </Row>
-                <OverlineTitle className="pt-4"> Balance </OverlineTitle>
-                <hr className="hr mt-2 border-light" />
-                <Row className="gy-4">
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">BTC</label>
-                      <input
-                        type="number"
-                        name="balanceBTC"
-                        defaultValue={formData.balanceBTC}
-                        className="form-control"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.balanceBTC && <span className="invalid">{errors.balanceBTC.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col md="6">
-                    <FormGroup>
-                      <label className="form-label">USD</label>
-                      <input
-                        type="number"
-                        name="balanceUSD"
-                        defaultValue={formData.balanceUSD}
-                        className="form-control"
-                        ref={register({ required: "This field is required" })}
-                      />
-                      {errors.balanceUSD && <span className="invalid">{errors.balanceUSD.message}</span>}
-                    </FormGroup>
-                  </Col>
-                  <Col size="12">
-                    <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
-                      <li>
-                        <Button type="submit" color="primary" size="md">
-                          Add Transaction
-                        </Button>
-                      </li>
-                      <li>
-                        <a
-                          href="#cancel"
-                          onClick={(ev) => {
-                            ev.preventDefault();
-                            onFormCancel();
-                          }}
-                          className="link link-light"
-                        >
-                          Cancel
-                        </a>
-                      </li>
-                    </ul>
-                  </Col>
-                </Row>
-              </Form>
-            </div>
-          </ModalBody>
-        </Modal>
-
-        <Modal isOpen={modalDetail} toggle={() => toggleModalDetail()} className="modal-dialog-centered" size="lg">
-          <ModalBody>
-            <a
-              href="#cancel"
-              onClick={(ev) => {
-                ev.preventDefault();
-                toggleModalDetail();
-              }}
-              className="close"
-            >
-              <Icon name="cross-sm"></Icon>
-            </a>
-            <div className="nk-modal-head mb-3">
-              <h4 className="nk-modal-title title">
-                Transaction <small className="text-primary">{detail.transactionId}</small>
-              </h4>
-            </div>
-            <div className="nk-tnx-details">
-              <BlockBetween className="flex-wrap g-3">
-                <div className="nk-tnx-type">
-                  <div
-                    className={`nk-tnx-type-icon bg-${
-                      detail.status === "COMPLETED"
-                        ? "success"
-                        : detail.status === "Upcoming"
-                        ? "warning"
-                        : detail.status === "PENDING"
-                        ? "info"
-                        : "danger"
-                    } text-white`}
-                  >
-                    <Icon name="arrow-up-right"></Icon>
-                  </div>
-                  <div className="nk-tnx-type-text">
-                    <h5 className="title">+ {detail.amountBTC} BTC</h5>
-                    <span className="sub-text mt-n1">{detail.date}</span>
-                  </div>
-                </div>
-                <ul className="align-center flex-wrap gx-3">
-                  <li>
-                    <Badge
-                      color={
-                        detail.status === "COMPLETED"
-                          ? "success"
-                          : detail.status === "Upcoming"
-                          ? "warning"
-                          : detail.status === "PENDING"
-                          ? "info"
-                          : "danger"
-                      }
-                      size="sm"
-                    >
-                      {detail.status}
-                    </Badge>
-                  </li>
-                </ul>
-              </BlockBetween>
-              <div className="nk-modal-head mt-4 mb-3">
-                <h5 className="title">Transaction Info</h5>
-              </div>
-              <Row className="gy-3">
-                <Col lg={6}>
-                  <span className="sub-text">Order ID</span>
-                  <span className="caption-text">{detail.ref}</span>
-                </Col>
-                <Col lg={6}>
-                  <span className="sub-text">Reference ID</span>
-                  <span className="caption-text text-break">{detail.referenceId}</span>
-                </Col>
-                <Col lg={6}>
-                  <span className="sub-text">Transaction Fee</span>
-                  <span className="caption-text">{detail.transactionFee} BTC</span>
-                </Col>
-                <Col lg={6}>
-                  <span className="sub-text">Amount</span>
-                  <span className="caption-text">{detail.amountBTC} BTC</span>
-                </Col>
-              </Row>
-              <div className="nk-modal-head mt-4 mb-3">
-                <h5 className="title">Transaction Details</h5>
-              </div>
-              <Row className="gy-3">
-                <Col lg={6}>
-                  <span className="sub-text">Transaction Type</span>
-                  <span className="caption-text">{detail.orderType}</span>
-                </Col>
-                <Col lg={6}>
-                  <span className="sub-text">Payment Gateway</span>
-                  <span className="caption-text align-center">
-                    CoinPayments{" "}
-                    <Badge color="primary" className="ml-2 text-white">
-                      Online Gateway
-                    </Badge>
-                  </span>
-                </Col>
-                <Col lg={6}>
-                  <span className="sub-text">Payment From</span>
-                  <span className="caption-text text-break">{detail.paymentForm}</span>
-                </Col>
-                <Col lg={6}>
-                  <span className="sub-text">Payment To</span>
-                  <span className="caption-text text-break">{detail.paymentTo}</span>
-                </Col>
-                <Col lg={12}>
-                  <span className="sub-text">Transaction Hash</span>
-                  <span className="caption-text text-break">{detail.transactionHash}</span>
-                </Col>
-                <Col lg={12}>
-                  <span className="sub-text">Details</span>
-                  <span className="caption-text">{detail.orderType} funds</span>
-                </Col>
-              </Row>
-            </div>
-          </ModalBody>
-        </Modal> */}
     </React.Fragment>
   );
 };

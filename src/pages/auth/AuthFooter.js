@@ -13,15 +13,17 @@ import {
 } from '../../components/Component';
 import EnglishFlag from '../../images/flags/english.png';
 import ChineseFlag from '../../images/flags/china.png';
+import JapaneseFlag from '../../images/flags/jp.webp';
+import KoreanFlag from '../../images/flags/kr.webp';
 import { useTranslation } from 'react-i18next'
 const AuthFooter = () => {
   const { t } = useTranslation(); 
   const [lang, setLang] = useState(localStorage.getItem('i18nextLng'));
   const languages = { 
-    en: "English" ,
-    zh: "Chinese" ,
-    ko: "Korean" ,
-    ja: "Japanese" ,
+    en: t('english'),
+    zh: t('chinese'),
+    ko: t('korean'),
+    ja: t('japanese'),
   }
   const handleChange = (value) => { 
     setLang(value);
@@ -67,7 +69,7 @@ const AuthFooter = () => {
                           <span className="language-name">English</span>
                         </DropdownItem>
                       </li>
-                      {/* <li>
+                      <li>
                         <DropdownItem
                           tag="a"
                           href="#dropdownitem"
@@ -93,7 +95,7 @@ const AuthFooter = () => {
                           }}
                           className="language-item"
                         >
-                          <img src={ChineseFlag} alt="" className="language-flag" />
+                          <img src={KoreanFlag} alt="" className="language-flag" />
                           <span className="language-name">Korean</span>
                         </DropdownItem>
                       </li>
@@ -108,10 +110,10 @@ const AuthFooter = () => {
                           }}
                           className="language-item"
                         >
-                          <img src={ChineseFlag} alt="" className="language-flag" />
+                          <img src={JapaneseFlag} alt="" className="language-flag" />
                           <span className="language-name">Japanese</span>
                         </DropdownItem>
-                      </li> */}
+                      </li>
                     </ul>
                   </DropdownMenu>
                 </UncontrolledDropdown>

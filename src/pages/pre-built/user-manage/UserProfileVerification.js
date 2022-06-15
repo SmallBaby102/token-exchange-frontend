@@ -32,8 +32,10 @@ import {
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
 import { fromStringTodateFormatter } from '../../../utils/Utils';
+import { useTranslation } from 'react-i18next'
 
 const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress, sm, updateSm }) => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const history = useHistory();
   const user = useSelector((state) => state.user.user)
@@ -269,7 +271,7 @@ const uploadData = (e) => {
 
   return (
     <React.Fragment>
-      <Head title="Profile Verification"></Head>
+      <Head title={t('profile_verification')}></Head>
 
       <BlockHead size="lg">
         <BlockBetween>
@@ -289,7 +291,7 @@ const uploadData = (e) => {
       { data.department === "Individual" ? <BlockContent>
           <Row>
             <Col size={6}>
-              <span className="h6 fw-500">Verification Status</span>
+              <span className="h6 fw-500">{t('verification_status')}</span>
             </Col>
             <Col size={6}>
               {/* <div
@@ -322,7 +324,7 @@ const uploadData = (e) => {
         </div>
           <Row className="mt-3 ">
             <Col size={6}>
-              <span className="h6 fw-light">Account type</span>
+              <span className="h6 fw-light">{t('account_type')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.department}</span>
@@ -330,7 +332,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Name</span>
+              <span className="h6 fw-light">{t('name')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.name}</span>
@@ -338,7 +340,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Birthday</span>
+              <span className="h6 fw-light">{t('birthday')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{fromStringTodateFormatter(data.birthday, true)}</span>
@@ -346,7 +348,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Id number</span>
+              <span className="h6 fw-light">{t('id_number')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.id_number}</span>
@@ -354,7 +356,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Issue Date</span>
+              <span className="h6 fw-light">{t('issue_date')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{fromStringTodateFormatter(data.issue_date, true)}</span>
@@ -362,7 +364,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Expiration Date</span>
+              <span className="h6 fw-light">{t('exp_date')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{fromStringTodateFormatter(data.exp_date, true)}</span>
@@ -370,7 +372,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Issue Country</span>
+              <span className="h6 fw-light">{t('issue_country')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.issue_country}</span>
@@ -378,7 +380,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Home Address</span>
+              <span className="h6 fw-light">{t('home_address')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.address}</span>
@@ -402,7 +404,7 @@ const uploadData = (e) => {
           </Row> */}
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Postal Code</span>
+              <span className="h6 fw-light">{t('postal_code')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.postal_code}</span>
@@ -410,7 +412,7 @@ const uploadData = (e) => {
           </Row>
           <Row className="mt-3">
             <Col size={6}>
-              <span className="h6 fw-light">Country</span>
+              <span className="h6 fw-light">{t('country')}</span>
             </Col>
             <Col size={6}>
               <span className="h6 fw-light">{data.country}</span>
@@ -420,11 +422,11 @@ const uploadData = (e) => {
           </div>
           <Row>
             <Col className="ml-3 mt-2">
-                The following documents are required for individual verification.
+               {t('ind_verify_desc')}
               <br/><br/>
-              1. ID (passport or valid drivers license or residence permit or government-issued ID Card)
+              1. {t('ind_verify_desc1')}
               <br/><br/>
-                *In some cases, we may request additional confirmation documents.
+              {t('verify_desc3')}
             </Col>
           </Row>
           <Row>
@@ -434,15 +436,15 @@ const uploadData = (e) => {
                 return(
                   <FormGroup className="mt-4 ml-3">
                       <div className="form-control-wrap d-flex">
-                          <div className="custom-file">
+                          <div className="custom-file" style={{width:"70%"}}>
                               <input type="file" className="custom-file-input" name={index} id={index} disabled= {data.verification_status !== "Not Approved"}
                                 onChange={(e) => {let temp = addedFiles; temp[index] = e.target.files[0]; setAddedFiles(temp); setData({...data, verification_status:data.verification_status}) }}
                                 />
                               <label className="custom-file-label" htmlFor={index}>
-                                {(item == null) ? "Choose a file" : item.name} 
+                                {(item == null) ? t('choose_file') : item.name} 
                               </label>
                           </div>
-                          <Button className="btn-dim" color="warning" onClick={e => removeFile(index)}>Remove</Button>
+                          <Button className="btn-dim" color="warning" onClick={e => removeFile(index)}>{t('remove')}</Button>
                       </div>
 
                   </FormGroup> 
@@ -453,7 +455,7 @@ const uploadData = (e) => {
             <Col md={4}>
               <FormGroup>
                   <Button type="input" color="primary" disabled= {data.verification_status !== "Not Approved"} size="md" onClick={(e) => addFile(e)} className="btn mt-4 ml-3">
-                  Add
+                  {t('add')}
                   </Button>
               </FormGroup>
             </Col>
@@ -462,7 +464,7 @@ const uploadData = (e) => {
           <div className="text-center pt-5">
             <FormGroup>
               <Button type="input" color="primary" disabled= {data.verification_status !== "Not Approved"} size="lg" onClick={(e) => uploadData(e)} className="btn-block">
-                {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                {loading ? <Spinner size="sm" color="light" /> :  t('update')}
               </Button>
             </FormGroup>
         </div>
@@ -471,7 +473,7 @@ const uploadData = (e) => {
       <BlockContent>
       <Row>
         <Col size={6}>
-          <span className="h6 fw-500">Verification Status</span>
+          <span className="h6 fw-500">{t('verification_status')}</span>
         </Col>
         <Col size={6}>
           <div
@@ -504,7 +506,7 @@ const uploadData = (e) => {
       </div>
       <Row className="mt-2">
         <Col size={6}>
-          <span className="h6 fw-light">Account type</span>
+          <span className="h6 fw-light">{t('account_type')}</span>
         </Col>
         <Col size={6}>
           <span className="h6 fw-light">{data.department}</span>
@@ -512,7 +514,7 @@ const uploadData = (e) => {
       </Row>
       <Row className="mt-3">
         <Col size={6}>
-          <span className="h6 fw-light">Company Name</span>
+          <span className="h6 fw-light">{t('company_name')}</span>
         </Col>
         <Col size={6}>
           <span className="h6 fw-light">{data.company_name}</span>
@@ -520,7 +522,7 @@ const uploadData = (e) => {
       </Row>
       <Row className="mt-3">
         <Col size={6}>
-          <span className="h6 fw-light">Director</span>
+          <span className="h6 fw-light">{t('director_name')}</span>
         </Col>
         <Col size={6}>
           <span className="h6 fw-light">{data.director_name}</span>
@@ -528,7 +530,7 @@ const uploadData = (e) => {
       </Row>
       <Row className="mt-3">
         <Col size={6}>
-          <span className="h6 fw-light">Company Address</span>
+          <span className="h6 fw-light">{t('company_address')}</span>
         </Col>
         <Col size={6}>
           <span className="h6 fw-light">{data.company_address}</span>
@@ -552,7 +554,7 @@ const uploadData = (e) => {
       </Row> */}
       <Row className="mt-3">
         <Col size={6}>
-          <span className="h6 fw-light">Postal Code</span>
+          <span className="h6 fw-light">{t('postal_code')}</span>
         </Col>
         <Col size={6}>
           <span className="h6 fw-light">{data.company_postal_code}</span>
@@ -560,7 +562,7 @@ const uploadData = (e) => {
       </Row>
       <Row className="mt-3">
         <Col size={6}>
-          <span className="h6 fw-light">Country</span>
+          <span className="h6 fw-light">{t('country')}</span>
         </Col>
         <Col size={6}>
           <span className="h6 fw-light">{data.company_country}</span>
@@ -570,13 +572,13 @@ const uploadData = (e) => {
       </div>
       <Row>
           <Col className="ml-3 mt-2">
-          The following documents are required for corporate verification.
+          {t('verify_desc1')}
           <br/><br/>
-          1. Certificate of Incorporation
+          1.  {t('verify_desc')}
           <br/><br/>
-          2. Director's ID(passport or valid drivers license or residence permit or government-issued ID card)
+          2.  {t('verify_desc2')}
           <br/><br/>
-          *In some cases, we may request additional confirmation documents. <br/>
+          {t('verify_desc3')} <br/>
           </Col>
       </Row>
       <Row>
@@ -586,15 +588,15 @@ const uploadData = (e) => {
                 return(
                   <FormGroup className="mt-4 ml-3" >
                       <div className="form-control-wrap d-flex">
-                          <div className="custom-file">
+                          <div className="custom-file" style={{width:"70%"}}>
                               <input type="file" className="custom-file-input" name={index} id={index} disabled= {data.verification_status !== "Not Approved"}
                                 onChange={(e) => {let temp = addedFiles; temp[index] = e.target.files[0]; setAddedFiles(temp); setData({...data, verification_status:data.verification_status}) }}
                                 />
                               <label className="custom-file-label" htmlFor={index}>
-                                {(item == null) ? "Choose a file" : item.name} 
+                                {(item == null) ?  t('choose_file') : item.name} 
                               </label>
                           </div>
-                          <Button className="btn-dim" color="warning" onClick={e => removeFile(index)}>Remove</Button>
+                          <Button className="btn-dim" color="warning" onClick={e => removeFile(index)}>{ t('remove')}</Button>
                       </div>
                   </FormGroup> 
                 )
@@ -604,7 +606,7 @@ const uploadData = (e) => {
             <Col md={4}>
               <FormGroup>
                   <Button type="input" color="primary" disabled= {data.verification_status !== "Not Approved"} size="md" onClick={(e) => addFile(e)} className="btn mt-4 ml-3">
-                  Add
+                    {t('add')}
                   </Button>
               </FormGroup>
             </Col>
@@ -613,7 +615,7 @@ const uploadData = (e) => {
       <div className="text-center pt-5">
         <FormGroup>
           <Button type="input"  disabled= {data.verification_status !== "Not Approved"} color="primary" size="lg" onClick={(e) => uploadData(e)} className="btn-block">
-            {loading ? <Spinner size="sm" color="light" /> : "Update"}
+            {loading ? <Spinner size="sm" color="light" /> :  t('update')}
           </Button>
         </FormGroup>
     </div>
