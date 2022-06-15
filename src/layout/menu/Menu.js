@@ -11,6 +11,7 @@ import {
 
 import adminmenu from './AdminMenuData';
 import usermenu from './UserMenuData';
+import { useTranslation } from 'react-i18next'
 
 const MenuHeader = ({ item }) => {
   return (
@@ -22,6 +23,7 @@ const MenuHeader = ({ item }) => {
 
 const MenuItem = ({ item, headActive }) => {
   const { subMenu, subPanel, text, link, newTab, header } = item;
+  const { t } = useTranslation(); 
 
   if (header) {
     return <MenuHeader item={header}></MenuHeader>;
@@ -57,7 +59,7 @@ const MenuItem = ({ item, headActive }) => {
           </React.Fragment>
         ) : (
           <Link className="nk-menu-link" to={process.env.PUBLIC_URL + link}>
-            <span className="nk-menu-text">{text}</span>
+            <span className="nk-menu-text">{t(text)}</span>
           </Link>
         )}
       </li>

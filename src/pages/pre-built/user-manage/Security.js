@@ -336,7 +336,7 @@ const Security = () => {
                 <Row>
                   <Col md={6}>
                       <FormGroup>
-                        <Button color="primary"  className="mt-3"  onClick={() => onChangeStatus()}>
+                        <Button color="primary"  className="mt-3"  onClick={(e) => {e.preventDefault(); onChangeStatus();}}>
                           {loading2FA ? <Spinner size="sm" color="light" /> :
                           security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
                         </Button>

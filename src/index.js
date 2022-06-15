@@ -10,6 +10,7 @@ import Web3Provider from "./providers/web3";
 import { Provider } from 'react-redux';
 import store from './store';
 import { CookiesProvider } from "react-cookie";
+import './i18n.js';
 const Error404Modern = lazy(() => import("./pages/error/404-modern"));
 
 ReactDOM.render(

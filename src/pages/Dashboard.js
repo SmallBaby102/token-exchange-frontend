@@ -929,12 +929,12 @@ const Dashboard = () => {
           }
         }
         if (item.product === "BTC") {
-          setBtcBalance(item.balance.active_balance);
+          setBtcBalance(item.balance.active_balance.toFixed(8));
           setBtcitem(item);
           // dispatch(setChecking(false))
         }
         if (item.product === "USD") {
-            setUsdBalance(item.balance.active_balance);
+            setUsdBalance(item.balance.active_balance.toFixed(8));
             setUsditem(item);
             // dispatch(setChecking(false))
         } 
@@ -967,7 +967,7 @@ const Dashboard = () => {
       setWithdrawFee(withdraw_fee);
   }, [formData.amount_withdraw])
   useEffect(() => {
-    let sum_usd = (btcBalance * btcPrice) + (usdBalance) + (usdtBalance) + (ethBalance * ethPrice);
+    let sum_usd = parseFloat((btcBalance * btcPrice) + (usdBalance) + (usdtBalance) + (ethBalance * ethPrice));
     setTotalBalance(sum_usd);
   }, [btcPrice, btcBalance, usdBalance, usdtBalance, ethBalance])
   // useEffect(() => {
@@ -1042,7 +1042,7 @@ const Dashboard = () => {
       for (const key in pairPriceArr) {
         if (Object.hasOwnProperty.call(pairPriceArr, key)) {
           const element = pairPriceArr[key];
-          if (element.pair === "BTCUSD"){
+          if (element.pair === "BTCUSDT"){
             let buyBtcPrice = element.bid;
             setBtcPrice(buyBtcPrice);
           }
@@ -1886,7 +1886,6 @@ const Dashboard = () => {
                         <Button
                           onClick={(ev) => {
                             ev.preventDefault();
-                            setModal({...modal, auth: false});
                           }}
                           className="link link-light"
                         >

@@ -978,7 +978,7 @@ const MyWallet = () => {
       for (const key in pairPriceArr) {
         if (Object.hasOwnProperty.call(pairPriceArr, key)) {
           const element = pairPriceArr[key];
-          if (element.pair === "BTCUSD"){
+          if (element.pair === "BTCUSDT"){
             let buyBtcPrice = element.bid;
             setBtcPrice(buyBtcPrice);
           }
@@ -1806,7 +1806,6 @@ const MyWallet = () => {
                         <Button
                           onClick={(ev) => {
                             ev.preventDefault();
-                            setModal({...modal, auth: false});
                           }}
                           className="link link-light"
                         >

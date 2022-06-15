@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
   DropdownItem,
@@ -12,8 +12,22 @@ import {
   Row,
 } from '../../components/Component';
 import EnglishFlag from '../../images/flags/english.png';
-
+import ChineseFlag from '../../images/flags/china.png';
+import { useTranslation } from 'react-i18next'
 const AuthFooter = () => {
+  const { t } = useTranslation(); 
+  const [lang, setLang] = useState(localStorage.getItem('i18nextLng'));
+  const languages = { 
+    en: "English" ,
+    zh: "Chinese" ,
+    ko: "Korean" ,
+    ja: "Japanese" ,
+  }
+  const handleChange = (value) => { 
+    setLang(value);
+    let loc = "http://localhost:3000/auth-login";
+    window.location.replace(loc + "?lng=" + value);
+}
   return (
     <div className="nk-footer nk-auth-footer-full">
       <div className="container wide-lg">
@@ -21,13 +35,13 @@ const AuthFooter = () => {
           <Col lg={6} className="order-lg-last">
             <ul className="nav nav-sm justify-content-center justify-content-lg-end">
               <li className="nav-item">
-                <a href='https://cryptowire.vip/terms/' className='nav-link' target="_blank" >Terms &amp; Condition</a>
+                <a href='https://cryptowire.vip/terms/' className='nav-link' target="_blank" >{t('terms_conditions')}</a>
               </li>
               <li className="nav-item">
-                <a href='https://cryptowire.vip/privacy-policy/' className='nav-link' target="_blank" >Privacy Policy</a>
+                <a href='https://cryptowire.vip/privacy-policy/' className='nav-link' target="_blank" >{t('privacy_policy')}</a>
               </li>
               <li className="nav-item">
-               <a href='https://cryptowire.vip/contact-us/' className='nav-link' target="_blank" >Help</a>
+               <a href='https://cryptowire.vip/contact-us/' className='nav-link' target="_blank" >{t('help')}</a>
               </li>
               <li className="nav-item ">
                 <UncontrolledDropdown direction="up">
@@ -35,7 +49,7 @@ const AuthFooter = () => {
                     color="transparent"
                     className="dropdown-toggle dropdown-indicator has-indicator nav-link"
                   >
-                    <span>English</span>
+                    <span>{languages[lang]}</span>
                   </DropdownToggle>
                   <DropdownMenu right className="dropdown-menu-sm">
                     <ul className="language-list">
@@ -45,6 +59,7 @@ const AuthFooter = () => {
                           href="#dropdownitem"
                           onClick={(ev) => {
                             ev.preventDefault();
+                            handleChange("en");
                           }}
                           className="language-item"
                         >
@@ -58,11 +73,13 @@ const AuthFooter = () => {
                           href="#dropdownitem"
                           onClick={(ev) => {
                             ev.preventDefault();
+                            handleChange("zh");
+
                           }}
                           className="language-item"
                         >
-                          <img src={SpanishFlag} alt="" className="language-flag" />
-                          <span className="language-name">Español</span>
+                          <img src={ChineseFlag} alt="" className="language-flag" />
+                          <span className="language-name">Chinese</span>
                         </DropdownItem>
                       </li>
                       <li>
@@ -71,11 +88,13 @@ const AuthFooter = () => {
                           href="#dropdownitem"
                           onClick={(ev) => {
                             ev.preventDefault();
+                            handleChange("zh");
+
                           }}
                           className="language-item"
                         >
-                          <img src={FrenchFlag} alt="" className="language-flag" />
-                          <span className="language-name">Français</span>
+                          <img src={ChineseFlag} alt="" className="language-flag" />
+                          <span className="language-name">Korean</span>
                         </DropdownItem>
                       </li>
                       <li>
@@ -84,11 +103,13 @@ const AuthFooter = () => {
                           href="#dropdownitem"
                           onClick={(ev) => {
                             ev.preventDefault();
+                            handleChange("ja");
+
                           }}
                           className="language-item"
                         >
-                          <img src={TurkeyFlag} alt="" className="language-flag" />
-                          <span className="language-name">Türkçe</span>
+                          <img src={ChineseFlag} alt="" className="language-flag" />
+                          <span className="language-name">Japanese</span>
                         </DropdownItem>
                       </li> */}
                     </ul>

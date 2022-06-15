@@ -25,8 +25,10 @@ import Http from '../../utils/Http';
 import AuthFooter from './AuthFooter';
 import LogoComp from './Logo';
 import { useCookies } from 'react-cookie';
+import { useTranslation } from 'react-i18next'
 
 const Register = () => {
+  const { t } = useTranslation(); 
   const [cookies, setCookie] = useCookies();
   const history = useHistory();
   const [passState, setPassState] = useState(false);
@@ -242,7 +244,7 @@ const Register = () => {
             <BlockHead>
               <BlockContent>
                 <BlockDes>
-                  <p>Create a New Account</p>
+                  <p>{t('create_account')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -250,7 +252,7 @@ const Register = () => {
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="firstname">
-                    First Name (*)
+                   {t('firstname')} (*)
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -276,17 +278,17 @@ const Register = () => {
                     }
                     }
                     name="firstname"
-                    // ref={register({ required: "This field is required" , validate: (value) => (value.match(/^[A-Za-z]+$/)) || "Must be only alphabetic characters" })}
+                    // ref={register({ required: t('required') , validate: (value) => (value.match(/^[A-Za-z]+$/)) || "Must be only alphabetic characters" })}
                     className="form-control-lg form-control"
-                    placeholder="Enter your first name"
+                    placeholder={t('placeholder_firstname')}
                   />
-                  {errorsf.firstname.status && <p className="invalid">Only alphabet characters are allowed for 'First Name'</p>}
+                  {errorsf.firstname.status && <p className="invalid">{t('only_alpha')}</p>}
                 </div>
               </FormGroup>
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="lastname">
-                    Last Name (*)
+                    {t('lastname')} (*)
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -311,17 +313,17 @@ const Register = () => {
                         ...errorsf, lastname: {status:true}
                       })
                   }}
-                    // ref={register({ required: "This field is required", validate: (value) => value.match(/^[A-Za-z]+$/) || "Must be only alphabetic characters" })}
+                    // ref={register({ required: t('required'), validate: (value) => value.match(/^[A-Za-z]+$/) || "Must be only alphabetic characters" })}
                     className="form-control-lg form-control"
-                    placeholder="Enter your last name"
+                    placeholder={t('placeholder_lastname')}
                   />
-                  {errorsf.lastname.status && <p className="invalid">Only alphabet characters are allowed for 'Last Name'</p>}
+                  {errorsf.lastname.status && <p className="invalid">{t('only_alpha')}</p>}
                 </div>
               </FormGroup>
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="email">
-                    Email (*)
+                    {t('email')} (*)
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -348,7 +350,7 @@ const Register = () => {
                         ...errorsf, emailfield: {status:true}
                       })
                     }}
-                    // ref={register({ required: "This field is required", validate: (value)=> { 
+                    // ref={register({ required: t('required'), validate: (value)=> { 
                     //   if (value.match(/[a-z0-9]+@[a-z]+\.[a-z]{2,3}/))
                     //       return true; 
                     //   else
@@ -357,15 +359,15 @@ const Register = () => {
                     //   })
                     // }  
                     className="form-control-lg form-control"
-                    placeholder="Enter your email address"
+                    placeholder={t('placeholder_email')}
                   />
-                  {errorsf.emailfield.status && <p className="invalid">Please input correct email address</p>}
+                  {errorsf.emailfield.status && <p className="invalid">{t('email_error')}</p>}
                 </div>
               </FormGroup>
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="password">
-                    Password (*)
+                  {t('password')} (*)
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -403,7 +405,7 @@ const Register = () => {
                         })
                     }
                     }
-                    // ref={register({ required: "This field is required", validate: (value)=> { 
+                    // ref={register({ required: t('required'), validate: (value)=> { 
                     //   if (value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[-+_!@#$%^&*.,?]).{6,}/))
                     //    { 
                     //      if (value.match(/^[a-zA-Z\d-+_!@#$%^&*.,?]+$/)) 
@@ -416,16 +418,16 @@ const Register = () => {
                     //     }
                     //   })
                     // }  
-                    placeholder="Enter your password"
+                    placeholder={t('placeholder_password')}
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   />
-                  {errorsf.password.status && <span className="invalid">A combination of numbers, lowercase letters, uppercase letters, and symbols with 6 or more characters</span>}
+                  {errorsf.password.status && <span className="invalid">{t('combination')}</span>}
                 </div>
               </FormGroup>
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="password_confirm">
-                    Password Confirm (*)
+                    {t('password_confirm')} (*)
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -470,22 +472,22 @@ const Register = () => {
                     }
                     }
                    
-                    // ref={register({ required: "This field is required", validate: (value) => value === watch('password') || `Password doesn't match` })}
-                    placeholder="Enter your password again."
+                    // ref={register({ required: t('required'), validate: (value) => value === watch('password') || `Password doesn't match` })}
+                    placeholder={t('placeholder_password_confirm')}
                     className={`form-control-lg form-control ${passStateConfirm ? "is-hidden" : "is-shown"}`}
                   />
-                  {errorsf.password_confirm.status && <span className="invalid">Password doesn't match</span>}
+                  {errorsf.password_confirm.status && <span className="invalid">{t('password_error')}</span>}
                 </div>
               </FormGroup>
               <FormGroup>
                 <label className="form-label" htmlFor="name">
-                    Your Country (*)
+                    {t('country')} (*)
                 </label>
                 <div className="form-control-wrap">
                     <select id="country" name="country" className="form-control-lg form-control"
-                      ref={register({ required: "This field is required", validate: (value) => value !== "noselect" || `Please select a country` })}
+                      ref={register({ required: t('required'), validate: (value) => value !== "noselect" || `Please select a country` })}
                     >
-                        <option value="noselect" >Select Country</option>
+                        <option value="noselect" >{t('select_country')}</option>
                         <option value="United States">United States</option>
                         <option value="Afghanistan">Afghanistan</option>
                         <option value="Albania">Albania</option>
@@ -682,7 +684,7 @@ const Register = () => {
                         className="custom-control-input "
                         id="terms1"
                         name = "terms1"
-                        ref={register({ required: "This field is required"})}
+                        ref={register({ required: t('required')})}
                         onKeyDown={(e) => handleKeyPress(e)}
                     />
                     {errors.terms1 && <span className="invalid" style={{position: "absolute", left: "0",
@@ -695,7 +697,7 @@ const Register = () => {
                       zIndex: "1",
                       borderRadius: "3px",
                       whiteSpace: "nowrap"}}>{errors.terms1.message}</span>}
-                    <label className="custom-control-label ml-5 pl-1 custom-control-sm" htmlFor="terms1" >I agree with <a href='https://cryptowire.vip/terms/' target="_blank" >Terms and conditions</a></label>
+                    <label className="custom-control-label ml-5 pl-1 custom-control-sm" htmlFor="terms1" >{t('agree')} <a href='https://cryptowire.vip/terms/' target="_blank" >{t('terms_conditions')}</a></label>
                 </div>
               </FormGroup>
               <FormGroup>
@@ -706,7 +708,7 @@ const Register = () => {
                       name = "terms2"
                       id="terms2"
                       onKeyDown={(e) => handleKeyPress(e)}
-                      ref={register({ required: "This field is required"})}
+                      ref={register({ required: t('required')})}
                   />
                   {errors.terms2 && <span className="invalid" style={{position: "absolute", left: "0",
                     color: "#fff",
@@ -718,11 +720,11 @@ const Register = () => {
                     zIndex: "1",
                     borderRadius: "3px",
                     whiteSpace: "nowrap"}}>{errors.terms2.message}</span>}
-                  <label className="custom-control-label ml-5 pl-1 custom-control-sm" htmlFor="terms2" >I agree with <a href='https://cryptowire.vip/privacy-policy/' target='_blank'>Privacy Policy</a></label>
+                  <label className="custom-control-label ml-5 pl-1 custom-control-sm" htmlFor="terms2" >{t('agree')} <a href='https://cryptowire.vip/privacy-policy/' target='_blank'>{t('privacy_policy')}</a></label>
                 </div>
               </FormGroup>
               <input type="hidden" id="papCookie" name="papCookie" value="noCookie" 
-                      ref={register({ required: "This field is required"})}
+                      ref={register({ required: t('required')})}
               
               />
 
@@ -730,15 +732,14 @@ const Register = () => {
                 <Button type="submit" color="primary" size="lg" name="register" 
                       onKeyDown={(e) => handleKeyPress(e)}
                       className="btn-block">
-                  {loading ? <Spinner size="sm" color="light" /> : "Register"}
+                  {loading ? <Spinner size="sm" color="light" /> : t('register')}
                 </Button>
               </FormGroup>
             </form>
             <div className="form-note-s2 text-center pt-4">
-              {" "}
-              Already have an account?{" "}
+                {t('already')}
               <Link to={`${process.env.PUBLIC_URL}/auth-login`}>
-                <strong>Sign in instead</strong>
+                <strong>{t('instead_signin')}</strong>
               </Link>
             </div>
           </PreviewCard>

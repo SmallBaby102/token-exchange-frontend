@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useTranslation } from 'react-i18next'
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
@@ -44,6 +44,7 @@ import axios from 'axios';
 
 let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 const Login = () => {
+  const { t } = useTranslation(); 
   const [cookies, setCookie] = useCookies();
   const [loading, setLoading] = useState(false);
   const [loadingConfirm, setLoadingConfirm] = useState(false);
@@ -341,9 +342,9 @@ const Login = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h4">SignIn</BlockTitle>
+                <BlockTitle tag="h4">{t('signin')}</BlockTitle>
                 <BlockDes>
-                  <p>Access Cryptowire using your email and password.</p>
+                  <p>{t('access')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -360,7 +361,7 @@ const Login = () => {
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">
-                    Email
+                    {t('email')}
                   </label>
                 </div>
                 <div className="form-control-wrap">
@@ -369,7 +370,7 @@ const Login = () => {
                     id="default-01"
                     name="name"
                     value={email}
-                    placeholder="Enter your email address"
+                    placeholder={t('placeholder_email')}
                     className="form-control-lg form-control"
                     onKeyDown={(e) => handleKeyPress(e)}
                     onChange={ e => {
@@ -389,17 +390,18 @@ const Login = () => {
                       })
                     }}
                   />
-                   {errorsf.emailfield.status && <p className="invalid">Please input correct email address</p>}
+                   {errorsf.emailfield.status && <p className="invalid">{t('email_error')}</p>}
              
                 </div>
               </FormGroup>
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="password">
-                    Password
+                  {t('password')}
+
                   </label>
                   <Link className="link link-sm" name="forgot" to={`${process.env.PUBLIC_URL}/auth-reset`}>
-                    Forgot password?
+                    {t('forgot_password')}
                   </Link>
                 </div>
                 <div className="form-control-wrap">
@@ -420,27 +422,27 @@ const Login = () => {
                     id="password"
                     defaultValue=""
                     name="passcode"
-                    ref={register({ required: "This field is required" })}
+                    ref={register({ required: t('required') })}
                     onKeyDown={(e) => handleKeyPress(e)}
-                    placeholder="Enter your password"
+                    placeholder={t('placeholder_password')}
                     className={`form-control-lg form-control ${passState ? "is-hidden" : "is-shown"}`}
                   />
                   {errors.passcode && <span className="invalid">{errors.passcode.message}</span>}
                 </div>
               </FormGroup>
               <input type="hidden" id="papCookie" name="papCookie" value="noCookie" 
-                      ref={register({ required: "This field is required"})}
+                      ref={register({ required: t('required')})}
               
               />
               <FormGroup>
                 <Button size="lg" className="btn-block" type="submit" name="login" color="primary" onKeyDown={(e) => handleKeyPress(e)}>
-                  {loading ? <Spinner size="sm" color="light" /> : "Sign in"}
+                  {loading ? <Spinner size="sm" color="light" /> : t('signin')}
                 </Button>
               </FormGroup>
             </Form>
             <div className="form-note-s2 text-center pt-4">
               {" "}
-              New on our platform? <Link to={`${process.env.PUBLIC_URL}/auth-register`}  onKeyDown={(e) => handleKeyPress(e)} name="create">Create an account</Link>
+              {t('new')} <Link to={`${process.env.PUBLIC_URL}/auth-register`}  onKeyDown={(e) => handleKeyPress(e)} name="create">{t('create_account')}</Link>
             </div>
           </PreviewCard>
         </Block>
@@ -463,7 +465,7 @@ const Login = () => {
                   <Col md="12">
                     <FormGroup>
                         <label className="form-label" htmlFor="default-01">
-                          Input 2FA code
+                          {t('input_2fa')}
                         </label>
                         <div className="form-control-wrap">
                           <input
@@ -490,7 +492,7 @@ const Login = () => {
                               })
                             }}
                           />
-                          {errorsf.authfield.status && <p className="invalid">This field is required</p>}
+                          {errorsf.authfield.status && <p className="invalid">{t('required')}</p>}
                     
                         </div>
                     </FormGroup>
@@ -499,19 +501,18 @@ const Login = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit" >
-                          {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
+                          {loadingConfirm ? <Spinner size="sm" color="light" /> : t('confirm')}
                         </Button>
                       </li>
                       <li>
                         <Button
                           onClick={(ev) => {
                             ev.preventDefault();
-                            setModal({...modal, auth: false});
                           }}
                           className="link link-light"
                         >
                           
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </li>
                     </ul>
