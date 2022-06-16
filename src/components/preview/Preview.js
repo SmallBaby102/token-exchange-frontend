@@ -4,6 +4,7 @@ import { Card, Button } from "reactstrap";
 import { a11yLight } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { OverlineTitle } from "../text/Text";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { useTranslation } from 'react-i18next'
 
 export const PreviewCard = ({ className, bodyClass, ...props }) => {
   return (
@@ -29,6 +30,7 @@ export const PreviewTable = ({ ...props }) => {
   );
 };
 export const CodeBlock = ({ language, ...props }) => {
+  const { t } = useTranslation(); 
   const [copyText, setCopyText] = useState(props.children);
   const [copyState, setCopyState] = useState(false);
   const onCopyClick = () => {
@@ -44,7 +46,7 @@ export const CodeBlock = ({ language, ...props }) => {
       <OverlineTitle className="title">{props.title ? props.title : "Code Example"}</OverlineTitle>
       <CopyToClipboard text={copyText} onCopy={onCopyClick}>
         <Button color="blank" size="sm" className="clipboard-init">
-        {copyState ? "Copied" : "Copy"}
+        {copyState ? t('copied') : t('copy')}
         </Button>
       </CopyToClipboard>
       <div language="javascript" className="bg-lighter h-max-150px m-0" style={{whiteSpace: "pre-wrap", overflowWrap: "anywhere"}}>

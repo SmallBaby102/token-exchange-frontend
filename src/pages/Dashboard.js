@@ -931,22 +931,22 @@ const Dashboard = () => {
           }
         }
         if (item.product === "BTC") {
-          setBtcBalance(item.balance.active_balance);
+          setBtcBalance(item.balance.active_balance.toFixed(8));
           setBtcitem(item);
           // dispatch(setChecking(false))
         }
         if (item.product === "USD") {
-            setUsdBalance(item.balance.active_balance);
+            setUsdBalance(item.balance.active_balance.toFixed(8));
             setUsditem(item);
             // dispatch(setChecking(false))
         } 
         if (item.product === "USDT") {
-            setUsdtBalance(item.balance.active_balance);
+            setUsdtBalance(item.balance.active_balance.toFixed(8));
             setUsdtitem(item);
             // dispatch(setChecking(false))
         } 
         if (item.product === "ETH") {
-            setEthBalance(item.balance.active_balance);
+            setEthBalance(item.balance.active_balance.toFixed(8));
             setEthitem(item);
             // dispatch(setChecking(false))
         } 

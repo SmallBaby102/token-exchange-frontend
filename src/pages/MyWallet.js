@@ -937,19 +937,19 @@ const MyWallet = () => {
             }
           }
           if (item.product === "BTC") {
-            setBtcBalance(item.balance.active_balance);
+            setBtcBalance(item.balance.active_balance.toFixed(8));
             setBtcitem(item);
           } 
           if (item.product === "USD") {
-              setUsdBalance(item.balance.active_balance);
+              setUsdBalance(item.balance.active_balance.toFixed(8));
               setUsditem(item);
             } 
           if (item.product === "USDT") {
-              setUsdtBalance(item.balance.active_balance);
+              setUsdtBalance(item.balance.active_balance.toFixed(8));
               setUsdtitem(item);
             } 
           if (item.product === "ETH") {
-              setEthBalance(item.balance.active_balance);
+              setEthBalance(item.balance.active_balance.toFixed(8));
               setEthitem(item);
             } 
       }

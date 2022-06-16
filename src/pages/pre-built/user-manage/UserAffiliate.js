@@ -66,8 +66,7 @@ const UserProfileRegularPage = ({sm, updateSm}) => {
           <BlockHeadContent>
             <BlockTitle tag="h4">{t('my_affiliate_link')}</BlockTitle>
             <BlockDes>
-              <p>These are your affiliate links. We provide 2 types of affiliate links, you can freely to Copy and Paste them 
-                to your website, blog or SNS to to promote for Cryptowire and get rewards.
+              <p>{t('affiliate_link_desc1')}
               </p>
             </BlockDes>
           </BlockHeadContent>
@@ -85,14 +84,14 @@ const UserProfileRegularPage = ({sm, updateSm}) => {
         <div className="nk-data data-list">
             <Col md="12">
               <FormGroup>
-                <CodeBlock title = "Homepage"
+                <CodeBlock title = {t('homepage')}
                   children = {homepageUrl}
                   >
                   {homepageUrl}
                 </CodeBlock>
               </FormGroup>
               <FormGroup>
-                <CodeBlock title = "Signup/Signin Page"
+                <CodeBlock title = {t('signinurl')}
                   children = {signinUrl}
                   >
                   {signinUrl}
@@ -105,7 +104,7 @@ const UserProfileRegularPage = ({sm, updateSm}) => {
       <Block>
           <FormGroup>
               <Label style={{color:'#526484'}}>
-              When the user you referred to creates a USD wire, you will receive an affiliate commission.  <a href=" https://cryptowire.vip/affiliate-details/" target="_blank">more</a>
+              {t('affiliate_link_desc2')}  <a href=" https://cryptowire.vip/affiliate-details/" target="_blank">{t('more')}</a>
               </Label>
           </FormGroup>
       </Block>
