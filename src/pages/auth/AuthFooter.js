@@ -90,7 +90,7 @@ const AuthFooter = () => {
                           href="#dropdownitem"
                           onClick={(ev) => {
                             ev.preventDefault();
-                            handleChange("zh");
+                            handleChange("ko");
 
                           }}
                           className="language-item"

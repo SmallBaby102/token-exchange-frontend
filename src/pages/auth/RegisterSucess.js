@@ -17,9 +17,10 @@ import Head from '../../layout/head/Head';
 import Http from '../../utils/Http';
 import { useCookies } from 'react-cookie';
 import api, { myServerApi } from '../../utils/api';
-import { returnLevel } from '../../utils/Utils';
+import { useTranslation } from 'react-i18next'
 
 const RegisterSuccess = () => {
+  const { t } = useTranslation(); 
   const [cookies, setCookie] = useCookies();
   const history = useHistory();
   const [loading, setLoading] = useState(false)
@@ -38,7 +39,7 @@ const RegisterSuccess = () => {
   const handleSubmit = e => {
     if (loading) return;
     if (formData.verification_code === ''){
-      toast.warn("Please input a verification code");
+      toast.warn(t('input_verification_code'));
       return;
     }
     e.preventDefault();
@@ -75,7 +76,7 @@ const RegisterSuccess = () => {
         setLoading(false)
       } else {
         setLoading(false)
-        toast.warn("Verification failed. Please enter the correct code");
+        toast.warn(t('input_correct_verification_code'));
       }    
     });
   };

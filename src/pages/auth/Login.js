@@ -152,7 +152,7 @@ const Login = () => {
       //   role === "admin" ? history.push("/") : history.push("/");
       // }
     } else {
-      toast.warn("Please input correct code");
+      toast.warn(t('code_error'));
     }
      
   }
@@ -246,17 +246,17 @@ const Login = () => {
           } else {
             setLoading(false);
             if (res.message === "User is not confirmed"){
-              toast.info("Please verify email");
+              toast.info(t('verify_email_warn'));
               // for test
               localStorage.setItem("registerData", null)
               localStorage.setItem("pass", formData.passcode)
 
               history.push('/register-success');
             } else if(res.result === "error") {
-              toast.error("Can't login now due to system error, please try again later.");
+              toast.error(t('login_system_error'));
             }else
             {
-              toast.error("Incorrect credential");
+              toast.error(t('incorrect_credential'));
             }
           }
         })      
@@ -465,7 +465,7 @@ const Login = () => {
                   <Col md="12">
                     <FormGroup>
                         <label className="form-label" htmlFor="default-01">
-                          {t('input_2fa')}
+                          {t('enter_code')}
                         </label>
                         <div className="form-control-wrap">
                           <input
@@ -473,7 +473,7 @@ const Login = () => {
                             id="default-01"
                             name="authcode"
                             value={authCode}
-                            placeholder="Enter your code"
+                            placeholder={t('input_2fa')}
                             className="form-control-lg form-control"
                             onChange={ e => {
                               // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)

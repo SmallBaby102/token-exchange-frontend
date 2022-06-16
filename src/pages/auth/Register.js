@@ -72,6 +72,12 @@ const Register = () => {
         });
         return;
       }
+      if (lastname === "") {
+        setErrorsf({
+          ...errorsf, lastname: {status: true}
+        });
+        return;
+      }
       if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
         console.log("test");
         setErrorsf({
@@ -124,9 +130,9 @@ const Register = () => {
         ])
         if (res.message === "An account with the given email already exists.") {
           localStorage.setItem("username",formData.email)
-          toast.warn("Your account already exists");
+          toast.warn(t('account_exist'));
         } else {
-            toast.warn("A combination of numbers, lowercase letters, uppercase letters, and symbols with 6 or more characters.");
+            toast.warn(t('combination'));
         }
       }    
     })
@@ -140,9 +146,9 @@ const Register = () => {
       ])
       if (e.response.message === "An account with the given email already exists.") {
         localStorage.setItem("username",formData.email)
-        toast.warn("Your account already exists");
+        toast.warn(t('account_exist'));
       } else {
-          toast.warn("A combination of numbers, lowercase letters, uppercase letters, and symbols with 6 or more characters.");
+          toast.warn(t('combination'));
       }
     });
   };
@@ -476,7 +482,7 @@ const Register = () => {
                     placeholder={t('placeholder_password_confirm')}
                     className={`form-control-lg form-control ${passStateConfirm ? "is-hidden" : "is-shown"}`}
                   />
-                  {errorsf.password_confirm.status && <span className="invalid">{t('password_error')}</span>}
+                  {errorsf.password_confirm.status && <span className="invalid">{t('combination')}</span>}
                 </div>
               </FormGroup>
               <FormGroup>

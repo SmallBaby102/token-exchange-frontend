@@ -157,7 +157,7 @@ const WireHistory = () => {
         <BlockHead size="sm">
           <BlockBetween>
             <BlockHeadContent>
-              <BlockTitle page>Wire History</BlockTitle>
+              <BlockTitle page>{t('Wire History')}</BlockTitle>
               <BlockDes className="text-soft">
                 <p>{t('desc', {total: data.length})}</p>
               </BlockDes>
@@ -187,13 +187,13 @@ const WireHistory = () => {
                 <div className="card-inner">
                   <div className="card-title-group">
                     <div className="card-title">
-                      <h5 className="title">All History</h5>
+                      <h5 className="title">{t('all_history')}</h5>
                       <Row>
                         <FormGroup style={{width:"30%"}} className="d-none d-md-block mt-3">
                              <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <Stack spacing={3}>
                                   <DesktopDatePicker
-                                    label="Date(From)"
+                                    label={`${t('date')}(${t('from')})`}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.from}
                                     onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); }}
@@ -209,7 +209,7 @@ const WireHistory = () => {
                               style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                               className="select-btn sm"
                               onClick={handleThemeToggle('default')}>
-                              {displaySetting.from === null ? "Select Date" : dateFormatterAlt(displaySetting.from, true)}
+                              {displaySetting.from === null ? t('select_date') : dateFormatterAlt(displaySetting.from, true)}
                           </a>
                           <DatePickerMobile
                           value={displaySetting.from !== null ? new Date(displaySetting.from) : new Date()}
@@ -217,8 +217,8 @@ const WireHistory = () => {
                           isOpen={state.isOpen}
                           showCaption
                           headerFormat="DD/MM/YYYY"
-                          confirmText="Set"
-                          cancelText="Cancel"
+                          confirmText={t('set')}
+                          cancelText={t('cancel')}
                           dateConfig={{
                             'date': {
                               format: 'D',
@@ -243,7 +243,7 @@ const WireHistory = () => {
                               <LocalizationProvider dateAdapter={AdapterDateFns}>
                                 <Stack spacing={3}>
                                   <DesktopDatePicker
-                                    label="Date(To)"
+                                    label={`${t('date')}(${t('to')})`}
                                     minDate={displaySetting.from}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.end}
@@ -260,7 +260,7 @@ const WireHistory = () => {
                             style={{opacity: "0",width:"60%", position:"absolute", left: "0"}}
                               className="select-btn sm"
                               onClick={handleThemeToggle1('default')}>
-                              {displaySetting.end === null ? "Select Date" : dateFormatterAlt(displaySetting.end, true)}
+                              {displaySetting.end === null ? t('select_date') : dateFormatterAlt(displaySetting.end, true)}
                           </a>
                           <DatePickerMobile
                           value={displaySetting.end !== null ? new Date(displaySetting.end) : new Date()}
@@ -268,8 +268,8 @@ const WireHistory = () => {
                           isOpen={state.isOpen1}
                           showCaption
                           headerFormat="DD/MM/YYYY"
-                          confirmText="Set"
-                          cancelText="Cancel"
+                          confirmText={t('set')}
+                          cancelText={t('cancel')}
                           dateConfig={{
                             'date': {
                               format: 'D',

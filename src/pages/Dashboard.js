@@ -190,14 +190,14 @@ const Dashboard = () => {
       if (formData.amount_withdraw < minimumWithdrawAmount[formData.product.toLowerCase()]) {
           setErrorsWithdraw({
             status: true,
-            message: "Amount must be over minimum withdraw one"
+            message:  t('amount_over_error')
           })
           return;
       } 
       if (formData.amount_withdraw > availableWithdrawAmount) {
         setErrorsWithdraw({
           status: true,
-          message: "Amount must be under the available one"
+          message: t('amount_under_available_error')
         })
         return;
       }
@@ -219,7 +219,7 @@ const Dashboard = () => {
       // if (twoFactor.status === 1 && twoFactor.withdraw === 1){
         // setSecret_val(security.data.data.code_from_app);
       // } else {
-      //   toast.warn("You must enable 2FA function");
+      //   toast.warn(t('must_2fa'));
       //   history.push("/security");
         setModal({...modal, auth: true, withdrawConfirm: false});
       
@@ -304,7 +304,7 @@ const Dashboard = () => {
       setAuthCode("");
       if (flag === "False")
       {
-        toast.warn("Please input correct code");
+        toast.warn(t('code_error'));
         return;
       }
         setModal({...modal, ...{auth : false}});
@@ -384,14 +384,14 @@ const Dashboard = () => {
           if (formData.amount_sell > maximumSellAmount[formData.product.toLowerCase()]) {
             setErrorsSell({
               status: true,
-              message: "Amount must be under the maximum one"
+              message: t('amount_under_max_error')
             })
             return;
           }
         if (formData.amount_sell > parseFloat(availableSellAmount)) {
           setErrorsSell({
             status: true,
-            message: "Amount must be under the available one"
+            message: t('amount_under_available_error')
           })
           return;
         }
@@ -816,13 +816,13 @@ const Dashboard = () => {
       let security = await myApi.get(`security/${email}`)
       let twoFactor = security.data.data;
       if (twoFactor === null){
-        toast.warn("You must enable 2FA function");
+        toast.warn(t('must_2fa'));
         // history.push("/security");
         return;
       }
       setSecret_val(twoFactor.code_from_app);
       if (twoFactor.status !== 1){
-        toast.warn("You must enable 2FA function");
+        toast.warn(t('must_2fa'));
         // history.push("/security");
         return;
       }
@@ -1129,7 +1129,7 @@ const Dashboard = () => {
                                     }}
                                   >
                                     <Icon name="edit"></Icon>
-                                    <span>Deposit</span>
+                                    <span>{t('deposit')}</span>
                                   </DropdownItem>
                                 </li>
                                   <li onClick={() => withdrawClick(btcitem.id)}>
@@ -1141,7 +1141,7 @@ const Dashboard = () => {
                                       }}
                                     >
                                       <Icon name="check-round-cut"></Icon>
-                                      <span>Withdraw</span>
+                                      <span>{t('withdraw')}</span>
                                     </DropdownItem>
                                   </li>
                                   {btcitem.product !== "USD" && <li onClick={() => sellClick(btcitem.id)}>
@@ -1153,7 +1153,7 @@ const Dashboard = () => {
                                       }}
                                     >
                                       <Icon name="check-round-cut"></Icon>
-                                      <span>Sell</span>
+                                      <span>{t('sell')}</span>
                                     </DropdownItem>
                                   </li>}
                               </ul>
@@ -1205,7 +1205,7 @@ const Dashboard = () => {
                                     }}
                                   >
                                     <Icon name="edit"></Icon>
-                                    <span>Deposit</span>
+                                    <span>{t('deposit')}</span>
                                   </DropdownItem>
                                 </li>
                                   <li onClick={() => withdrawClick(ethitem.id)}>
@@ -1217,7 +1217,7 @@ const Dashboard = () => {
                                       }}
                                     >
                                       <Icon name="check-round-cut"></Icon>
-                                      <span>Withdraw</span>
+                                      <span>{t('withdraw')}</span>
                                     </DropdownItem>
                                   </li>
                                   <li onClick={() => sellClick(ethitem.id)}>
@@ -1229,7 +1229,7 @@ const Dashboard = () => {
                                       }}
                                     >
                                       <Icon name="check-round-cut"></Icon>
-                                      <span>Sell</span>
+                                      <span>{t('sell')}</span>
                                     </DropdownItem>
                                   </li>
                               </ul>
@@ -1281,7 +1281,7 @@ const Dashboard = () => {
                                     }}
                                   >
                                     <Icon name="edit"></Icon>
-                                    <span>Deposit</span>
+                                    <span>{t('deposit')}</span>
                                   </DropdownItem>
                                 </li>
                                   <li onClick={() => withdrawClick(usdtitem.id)}>
@@ -1293,7 +1293,7 @@ const Dashboard = () => {
                                       }}
                                     >
                                       <Icon name="check-round-cut"></Icon>
-                                      <span>Withdraw</span>
+                                      <span>{t('withdraw')}</span>
                                     </DropdownItem>
                                   </li>
                                   <li onClick={() => sellClick(usdtitem.id)}>
@@ -1305,7 +1305,7 @@ const Dashboard = () => {
                                       }}
                                     >
                                       <Icon name="check-round-cut"></Icon>
-                                      <span>Sell</span>
+                                      <span>{t('sell')}</span>
                                     </DropdownItem>
                                   </li>
                               </ul>
@@ -1373,7 +1373,7 @@ const Dashboard = () => {
                                     to="/requestwire"
                                   >
                                     <Icon name="check-round-cut"></Icon>
-                                    <span>Withdraw</span>
+                                    <span>{t('withdraw')}</span>
                                   </Link>
                                 </li>
                                 {/* {usditem.product !== "USD" && <li onClick={() => sellClick(usditem.id)}>
@@ -1441,20 +1441,19 @@ const Dashboard = () => {
                 <Form className="gy-4" onSubmit={handleSubmit(onWithdrawSubmit)}>
                   <Row>
                     <FormGroup className='ml-4'>
-                      <label className="form-label">Important Notice</label>
+                      <label className="form-label">{t('important_notice')}</label>
                       <div style={{fontSize: "13px"}}>
                           <p>
-                          Minimum withdrawal amount:   {  minimumWithdrawAmount[formData.product.toLowerCase()]} {formData.product}
+                          {t('minimum_withdrawal_amount')}:   {  minimumWithdrawAmount[formData.product.toLowerCase()]} {formData.product}
 
                           </p>
                           <p>
-                          Withdrawal fee:  {formData.amount_withdraw === 0 ? ("0.1% + " + withdrawFeeRule[formData.product]) : (formData.product === "USDT" && Number(withdrawFee).toFixed(6) || Number(withdrawFee).toFixed(8))} {formData.product}
+                          {t('withdraw_fee')}:  {formData.amount_withdraw === 0 ? ("0.1% + " + withdrawFeeRule[formData.product]) : (formData.product === "USDT" && Number(withdrawFee).toFixed(6) || Number(withdrawFee).toFixed(8))} {formData.product}
                           {/* 0.001 BTC + 0.1% of withdraw amount */}
 
                           </p>
                           <p>
-                          Available amount for withdrawal:   { formData.product === "USDT" && Helper.limitDecimal(availableWithdrawAmount, 6) || Helper.limitDecimal(availableWithdrawAmount, 8)} {formData.product}
-
+                            {t('available_amount_withdraw')}:   { formData.product === "USDT" && Helper.limitDecimal(availableWithdrawAmount, 6) || Helper.limitDecimal(availableWithdrawAmount, 8)} {formData.product}
                           </p>
                       </div>
                     </FormGroup>
@@ -1463,7 +1462,7 @@ const Dashboard = () => {
                   <Row >
                     <Col md="6">
                       <FormGroup>
-                        <label className="form-label">Amount {formData.product} to withdraw</label>
+                        <label className="form-label">{t('withdraw')} {t('amount')}</label>
                         <input
                           type = "text"
                           value={formData.amount_withdraw}
@@ -1481,11 +1480,11 @@ const Dashboard = () => {
                               if (e.target.value <= availableWithdrawAmount && e.target.value > 0)
                                 setErrorsWithdraw({...errorsSell, status: false});
                               else if (e.target.value > availableWithdrawAmount )
-                                setErrorsWithdraw({...errorsSell, status: true, message: "Amount must be under the available one"});
+                                setErrorsWithdraw({...errorsSell, status: true, message: t('amount_under_available_error')});
                               else 
                                 setErrorsWithdraw({
                                   status: true,
-                                  message: "Amount must be a minimum one"
+                                  message: t('amount_over_error')
                                 })
 
                             } 
@@ -1500,7 +1499,7 @@ const Dashboard = () => {
                     </Col>
                     <Col md="6">
                       <FormGroup>
-                        <label className="form-label">{formData.product} address</label>
+                        <label className="form-label">{formData.product}  {t('address')}</label>
                         <input  
                           className="form-control" 
                           value={formData.address_withdraw}
@@ -1511,12 +1510,12 @@ const Dashboard = () => {
                             if (e.target.value === "") {
                               setErrorsWithdrawAddr({
                                 status: true,
-                                message: "Address is required"
+                                message: t('required')
                               })
                             } else {
                               setErrorsWithdrawAddr({
                                 status: false,
-                                message: "Address is required"
+                                message: t('required')
                               })
                             }
                             } }
@@ -1529,10 +1528,10 @@ const Dashboard = () => {
                     </Col>
                   </Row>: (withdrawFinish === 1?
                   <Row className='success_dlg'>
-                     {formData.amount_withdraw + " " + formData.product} successfully withdrawed to {formData.address_withdraw}
+                    {t('withdraw_success', {amount: formData.amount_withdraw + formData.product, address: formData.address_withdraw})}
                   </Row>:
                   <Row className='fail_dlg'>
-                      Failed
+                      {t('failed')}
                   </Row>)
                   }
                   <Row className="ml-2">
@@ -1540,7 +1539,7 @@ const Dashboard = () => {
                       { withdrawFinish === 0 &&
                       <li>
                         <Button color="primary" size="md" type="submit">
-                            {loading ? <Spinner size="sm" color="light" /> : "Withdraw"}
+                            {loading ? <Spinner size="sm" color="light" /> : t('withdraw')}
                         </Button>
                       </li>}
                       <li>
@@ -1551,7 +1550,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                          {withdrawFinish === 0 ? "Cancel" : "Close"}
+                            {withdrawFinish === 0 ? t('cancel') : t('close') }
                         </Button>
                       </li>
                     </ul>
@@ -1574,12 +1573,12 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Deposit</h5>
+              <h5 className="title">{t('deposit')}</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onDepositSubmit)}>
                   <Col md="12">
                     <FormGroup>
-                      <label className="form-label">Please deposit to below address</label>
+                      <label className="form-label">{t('deposit_address_desc')}</label>
                     </FormGroup>
                   </Col>
                   <Row  className="center text-center" style={{width: "100%"}}>
@@ -1589,12 +1588,12 @@ const Dashboard = () => {
                   </Row>
                   <div style={{width: "95%"}}>
                       <Button color="primary" size="md" type="submit" className="float-right" onClick={(e) => { e.preventDefault(); onDepositClick(activeId, true)}}>
-                        {loading ? <Spinner size="sm" color="light" /> : " Change address"}
+                        {loading ? <Spinner size="sm" color="light" /> :  t('change_address')}
                       </Button>
                   </div>
                   <Col md="12">
                     <FormGroup>
-                    <CodeBlock title = "Address"
+                    <CodeBlock title ={t('address')}
                       children = {deposit_address}
                       >
                       {deposit_address}
@@ -1611,7 +1610,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </li>
                     </ul>
@@ -1634,23 +1633,23 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Sell {formData.product}</h5>
+              <h5 className="title">{t('sell')} {formData.product}</h5>
               <div className="mt-4">
                 <Form className="gy-4" onSubmit={handleSubmit(onSellSubmit)}>
                   { sellFinish === 0 ? <Col size="12"><Col md="12">
                   {formData.product !== "USDT" && <FormGroup>
-                      <label className="form-label">Important Notice</label>
+                      <label className="form-label">{t('important_notice')}</label>
                       <div>
-                            Because Cryptocurrency price is changed rapidly from time to time, the final amount in USD you will receive for your selling is subject to be changed according to the market price at the time your selling order is submitted.
+                            {t('important_notice_desc')}
                       </div>
                     </FormGroup>}
-                    <label className="form-label">Minimum Amount : { minimumSellAmount[[formData.product.toLowerCase()]]} {formData.product}</label><br/>
-                    <label className="form-label">Maximum Amount : {maximumSellAmount[[formData.product.toLowerCase()]] || "No limit"} {maximumSellAmount[[formData.product.toLowerCase()]] && formData.product}</label><br/>
-                    <label className="form-label">Available Amount : {availableSellAmount} {formData.product}</label>
+                    <label className="form-label">{t('minimum_amount')} : { minimumSellAmount[[formData.product.toLowerCase()]]} {formData.product}</label><br/>
+                    <label className="form-label">{t('maximum_amount')} : {maximumSellAmount[[formData.product.toLowerCase()]] || "No limit"} {maximumSellAmount[[formData.product.toLowerCase()]] && formData.product}</label><br/>
+                    <label className="form-label">{t('available_amount')} : {availableSellAmount} {formData.product}</label>
                   </Col>
                   <Col md="12">
                     <FormGroup>
-                      <label className="form-label">Amount {formData.product} to sell</label>
+                      <label className="form-label">{t('sell')} {t('amount')}</label>
                       <input
                         type = "text"
                         value={formData.amount_sell}
@@ -1668,13 +1667,13 @@ const Dashboard = () => {
                           if (e.target.value <= parseFloat(availableSellAmount) && e.target.value > 0)
                             setErrorsSell({...errorsSell, status: false});
                           else if (e.target.value > maximumSellAmount[[formData.product.toLowerCase()]] && formData.product!=="USDT")
-                            setErrorsSell({...errorsSell, status: true, message: "Amount must be under the maximum one"});
+                            setErrorsSell({...errorsSell, status: true, message: t('amount_under_max_error')});
                            else if (e.target.value > parseFloat(availableSellAmount) )
-                            setErrorsSell({...errorsSell, status: true, message: "Amount must be under the available one"});
+                            setErrorsSell({...errorsSell, status: true, message: t('amount_under_available_error')});
                             else 
                             setErrorsSell({
                               status: true,
-                              message: "Amount must be over minimum sell one"
+                                message: t('amount_over_error')
                             })
 
                       }}
@@ -1688,7 +1687,7 @@ const Dashboard = () => {
                   </Col>
                   <Col md="12">
                     <FormGroup>
-                      <label className="form-label">You will receive </label>
+                      <label className="form-label">{t('receive_desc')} </label>
                       <div className="pricing-amount text-center">
                         <div className="amount">
                           {Helper.limitDecimal(amount_receive, 2)} <span >USD</span>
@@ -1697,17 +1696,17 @@ const Dashboard = () => {
                     </FormGroup>
                   </Col></Col>: (sellFinish === 1?
                     <Col md="12" className='success_dlg'>
-                         {formData.amount_sell} {formData.product} was successfully sold
+                          {t('sell_success', {amount: formData.amount_sell+formData.product})}
                     </Col> :
                     <Col md="12" className='fail_dlg'>
-                        Failed sell operation
+                        {t('sell_failed')}
                     </Col>
                   )}
                   <Col size="12">
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2 justify-content-around">
                     {sellFinish === 0 &&<li>
                         <Button color="primary" size="md" type="submit">
-                            {loading ? <Spinner size="sm" color="light" /> : "Sell"}
+                        {loading ? <Spinner size="sm" color="light" /> : t('sell')}
                         </Button>
                       </li>}
                       <li>
@@ -1718,7 +1717,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                           {sellFinish === 0 ? "Cancel" : "Close"}
+                            {sellFinish === 0 ? t('cancel') : t('close')}
                         </Button>
                       </li>
                     </ul>
@@ -1741,7 +1740,7 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">Are you sure to sell {formData.amount_sell} {formData.product}?</h5>
+              <h5 className="title">{t('sure_sell', {amount: formData.amount_sell + formData.product})}</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onSellConfirmSubmit)}>
                   <Col md="12">
@@ -1755,7 +1754,7 @@ const Dashboard = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Confirm
+                          {t('confirm')}
                         </Button>
                       </li>
                       <li>
@@ -1766,7 +1765,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </li>
                     </ul>
@@ -1789,7 +1788,7 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>{t('sure_withdraw', {amount: formData.amount_withdraw + formData.product, address: formData.address_withdraw})}</h5>
               <div className="mt-4">
                 <Form className="row gy-4" onSubmit={handleSubmit(onWithdrawConfirmSubmit)}>
                   <Col md="12">
@@ -1802,7 +1801,7 @@ const Dashboard = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                          Confirm
+                          {t('confirm')}
                         </Button>
                       </li>
                       <li>
@@ -1813,7 +1812,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </li>
                     </ul>
@@ -1838,13 +1837,13 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>{t('sure_withdraw', {amount: formData.amount_withdraw + formData.product, address: formData.address_withdraw})}</h5>
               <div className="">
                 <Form className="row gy-4" onSubmit={handleSubmit(confirmWithdraw)}>
                   <Col md="12">
                     <FormGroup>
                         <label className="form-label" htmlFor="default-01">
-                          Input 2FA code
+                        {t('enter_code')}
                         </label>
                         <div className="form-control-wrap">
                           <input
@@ -1852,7 +1851,7 @@ const Dashboard = () => {
                             id="default-01"
                             name="authcode"
                             value={authCode}
-                            placeholder="Enter your code"
+                            placeholder={t('input_2fa')}
                             className="form-control-lg form-control"
                             onChange={ e => {
                               // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
@@ -1871,7 +1870,7 @@ const Dashboard = () => {
                               })
                             }}
                           />
-                          {errorsf.authfield.status && <p className="invalid">This field is required</p>}
+                          {errorsf.authfield.status && <p className="invalid">{t('required')}</p>}
                     
                         </div>
                     </FormGroup>
@@ -1892,8 +1891,7 @@ const Dashboard = () => {
                           }}
                           className="link link-light"
                         >
-                          
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </li>
                     </ul>

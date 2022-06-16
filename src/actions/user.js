@@ -111,13 +111,13 @@ export const forgotPassword = ( email, history) => dispatch => {
             history.push('resetpassword');
             dispatch(setLoading(false));
         }else {
-            toast.error('The account does not exist');
+            // toast.error('The account does not exist');
             dispatch(setLoading(false));
         }
     }).catch(err => {
         console.log('error: ', err);
         const msg = err.response.data.message;
-        toast.error(msg);
+        // toast.error(msg);
         dispatch(setLoading(false));
     });
 }
@@ -135,14 +135,13 @@ export const resetPassword = (password, verificationCode, history) => dispatch =
             toast.success('Your password has been successfully reset.');
             const myApi = myServerApi();
             myApi.post(`change_pap_password`, data).then(res => {
-                console.log('resetPasswordResult: ', res);
             })
             .catch (err => {
                 console.log('error: ', err);
             });
             history.push('/login');
         } else {
-            toast.warn('Please input the correct verification code.');
+            // toast.warn(t('input_correct_verification_code'));
         }
         dispatch(setLoading(false));
     }).catch (err => {

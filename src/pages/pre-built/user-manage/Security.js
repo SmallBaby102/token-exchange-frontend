@@ -23,13 +23,13 @@ import {
   Col,
   Row,
 } from '../../../components/Component';
-import Content from '../../../layout/content/Content';
 import Head from '../../../layout/head/Head';
 import { myServerApi } from '../../../utils/api';
 import { toast } from 'react-toastify';
-import Helper from '../../../utils/Helper';
+import { useTranslation } from 'react-i18next'
 let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 const Security = () => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");
   const myApi = myServerApi();
@@ -67,7 +67,7 @@ const Security = () => {
     // }
     setAuthCode("");
     if (flag === "False"){
-      toast.warn("Please input correct credential");
+      toast.warn(t('code_error'));
       setLoading2FA(false);
       return;
     }
@@ -174,11 +174,11 @@ const Security = () => {
 
   return (
     <React.Fragment>
-      <Head title="2-Factor Authenticator"></Head>
+      <Head title={t('2fa')}></Head>
       <BlockHead size="sm">
         <BlockBetween> 
           <BlockHeadContent>
-              <BlockTitle className="">2-FACTOR AUTHENTIFICATION SETTING</BlockTitle>
+              <BlockTitle className="">{t('2fa')}</BlockTitle>
               <BlockDes className="text-soft">
             </BlockDes>
             </BlockHeadContent>
@@ -188,21 +188,21 @@ const Security = () => {
         <div className="nk-data data-list"> 
           <Row >
             <Col md={6} style={{marginLeft: "-15px"}}>
-                <label>Current status : </label>
-                <label className='ml-4' style={{fontWeight: "bold"}}> { security.status === 1 ? "Enable": "Disable"}</label>
+                <label>{t('current_state')} : </label>
+                <label className='ml-4' style={{fontWeight: "bold"}}> { security.status === 1 ? t('enable'): t('disable')}</label>
             </Col>
           </Row>
           {security.status === 0 ? <div  style={{width: "100%!important"}}>       
               <div className='' style={{width: "100%", borderTop: "1px solid darkgray"}}>
                 { security.status === 0 && <label className="mt-3">
-                    Enable 2FA function
+                    {t('enable_2fa')}
                 </label>}   
               </div>
               <Col md={12}>
-                  <label>1. Install Google Authenticator. (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
+                  <label>1. {t('install_auth')} (<a target='_blank' href='https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2'>Android</a> / <a target='_blank' href='https://apps.apple.com/us/app/google-authenticator/id388497605'>iOS</a>)</label>
               </Col>
               <Col md={12}>
-                  <label>2. Scan QR code or enter authenticator key</label>
+                  <label>2. {t('scan_qr_code')}</label>
               </Col>
               <Col md={6}>
                   {/* {value && ( */}
@@ -220,12 +220,12 @@ const Security = () => {
                   {/* )} */}
               </Col>
               <Col md={12} className="mt-5">
-                  <label>3. Enter code from your Google Authenticator App to confirm</label>
+                  <label>3. {t('enter_code')}</label>
               </Col>
             </div>: 
             <div >
               <div className='mb-3' style={{width: "100%", borderTop: "1px solid darkgray"}}></div>
-              <label>Change confirm setting</label>
+              <label>{t('change_setting')}</label>
               <Row>
                   <Col md="12">
                     <div className="custom-control custom-checkbox">
@@ -240,7 +240,7 @@ const Security = () => {
                           onChange={e => {setSecurity({...security, login:  e.target.checked});}}
                         />
                           <label className="custom-control-label form-label" htmlFor="login">
-                          Login
+                          {t('signin')}
                         </label>
                     </div>
                   </Col>
@@ -259,7 +259,7 @@ const Security = () => {
                           onChange={e => {setSecurity({...security, withdraw:  e.target.checked});}}
                         />
                           <label className="custom-control-label form-label" htmlFor="withdraw">
-                          Withdraw crypto
+                          {t('withdraw_crypto')}
                         </label>
                     </div>
                   </Col>
@@ -276,7 +276,7 @@ const Security = () => {
                           onChange={e => {setSecurity({...security, request_wire:  e.target.checked});}}
                         />
                           <label className="custom-control-label form-label" htmlFor="request_wire">
-                          Request wire
+                          {t('request_wire')}
                         </label>
                     </div>
                   </Col>
@@ -284,7 +284,7 @@ const Security = () => {
               <Row>
                   <FormGroup>
                     <Button color="primary"  className="mt-3 ml-3"  onClick={() => updateStatus()}>
-                        {loading ? <Spinner size="sm" color="light" /> : "Update"}
+                        {loading ? <Spinner size="sm" color="light" /> : t('update')}
                         
                     </Button>
                   </FormGroup>
@@ -296,14 +296,14 @@ const Security = () => {
           
               { security.status === 1 && <div className='' style={{width: "100%", borderTop: "1px solid darkgray"}}>
                     <label className="mt-3">
-                        Disable 2FA function
+                        {t('disable_2fa')}
                     </label>
                   </div>}
                   <Col md={6} >
                       <FormGroup >
                         <div className="form-label-group">
                           <label className="form-label" htmlFor="default-01">
-                            Enter code from your Google Authenticator App
+                            {t('enter_code')}
                           </label>
                         </div>
                         <input
@@ -338,7 +338,7 @@ const Security = () => {
                       <FormGroup>
                         <Button color="primary"  className="mt-3"  onClick={(e) => {e.preventDefault(); onChangeStatus();}}>
                           {loading2FA ? <Spinner size="sm" color="light" /> :
-                          security.status === 0 ? "Enable 2-Factor authentication" : "Disable 2-Factor authentication"} 
+                          security.status === 0 ? t('enable_2fa') : t('disable_2fa')} 
                         </Button>
                       </FormGroup>
                   </Col>

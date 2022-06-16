@@ -276,7 +276,7 @@ const uploadData = (e) => {
       <BlockHead size="lg">
         <BlockBetween>
           <BlockHeadContent>
-            <BlockTitle tag="h4" className="text-center">Profile Verification</BlockTitle>
+            <BlockTitle tag="h4" className="text-center">{t('profile_verification')}</BlockTitle>
           </BlockHeadContent>
           <BlockHeadContent className="align-self-start d-lg-none">
             <Button

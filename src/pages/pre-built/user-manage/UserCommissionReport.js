@@ -644,7 +644,7 @@ const handleThemeToggle1 = (theme) => () => {
                 />
               ) : (
                 <div className="text-center">
-                  <span className="text-silent">No data found</span>
+                  <span className="text-silent">{t('nodata')}</span>
                 </div>
               )}
             </div>

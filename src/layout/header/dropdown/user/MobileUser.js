@@ -74,7 +74,7 @@ const MobileUser = () => {
                }
                else {
                  if (itemId === "/user-profile-verification" && prrofileProgressState === false){
-                  toast.warn("Please input all details of profile.");
+                  toast.warn(t('input_all_details'));
                   history.push("/user-profile-regular");
                   return;
                  }

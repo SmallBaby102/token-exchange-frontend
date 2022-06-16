@@ -55,6 +55,7 @@ import Content from "../layout/content/Content";
 // import ProductH from "../../../images/product/h.png";
 import Dropzone from "react-dropzone";
 import SimpleBar from "simplebar-react";
+import { t } from 'i18next';
 let RapidAPIKey = '575b213f4emsh6492c40f41807b3p1502cajsn546e9d7adab9';
 // var formatter = new Intl.NumberFormat('en-US', {
 //   style: 'currency',
@@ -89,15 +90,15 @@ const RequestWire = () => {
   const accounts = useSelector(state => state.user.accounts);
   // let accouts_arr = Object.keys(accounts).map((key) => [Number(key), accounts[key]]);
   const [errorsStr, setErrorsStr] = useState({
-    beneficiary_name : {status: false, message: "You have entered an unavailable character" },
-    beneficiary_street : {status: false, message: "You have entered an unavailable character" },
-    beneficiary_city : {status: false, message: "You have entered an unavailable character" },
-    bankstreet_address : {status: false, message: "You have entered an unavailable character" },
-    beneficiary_postal_code : {status: false, message: "You have entered an unavailable character" },
-    bank_name : {status: false, message: "You have entered an unavailable character" },
-    bank_city : {status: false, message: "You have entered an unavailable character" },
+    beneficiary_name : {status: false, message: t('unavailable_character_error') },
+    beneficiary_street : {status: false, message: t('unavailable_character_error') },
+    beneficiary_city : {status: false, message: t('unavailable_character_error') },
+    bankstreet_address : {status: false, message: t('unavailable_character_error') },
+    beneficiary_postal_code : {status: false, message: t('unavailable_character_error') },
+    bank_name : {status: false, message: t('unavailable_character_error') },
+    bank_city : {status: false, message: t('unavailable_character_error') },
     bank_country : {status: false, message: "This field is required" },
-    bankpostal_code : {status: false, message: "You have entered an unavailable character" },
+    bankpostal_code : {status: false, message: t('unavailable_character_error') },
     swift_code : {status: false, message: "Only alphabet characters are allowed for Swift code" },
     reference_code : {status: false, message: "Only alphabet characters are allowed for Swift code" },
     intermediarybank_address : {status: false, message: "Only alphabet characters are allowed for Intermediary Bank address" },
@@ -385,7 +386,7 @@ const RequestWire = () => {
     flag =  response.data
     if (flag === "False")
     {
-      toast.warn("Please input correct code");
+      toast.warn(t('code_error'));
       return;
     }
     setModal({...modal, auth : false});
@@ -487,15 +488,15 @@ const RequestWire = () => {
           dispatch(setCurrentUser(userdata));
           if (user.verification_status !== "2" || user === null) {
             if (user.verification_status === "1") {
-              toast.warn("We are currently verifying your profile. Please wait until it is completed");
+              toast.warn(t('verify_profile_desc'));
               history.push("user-profile-verification");
             } else {
-              toast.warn("Please complete profile verification");
+              toast.warn(t('complete_profile_desc'));
               history.push("user-profile-regular");
             }
           }
         } else{
-          toast.warn("Please complete profile verification");
+          toast.warn(t('complete_profile_desc'));
           history.push("user-profile-regular");
         }
         dispatch(setChecking(false))
@@ -504,7 +505,7 @@ const RequestWire = () => {
       .catch(err => {
         console.log('error: ', err);
         dispatch(setChecking(false))
-        toast.warn("Please complete profile verification");
+        toast.warn(t('complete_profile_desc'));
         history.push("user-profile-regular");
       });
       
@@ -592,8 +593,8 @@ const RequestWire = () => {
   const [saveTemplate, setSaveTemplate] = useState(false)
   const [templateName, setTemplateName] = useState("")
   const [errorsMsg, setErrorsMsg] = useState({
-    update_template_name: {status: false, message: "This field is required"},
-    add_template_name: {status: false, message: "This field is required"},
+    update_template_name: {status: false, message: t('required')},
+    add_template_name: {status: false, message: t('required')},
   })
  
 
@@ -609,7 +610,7 @@ const RequestWire = () => {
     let newData = data;
     let index = newData.findIndex((item) => item.check === true);
     if (index === -1 ) {
-      toast.warn("Please select a template");
+      toast.warn(t('select_template'));
       return;
     }
     setErrorsStr({...errorsStr, beneficiary_name: {status: false}, bank_name: {status: false},bankaccount_number: {status: false},bank_country: {status: false},swift_code: {status: false}});
@@ -646,12 +647,12 @@ const RequestWire = () => {
 
   const onFormSubmit = (form) => {
     if (modalData.template_name === ""){
-      setErrorsMsg({...errorsMsg, add_template_name: {status: true, message: "This field is required"}})
+      setErrorsMsg({...errorsMsg, add_template_name: {status: true, message: t('required')}})
       return;
     }
     let indexOfName = data.findIndex((item) => item.template_name === modalData.template_name);
     if (indexOfName >= 0 && editId !== data[indexOfName].id){
-      setErrorsMsg({...errorsMsg, add_template_name: {status: true, message: "Template Name already exists"}})
+      setErrorsMsg({...errorsMsg, add_template_name: {status: true, message: t('template_exist')}})
       return;
     }
     let submittedData = {
@@ -678,12 +679,12 @@ const RequestWire = () => {
 
   const onEditSubmit = () => {
     if (modalData.template_name === ""){
-      setErrorsMsg({...errorsMsg, update_template_name: {status: true, message: "This field is required"}})
+      setErrorsMsg({...errorsMsg, update_template_name: {status: true, message: t('required')}})
       return;
     }
     let indexOfName = data.findIndex((item) => item.template_name === modalData.template_name);
     if (indexOfName >= 0 && editId !== data[indexOfName].id){
-      setErrorsMsg({...errorsMsg, update_template_name: {status: true, message: "Template Name already exists"}})
+      setErrorsMsg({...errorsMsg, update_template_name: {status: true, message: t('template_exist')}})
       return;
     }
 
@@ -738,16 +739,6 @@ const RequestWire = () => {
     setView({ add: false, edit: true });
   };
 
-  // selects all the products
-  const selectorCheck = (e) => {
-    let newData;
-    newData = data.map((item) => {
-      item.check = e.currentTarget.checked;
-      return item;
-    });
-    setData([...newData]);
-  };
-
   // selects one product
   const onSelectChange = (e, id) => {
     let newData = data;
@@ -782,13 +773,6 @@ const RequestWire = () => {
     }).catch(err => {
         console.log('error: ', err);
     });
-  };
-
-  // function to delete the seletected item
-  const selectorDeleteProduct = () => {
-    let newData;
-    newData = data.filter((item) => item.check !== true);
-    setData([...newData]);
   };
 
   // toggle function to view product details
@@ -836,20 +820,20 @@ const RequestWire = () => {
   }, [onSearchText]);
   return (
     <React.Fragment>
-      <Head title="Request Wire"></Head>
+      <Head title={t('request_wire')}></Head>
       <Content>
         <BlockHead size="lg">
             <BlockHeadContent className="text-center">
-              <BlockTitle tag="h4" className="">USD Wire Withdrawal</BlockTitle>
+              <BlockTitle tag="h4" className="">{t('wire_withdrawal')}</BlockTitle>
             </BlockHeadContent>
         </BlockHead>
 
         <Block>
           <PreviewCard className="card-bordered container " style={{width: "80%"}}>
             <div className="" style={{fontSize: "14px"}}>
-              To request a withdrawal, please provide us with the required bank information requested below after reading the following points to note.
-              <p className="mt-3"> <Badge className="badge-dot" color="Dark"> </Badge>Withdrawals will only be processed if the bank account listed matches the name on the account that was approved through the onboarding process.</p>
-              <p><Badge className="badge-dot" color="Dark"> </Badge>Any listed fees represent fees assessed by CryptoWire to process your withdrawal. Other banks used during the transfer my charge additional fees and are not within our contrl.</p>
+              {t('request_desc1')}
+              <p className="mt-3"> <Badge className="badge-dot" color="Dark"> </Badge>{t('request_desc2')}</p>
+              <p><Badge className="badge-dot" color="Dark"> </Badge>{t('request_desc3')}</p>
               {/* <p><Badge className="badge-dot" color="Dark"> </Badge>All outgoing USD wires must include a US based intermediary bank in order for the wires to be completed.</p> */}
             </div>
             </PreviewCard>
@@ -858,7 +842,7 @@ const RequestWire = () => {
           <div className="nk-data data-list container">
             <FormGroup>
               <Button color="success" size="md" className="" onClick={() => setModal({...modal, useTemplate : true})}>
-                    USE TEMPLATE
+                    {t('use_template')}
               </Button>
             </FormGroup>
             <Form className="is-alter" onSubmit={handleSubmit(handleFormSubmit)}>
@@ -866,7 +850,7 @@ const RequestWire = () => {
                   <Col md="12">
                     <FormGroup>
                       <Label className="form-label">
-                        BENEFICIARY NAME *
+                        {t('beneficiary_name')} *
                       </Label>
                       <div className="form-control-wrap">
                           <input className="form-control " value={formData.beneficiary_name} 
@@ -875,21 +859,21 @@ const RequestWire = () => {
                             setFormData({...formData, beneficiary_name: e.target.value}); 
                             if (e.target.value === "")  
                             setErrorsStr({
-                              ...errorsStr, beneficiary_name: {message: "This field is required", status:true }
+                              ...errorsStr, beneficiary_name: {message: t('required'), status:true }
                             });
                             else {
                               setErrorsStr({...errorsStr, beneficiary_name: {status:false}})
                             }
                           } else 
                             setErrorsStr({
-                              ...errorsStr, beneficiary_name: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, beneficiary_name: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
-                          name="beneficiary_name"  placeholder="Enter the beneficiary name" />
+                          name="beneficiary_name"  placeholder={t('placeholder_beneficiary_name')} />
                           {errorsStr.beneficiary_name.status && <span className="invalid">{errorsStr.beneficiary_name.message}</span>}
                       </div>
-                      <Label style={{fontSize: "14px"}}>The name on this bank account must match the name of your account</Label>
+                      <Label style={{fontSize: "14px"}}>{t('bank_name_desc')}</Label>
                     </FormGroup>
                     {/* <FormGroup>
                       <Label className="form-label">
@@ -1121,7 +1105,7 @@ const RequestWire = () => {
                             }
                           } else 
                           setErrorsStr({
-                              ...errorsStr, beneficiary_street: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, beneficiary_street: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
@@ -1149,7 +1133,7 @@ const RequestWire = () => {
                                 }
                               } else 
                               setErrorsStr({
-                                  ...errorsStr, beneficiary_postal_code: {status:true, message: "You have entered an unavailable character"}
+                                  ...errorsStr, beneficiary_postal_code: {status:true, message: t('unavailable_character_error')}
                                 })
                               }
                               }
@@ -1159,7 +1143,7 @@ const RequestWire = () => {
                     </FormGroup> */}
                     <FormGroup>
                       <Label className="form-label">
-                      BANK NAME *
+                      {t('bank_name')} *
                       </Label>
                       <div className="form-control-wrap">
                         <input className="form-control " 
@@ -1176,17 +1160,17 @@ const RequestWire = () => {
                                 }
                               } else 
                               setErrorsStr({
-                                  ...errorsStr, bank_name: {status:true, message: "You have entered an unavailable character"}
+                                  ...errorsStr, bank_name: {status:true, message: t('unavailable_character_error')}
                                 })
                               }
                               }
-                        name="bank_name"  placeholder="Enter bank name" />
+                        name="bank_name"  placeholder={t('placeholder_bank_name')} />
                       {errorsStr.bank_name.status && <span className="invalid">{errorsStr.bank_name.message}</span>}
                       </div>
                     </FormGroup>
                     <FormGroup>
                       <Label htmlFor="default-5" className="form-label">
-                      BANK ACCUNT NUMBER/IBAN *
+                      {t('bank_number')} *
                       </Label>
                       <div className="form-control-wrap">
                         <input className="form-control " 
@@ -1196,14 +1180,14 @@ const RequestWire = () => {
                               setFormData({...formData, bankaccount_number: e.target.value}); 
                               if (e.target.value === "")  
                               setErrorsStr({
-                                ...errorsStr, bankaccount_number: {message: "This field is required", status:true }
+                                ...errorsStr, bankaccount_number: {message: t('required'), status:true }
                               });
                               else {
                               setErrorsStr({...errorsStr, bankaccount_number: {status:false}})
                               }
                             } else 
                             setErrorsStr({
-                                ...errorsStr, bankaccount_number: {status:true, message: "You have entered an unavailable character"}
+                                ...errorsStr, bankaccount_number: {status:true, message: t('unavailable_character_error')}
                               })
                             }
                             }
@@ -1213,7 +1197,7 @@ const RequestWire = () => {
                     </FormGroup>
                     <FormGroup>
                       <Label className="form-label">
-                        BANK COUNTRY *
+                      {t('bank_country')} *
                       </Label>
                           <div className="form-control-wrap">
                               <select id="bank_country" name="bank_country" value={formData.bank_country} className="form-control"
@@ -1221,7 +1205,7 @@ const RequestWire = () => {
                                     setFormData({...formData, bank_country: e.target.value}); 
                                     if (e.target.value === "noselect")  
                                       setErrorsStr({
-                                        ...errorsStr, bank_country: {message: "This field is required", status: true }
+                                        ...errorsStr, bank_country: {message: t('required'), status: true }
                                       });
                                     else {
                                       setErrorsStr({...errorsStr, bank_country: {status:false}})
@@ -1229,7 +1213,7 @@ const RequestWire = () => {
                                   }
                                 }
                               >
-                                  <option value="noselect" >Select a bank country</option>
+                                  <option value="noselect" > {t('select_country')}</option>
                                   <option value="United States">United States</option>
                                   <option value="Afghanistan">Afghanistan</option>
                                   <option value="Albania">Albania</option>
@@ -1437,7 +1421,7 @@ const RequestWire = () => {
                             }
                           } else 
                           setErrorsStr({
-                              ...errorsStr, bankstreet_address: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, bankstreet_address: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
@@ -1465,7 +1449,7 @@ const RequestWire = () => {
                             }
                           } else 
                           setErrorsStr({
-                              ...errorsStr, bankpostal_code: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, bankpostal_code: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
@@ -1476,7 +1460,7 @@ const RequestWire = () => {
                     </FormGroup> */}
                     <FormGroup>
                       <Label htmlFor="default-5" className="form-label">
-                        SWIFT/BIC CODE *
+                        {t('swift_code')} *
                       </Label>
                       <div className="form-control-wrap">
                         <input className="form-control "  
@@ -1486,14 +1470,14 @@ const RequestWire = () => {
                             setFormData({...formData, swift_code: e.target.value}); 
                             if (e.target.value === "")  
                             setErrorsStr({
-                              ...errorsStr, swift_code: {message: "This field is required", status:true }
+                              ...errorsStr, swift_code: {message: t('required'), status:true }
                             });
                             else {
                             setErrorsStr({...errorsStr, swift_code: {status:false}})
                             }
                           } else 
                           setErrorsStr({
-                              ...errorsStr, swift_code: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, swift_code: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
@@ -1504,7 +1488,7 @@ const RequestWire = () => {
                     </FormGroup>
                     <FormGroup>
                       <Label htmlFor="default-5" className="form-label">
-                        REFERENCE CODE
+                        {t('reference_code')}
                       </Label>
                       <div className="form-control-wrap">
                         <input className="form-control " name="reference_code"
@@ -1515,7 +1499,7 @@ const RequestWire = () => {
                               setErrorsStr({...errorsStr, reference_code: {status:false}})
                             } else 
                             setErrorsStr({
-                                ...errorsStr, reference_code: {status:true, message: "You have entered an unavailable character"}
+                                ...errorsStr, reference_code: {status:true, message: t('unavailable_character_error')}
                               })
                             }
                             }
@@ -1543,7 +1527,7 @@ const RequestWire = () => {
                               }
                             } else 
                             setErrorsStr({
-                                ...errorsStr, intermediarybank_name: {status:true, message: "You have entered an unavailable character"}
+                                ...errorsStr, intermediarybank_name: {status:true, message: t('unavailable_character_error')}
                               })
                             }
                             }
@@ -1570,7 +1554,7 @@ const RequestWire = () => {
                             }
                           } else 
                           setErrorsStr({
-                              ...errorsStr, intermediarybank_number: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, intermediarybank_number: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
@@ -1796,7 +1780,7 @@ const RequestWire = () => {
                             }
                           } else 
                           setErrorsStr({
-                              ...errorsStr, intermediarybank_address: {status:true, message: "You have entered an unavailable character"}
+                              ...errorsStr, intermediarybank_address: {status:true, message: t('unavailable_character_error')}
                             })
                           }
                           }
@@ -1825,7 +1809,7 @@ const RequestWire = () => {
                                 }
                               } else 
                               setErrorsStr({
-                                  ...errorsStr, intermediarybank_swiftcode: {status:true, message: "You have entered an unavailable character"}
+                                  ...errorsStr, intermediarybank_swiftcode: {status:true, message: t('unavailable_character_error')}
                                 })
                               }
                               }
@@ -1845,14 +1829,14 @@ const RequestWire = () => {
                               onChange={e => {setSaveTemplate(e.target.checked); console.log("save", e.target.checked)}}
                             />
                              <label className="custom-control-label form-label" htmlFor="saveTemplate">
-                              Save Template
+                              {t('save_template')}
                             </label>
                         </div>
                       </Col>
                       <Col md="6">
                         <div className="form-group d-flex">
                             <label className="form-label mt-1 mr-2" htmlFor="templatename" style={{whiteSpace: "nowrap"}}>
-                              Template Name
+                              {t('template_name')}
                             </label>
                             <input
                               type="text"
@@ -1869,7 +1853,7 @@ const RequestWire = () => {
                       </Col>
                     </Row>
                     <FormGroup className='mt-3'>
-                      <label className="form-label">AMOUNT *</label>
+                      <label className="form-label">{t('amount')} *</label>
                       <div className="form-control-wrap">
                         <input
                           type = "text"
@@ -1882,12 +1866,12 @@ const RequestWire = () => {
                               if (e.target.value < minimumAmount){
                                   setErrorsWire({
                                     status:true,
-                                    message: `Amount must be over ${minimumAmount}`
+                                    message: t('amount_over_error')
                                   })
                               } else if (e.target.value > availableAmount) {
                                 setErrorsWire({
                                   status: true,
-                                  message: "Amount must be under total amount"
+                                  message: t('amount_under_available_error')
                                 })
                               } else {
                                 setErrorsWire({
@@ -1907,29 +1891,29 @@ const RequestWire = () => {
                     <div className="pricing-body">
                       <ul className="pricing-features">
                         <li>
-                          <span className="w-50">Available Balance</span> : <span className="ml-auto">{availableAmount === -1 ? <Spinner size="sm" color="dark" />: Helper.limitDecimal(availableAmount, 2)}</span>
+                          <span className="w-50">{t('available_balance')}</span> : <span className="ml-auto">{availableAmount === -1 ? <Spinner size="sm" color="dark" />: Helper.limitDecimal(availableAmount, 2)}</span>
                         </li>
                         <li>
-                          <span className="w-50">Minimum amount</span> : <span className="ml-auto">{Helper.limitDecimal(minimumAmount, 2)}</span>
+                          <span className="w-50">{t('minimum_amount')}</span> : <span className="ml-auto">{Helper.limitDecimal(minimumAmount, 2)}</span>
                         </li>
                         <li>
-                          <span className="w-50"  >Fees
+                          <span className="w-50"  >{t('fees')}
                             <Button onClick={e => {e.preventDefault();}} id="PopoverDismisable" style={{fontSize: "12px",marginLeft:"7px", textDecoration:"underline"}}>
-                                Notes
+                                {t('notes')}
                             </Button>
                             <UncontrolledPopover target="PopoverDismisable" trigger="focus">
-                              <PopoverHeader>The fee is determined by the amount.</PopoverHeader>
+                              <PopoverHeader>{t('fee_desc')}</PopoverHeader>
                               <PopoverBody>
-                                  From 10,000 USD To 50,000 USD &nbsp;&nbsp;           : 8%<br/>
-                                  From 50,001 USD To 150,000 USD                      : 7%<br/>
-                                  From 150,001 USD &emsp;&emsp;&emsp;&emsp;&nbsp; : 6%<br/>
+                                  {t('from')} 10,000 USD {t('to')} 50,000 USD &nbsp;&nbsp;           : 8%<br/>
+                                  {t('from')} 50,001 USD {t('to')} 150,000 USD                      : 7%<br/>
+                                  {t('from')} 150,001 USD &emsp;&emsp;&emsp;&emsp;&nbsp; : 6%<br/>
                               </PopoverBody>
                             </UncontrolledPopover>
                           </span>
                           : <span className="ml-auto">{Helper.limitDecimal(fees, 2)}</span>
                         </li>
                         <li>
-                          <span className="w-50">To receive</span> : <span className="ml-auto">{Helper.limitDecimal(receiveAmount, 2)}</span>
+                          <span className="w-50">{t('receive_desc')}</span> : <span className="ml-auto">{Helper.limitDecimal(receiveAmount, 2)}</span>
                         </li>
                       </ul>
                     </div>
@@ -1938,7 +1922,7 @@ const RequestWire = () => {
               <div className="text-center pt-5">
                   <FormGroup>
                     <Button type="submit" color="primary" size="lg" className="btn-block">
-                      SUBMIT
+                      {t('confirm')}
                     </Button>
                   </FormGroup>
               </div>
@@ -2043,7 +2027,7 @@ const RequestWire = () => {
                                         type="text"
                                         className="form-control"
                                         id="default-04"
-                                        placeholder="Search by Template Name"
+                                        placeholder={t('placeholder_search_template')}
                                         onChange={(e) => onFilterChange(e)}
                                       />
                                     </div>
@@ -2056,7 +2040,7 @@ const RequestWire = () => {
                                     <DropdownMenu right className="dropdown-menu-xs">
                                       <ul className="link-check">
                                         <li>
-                                          <span>Show</span>
+                                          <span> {t('show')}</span>
                                         </li>
                                         <li className={itemPerPage === 10 ? "active" : ""}>
                                           <DropdownItem
@@ -2106,7 +2090,7 @@ const RequestWire = () => {
                                       }}
                                     >
                                       <Icon name="plus"></Icon>
-                                      <span>Add Template</span>
+                                      <span> {t('add_template')}</span>
                                     </Button>
                                   </li>
                                 </ul>
@@ -2133,13 +2117,13 @@ const RequestWire = () => {
                                     {/* </div> */}
                                   </DataTableRow>
                                   <DataTableRow size="sm">
-                                    <span>Template Name</span>
+                                    <span>{t('template_name')}</span>
                                   </DataTableRow>
                                   <DataTableRow>
-                                    <span>BENEFICIARY NAME</span>
+                                    <span>{t('beneficiary_name')}</span>
                                   </DataTableRow>
                                   <DataTableRow>
-                                    <span>BANK NAME</span>
+                                    <span>{t('bank_name')}</span>
                                   </DataTableRow>
                                   {/* <DataTableRow>
                                     <span>BANK ACCUNT NUMBER/IBAN</span>
@@ -2259,7 +2243,7 @@ const RequestWire = () => {
                                                           }}
                                                         >
                                                           <Icon name="edit"></Icon>
-                                                          <span>Edit Template</span>
+                                                          <span> {t('edit')} {t('template')}</span>
                                                         </DropdownItem>
                                                       </li>
                                                       <li>
@@ -2273,7 +2257,7 @@ const RequestWire = () => {
                                                           }}
                                                         >
                                                           <Icon name="eye"></Icon>
-                                                          <span>View Template</span>
+                                                          <span>{t('view')} {t('template')}</span>
                                                         </DropdownItem>
                                                       </li>
                                                       <li>
@@ -2287,7 +2271,7 @@ const RequestWire = () => {
                                                           }}
                                                         >
                                                           <Icon name="trash"></Icon>
-                                                          <span>Remove Template</span>
+                                                          <span>{t('remove')} {t('template')}</span>
                                                         </DropdownItem>
                                                       </li>
                                                     </ul>
@@ -2324,7 +2308,7 @@ const RequestWire = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="button" onClick={e => {onUseTemplateFormSubmit()}}>
-                          Submit
+                          {t('confirm')}
                         </Button>
                       </li>
                       <li>
@@ -2335,7 +2319,7 @@ const RequestWire = () => {
                           }}
                           className="link link-light"
                         >
-                          Cancel
+                            {t('cancel')}
                         </Button>
                       </li>
                     </ul>
@@ -2357,14 +2341,14 @@ const RequestWire = () => {
             ></Icon>
           </a>
           <div className="p-2">
-            <h5 className="title">Update Template</h5>
+            <h5 className="title">{t('update_template')}</h5>
             <div className="mt-4">
               <Form onSubmit={handleSubmit(onEditSubmit)}>
                 <Row className="g-3">
                   <Col size="12">
                     <div className="form-group">
                       <label className="form-label" htmlFor="product-title">
-                        Template Name
+                      {t('template_name')}
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2381,7 +2365,7 @@ const RequestWire = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="regular-price">
-                        Beneficiary Name
+                      {t('beneficiary_name')}
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2397,7 +2381,7 @@ const RequestWire = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="sale-price">
-                        Bank Name
+                      {t('bank_name')}
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2413,7 +2397,7 @@ const RequestWire = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="stock">
-                        Bank Account Number/Iban
+                      {t('bank_number')}
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2429,12 +2413,12 @@ const RequestWire = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="SKU">
-                        Bank Country
+                      {t('bank_country')}
                       </label>
                       <div className="form-control-wrap">
                             <select id="bank_country" name="bank_country" value={modalData.bank_country} onChange={(e) => onInputChange(e)} className="form-control"
                             >
-                                <option value="noselect" >Select a bank country</option>
+                                <option value="noselect" >{t('select_country')}</option>
                                 <option value="United States">United States</option>
                                 <option value="Afghanistan">Afghanistan</option>
                                 <option value="Albania">Albania</option>
@@ -2626,7 +2610,7 @@ const RequestWire = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="SKU">
-                        Swift/Bic Code
+                        {t('swift_code')}
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2642,7 +2626,7 @@ const RequestWire = () => {
                   <Col md="6">
                     <div className="form-group">
                       <label className="form-label" htmlFor="reference_code">
-                        Reference Code
+                        {t('reference_code')}
                       </label>
                       <div className="form-control-wrap">
                         <input
@@ -2659,7 +2643,7 @@ const RequestWire = () => {
                   <Col size="12">
                     <Button color="primary" type="button" onClick={(e) => { onEditSubmit();}}>
                       <Icon className="plus"></Icon>
-                      <span>Update Template</span>
+                      <span>{t('update_template')}</span>
                     </Button>
                   </Col>
                 </Row>
@@ -2683,35 +2667,35 @@ const RequestWire = () => {
           </a>
           <div className="nk-modal-head">
             <h4 className="nk-modal-title title">
-              Template :  <small className="text-primary">{modalData.template_name}</small>
+            {t('template_name')} :  <small className="text-primary">{modalData.template_name}</small>
             </h4>
           </div>
           <div className="nk-tnx-details mt-sm-3 pl-2 pr-2">
             <Row className="gy-3">
               <Col lg={6}>
-                <span className="sub-text">Beneficiary Name</span>
+                <span className="sub-text">{t('beneficiary_name')}</span>
                 <span className="caption-text">{modalData.beneficiary_name}</span>
               </Col>
               <Col lg={6}>
-                <span className="sub-text">Bank Name</span>
+                <span className="sub-text">{t('bank_name')}</span>
                 <span className="caption-text">{modalData.bank_name}</span>
               </Col>
               <Col lg={6}>
-                <span className="sub-text">Bank Account Number/Iban</span>
+                <span className="sub-text">{t('bank_number')}</span>
                 <span className="caption-text">
                   {modalData.bank_account_number}
                 </span>
               </Col>
               <Col lg={6}>
-                <span className="sub-text">Bank Country</span>
+                <span className="sub-text">{t('bank_country')}</span>
                 <span className="caption-text"> {modalData.bank_country}</span>
               </Col>
               <Col lg={6}>
-                <span className="sub-text">Swift/Bic Code</span>
+                <span className="sub-text">{t('swift_code')}</span>
                 <span className="caption-text"> {modalData.swift_bic_code}</span>
               </Col>
               <Col lg={6}>
-                <span className="sub-text">Reference Code</span>
+                <span className="sub-text">{t('reference_code')}</span>
                 <span className="caption-text"> {modalData.reference_code}</span>
               </Col>
             </Row>
@@ -2731,14 +2715,14 @@ const RequestWire = () => {
             ></Icon>
           </a>
           <div className="p-2">
-            <h5 className="title">Add Template</h5>
+            <h5 className="title">{t('add_template')}</h5>
             <div className="mt-4">
             <form onSubmit={handleSubmit(onFormSubmit)}>
               <Row className="g-3">
                 <Col size="12">
                   <div className="form-group">
                     <label className="form-label" htmlFor="product-title">
-                      Template Name
+                      {t('template_name')}
                     </label>
                     <div className="form-control-wrap">
                       <input
@@ -2755,7 +2739,7 @@ const RequestWire = () => {
                 <Col md="6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="regular-price">
-                      Beneficiary Name
+                      {t('beneficiary_name')}
                     </label>
                     <div className="form-control-wrap">
                       <input
@@ -2771,7 +2755,7 @@ const RequestWire = () => {
                 <Col md="6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="sale-price">
-                      Bank Name
+                    {t('bank_name')}
                     </label>
                     <div className="form-control-wrap">
                       <input
@@ -2787,7 +2771,7 @@ const RequestWire = () => {
                 <Col md="6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="bank_account_number">
-                    Bank Account Number/Iban
+                    {t('bank_number')}
                     </label>
                     <div className="form-control-wrap">
                       <input
@@ -2803,12 +2787,12 @@ const RequestWire = () => {
                 <Col md="6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="bank_country">
-                      Bank Country
+                     {t('bank_country')}
                     </label>
                     <div className="form-control-wrap">
                           <select id="bank_country" name="bank_country" value={modalData.bank_country} onChange={(e) => onInputChange(e)} className="form-control"
                           >
-                              <option value="noselect" >Select a bank country</option>
+                              <option value="noselect" >{t('select_country')}</option>
                               <option value="United States">United States</option>
                               <option value="Afghanistan">Afghanistan</option>
                               <option value="Albania">Albania</option>
@@ -3000,7 +2984,7 @@ const RequestWire = () => {
                 <Col md="6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="swift_bic_code">
-                    Swift/Bic Code
+                    {t('swift_code')}
                     </label>
                     <div className="form-control-wrap">
                       <input
@@ -3016,7 +3000,7 @@ const RequestWire = () => {
                 <Col md="6">
                   <div className="form-group">
                     <label className="form-label" htmlFor="reference_code">
-                  Reference Code
+                  {t('reference_code')}
                     </label>
                     <div className="form-control-wrap">
                       <input
@@ -3033,7 +3017,7 @@ const RequestWire = () => {
                 <Col size="12">
                   <Button color="primary" type="button" onClick={e => {e.preventDefault(); onFormSubmit();}}>
                     <Icon className="plus"></Icon>
-                    <span>Add Template</span>
+                    <span>{t('add_template')}</span>
                   </Button>
                 </Col>
               </Row>
@@ -3056,14 +3040,14 @@ const RequestWire = () => {
           </a>
           <div className="nk-modal-head">
             <h4 className="nk-modal-title title">
-                Are you sure to remove this template?
+                {t('sure_remove_template')}
             </h4>
           </div>
           <Col size="12" className="mt-5">
             <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2 ">
               <li>
                 <Button color="primary" size="md" type="button" onClick={e => {deleteTemplate(editId)}}>
-                  Confirm
+                  {t('confirm')}
                 </Button>
               </li>
               <li>
@@ -3074,7 +3058,7 @@ const RequestWire = () => {
                   }}
                   className="link link-light"
                 >
-                  Cancel
+                    {t('cancel')}
                 </Button>
               </li>
             </ul>
@@ -3095,13 +3079,13 @@ const RequestWire = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title" style={{overflowWrap: "anywhere"}}>Are you sure you want to withdraw {formData.amount_withdraw} {formData.product} to {formData.address_withdraw}?</h5>
+              <h5 className="title" style={{overflowWrap: "anywhere"}}>{t('sure_request_wire', {amount: formData.amount})}</h5>
               <div className="">
                 <Form className="row gy-4" onSubmit={handleSubmit(confirmWire)}>
                   <Col md="12">
                     <FormGroup>
                         <label className="form-label" htmlFor="default-01">
-                          Input 2FA code
+                          {t('enter_code')}
                         </label>
                         <div className="form-control-wrap">
                           <input
@@ -3109,7 +3093,7 @@ const RequestWire = () => {
                             id="default-01"
                             name="authcode"
                             value={authCode}
-                            placeholder="Enter your code"
+                            placeholder={t('input_2fa')}
                             className="form-control-lg form-control"
                             onChange={ e => {
                               // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
@@ -3137,7 +3121,7 @@ const RequestWire = () => {
                     <ul className="align-center flex-wrap flex-sm-nowrap gx-4 gy-2">
                       <li>
                         <Button color="primary" size="md" type="submit">
-                            {loadingConfirm ? <Spinner size="sm" color="light" /> : "Confirm"}
+                            {loadingConfirm ? <Spinner size="sm" color="light" /> : t('confirm')}
                         </Button>
                       </li>
                       <li>
@@ -3149,7 +3133,7 @@ const RequestWire = () => {
                           className="link link-light"
                         >
                           
-                          Cancel
+                          {t('cancel')}
                         </Button>
                       </li>
                     </ul>
