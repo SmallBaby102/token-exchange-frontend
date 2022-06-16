@@ -27,7 +27,7 @@ const AuthFooter = () => {
   }
   const handleChange = (value) => { 
     setLang(value);
-    let loc = "http://localhost:3000/auth-login";
+    let loc = `${process.env.REACT_APP_SELF}/auth-login`;
     window.location.replace(loc + "?lng=" + value);
 }
   return (
