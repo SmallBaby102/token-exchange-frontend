@@ -152,7 +152,7 @@ const WireHistory = () => {
 
   return (
     <React.Fragment>
-      <Head title="Trasaction List"></Head>
+      <Head title={t('Wire History')}></Head>
       <Content>
         <BlockHead size="sm">
           <BlockBetween>
@@ -489,7 +489,7 @@ const WireHistory = () => {
                     />
                   ) : (
                     <div className="text-center">
-                      <span className="text-silent">No data found</span>
+                      <span className="text-silent">{t('nodata')}</span>
                     </div>
                   )}
                 </div>

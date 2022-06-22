@@ -969,7 +969,7 @@ const Dashboard = () => {
       setWithdrawFee(withdraw_fee);
   }, [formData.amount_withdraw])
   useEffect(() => {
-    let sum_usd = parseFloat(btcBalance * btcPrice + usdBalance + (usdtBalance) + (ethBalance * ethPrice));
+    let sum_usd = btcBalance * btcPrice + parseFloat(usdBalance) + parseFloat(usdtBalance) + (ethBalance * ethPrice);
     setTotalBalance(sum_usd);
   }, [btcPrice, btcBalance, usdBalance, usdtBalance, ethBalance])
   // useEffect(() => {
