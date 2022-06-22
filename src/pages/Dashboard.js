@@ -481,30 +481,30 @@ const Dashboard = () => {
                   setLoading(false);
                   if(result.data.success){
                     setSellFinish(1);
-                    toast.success("Successfully corrected balance");
+                    toast.success("Successfully sold");
                   }
                   else {
                     setSellFinish(2);
-                    toast.error("Failed corrected balance");
+                    toast.error("Failed sell");
                   }
                   
                   
                 }).catch( e => {
                   setSellFinish(2);
-                  toast.error("Failed corrected balance");
+                  toast.error("Failed sell");
                   setLoading(false);
                     console.log("sell error")
                 })
             }).catch( e => {
               setSellFinish(2);
-              toast.error("Failed corrected balance");
+              toast.error("Failed sell");
               setLoading(false);
             })
             
         })
         .catch( e => {
           setSellFinish(2);
-          toast.error("Failed corrected balance");
+          toast.error("Failed sell");
           setLoading(false);
         })
       } else{
@@ -580,11 +580,11 @@ const Dashboard = () => {
                           .then(result => {
                             if(result.data.success){
                               setSellFinish(1);
-                              toast.success("Successfully corrected balance");
+                              toast.success("Successfully sold");
                             }
                             else {
                               setSellFinish(2);
-                              toast.error("Failed corrected balance");
+                              toast.error("Failed sell");
                             }
                             setLoading(false);
                           }).catch( e => {
@@ -631,7 +631,7 @@ const Dashboard = () => {
         }).catch(err => {
           setSellFinish(2);
           console.log('error: ', err);
-            toast.error("Failed corrected balance");
+            toast.error("Failed sell");
             setLoading(false);
             // dispatch(setChecking(false));
         });

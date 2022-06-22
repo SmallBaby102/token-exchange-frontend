@@ -486,7 +486,7 @@ const MyWallet = () => {
                 .then(result => {
                   if(result.data.success){
                     setSellFinish(1);
-                    toast.success("Successfully corrected balance");
+                    toast.success("Successfully sold");
                     Http.getAccounts(localStorage.getItem("exchange_access_token"))
                     .then((response) => {
                       if (response.message === "Unauthorized"){
@@ -504,7 +504,7 @@ const MyWallet = () => {
                   }
                   else {
                     setSellFinish(2);
-                    toast.error("Failed corrected balance");
+                    toast.error("Failed sell");
                   }
                   setLoading(false);
                   console.log("successfully selled")
@@ -512,7 +512,7 @@ const MyWallet = () => {
                 .catch( e => {
                   setSellFinish(2);
                   setLoading(false);
-                  toast.error("Failed corrected balance");
+                  toast.error("Failed sell");
                   console.log("sell error")
                 })
                
@@ -520,7 +520,7 @@ const MyWallet = () => {
             })
             .catch( e => {
               setSellFinish(2);
-              toast.error("Failed corrected balance");
+              toast.error("Failed sell");
               setLoading(false);
                 console.log("sell error")
             })
@@ -529,14 +529,14 @@ const MyWallet = () => {
           .catch( e => {
             setSellFinish(2);
             setLoading(false);
-            toast.error("Failed corrected balance");
+            toast.error("Failed sell");
             console.log("sell error")
           })
       })
       .catch(e => {
             setSellFinish(2);
             setLoading(false);
-            toast.error("Failed corrected balance");
+            toast.error("Failed sell");
             console.log("sell error")
       })
     } else {
@@ -602,11 +602,11 @@ const MyWallet = () => {
                           setLoading(false);
                           if(result.data.success){
                             setSellFinish(1);
-                            toast.success("Successfully corrected balance");
+                            toast.success("Successfully sold");
                           }
                           else {
                             setSellFinish(2);
-                            toast.error("Failed corrected balance");
+                            toast.error("Failed sell");
                           }
                         }).catch( e => {
                             setSellFinish(2);
@@ -623,7 +623,7 @@ const MyWallet = () => {
                   console.log("sell error")
                   setSellFinish(2);
                   setLoading(false);
-                  toast.error("Failed corrected balance");
+                  toast.error("Failed sell");
                 })
           }
           else{
@@ -638,7 +638,7 @@ const MyWallet = () => {
           // dispatch(setChecking(false));
           setLoading(false);
           setSellFinish(2);
-          toast.error("Failed corrected balance");
+          toast.error("Failed sell");
           
       });
     }
