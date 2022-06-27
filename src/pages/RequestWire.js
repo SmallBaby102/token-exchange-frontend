@@ -1191,7 +1191,7 @@ const RequestWire = () => {
                               })
                             }
                             }
-                        name="bankaccount_number"  placeholder="Enter bank account number"  />
+                        name="bankaccount_number"  placeholder={t('placeholder_bank_number')}  />
                         {errorsStr.bankaccount_number.status && <span className="invalid">{errorsStr.bankaccount_number.message}</span>}
                       </div>
                     </FormGroup>
@@ -1482,7 +1482,7 @@ const RequestWire = () => {
                           }
                           }
                         
-                        name="swift_code" placeholder="Enter swift/bic code"  />
+                        name="swift_code" placeholder={t('placeholder_swift_code')} />
                         {errorsStr.swift_code.status && <span className="invalid">{errorsStr.swift_code.message}</span>}
                       </div>
                     </FormGroup>
@@ -1503,7 +1503,7 @@ const RequestWire = () => {
                               })
                             }
                             }
-                          placeholder="Enter reference code"  />
+                          placeholder={t('placeholder_reference_code')}  />
                           {errorsStr.reference_code.status && <span className="invalid">{errorsStr.reference_code.message}</span>}
 
                       </div>
