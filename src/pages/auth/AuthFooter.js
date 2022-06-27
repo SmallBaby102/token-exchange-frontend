@@ -66,7 +66,7 @@ const AuthFooter = () => {
                           className="language-item"
                         >
                           <img src={EnglishFlag} alt="" className="language-flag" />
-                          <span className="language-name">English</span>
+                          <span className="language-name">{languages['en']}</span>
                         </DropdownItem>
                       </li>
                       <li>
@@ -81,7 +81,7 @@ const AuthFooter = () => {
                           className="language-item"
                         >
                           <img src={ChineseFlag} alt="" className="language-flag" />
-                          <span className="language-name">Chinese</span>
+                          <span className="language-name">{languages['zh']}</span>
                         </DropdownItem>
                       </li>
                       <li>
@@ -96,7 +96,7 @@ const AuthFooter = () => {
                           className="language-item"
                         >
                           <img src={KoreanFlag} alt="" className="language-flag" />
-                          <span className="language-name">Korean</span>
+                          <span className="language-name">{languages['ko']}</span>
                         </DropdownItem>
                       </li>
                       <li>
@@ -111,7 +111,7 @@ const AuthFooter = () => {
                           className="language-item"
                         >
                           <img src={JapaneseFlag} alt="" className="language-flag" />
-                          <span className="language-name">Japanese</span>
+                          <span className="language-name">{languages['ja']}</span>
                         </DropdownItem>
                       </li>
                     </ul>

@@ -870,13 +870,13 @@ const Dashboard = () => {
           item = item[1]
           if (item.id === id) {
             if (item.product === "BTC") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 5));
+              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance.toFixed(5), 5));
             }
             if (item.product === "ETH") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
+              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance.toFixed(2), 2));
             }
             if (item.product === "USDT") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
+              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance.toFixed(2), 2));
             }
             setFormData({
               ...formData,

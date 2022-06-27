@@ -475,8 +475,8 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen1}
                             showCaption
                             headerFormat="DD/MM/YYYY"
-                            confirmText="Set"
-                            cancelText="Cancel"
+                            confirmText={t('set')}
+                            cancelText={t('cancel')}
                             dateConfig={{
                               'date': {
                                 format: 'D',
@@ -522,19 +522,19 @@ const TransactionHistory = () => {
                             </DropdownToggle>
                             <DropdownMenu right className="filter-wg dropdown-menu-xl">
                               <div className="dropdown-head">
-                                <span className="sub-title dropdown-title">Advanced Filter</span>
+                                <span className="sub-title dropdown-title">{t('advanced_filter')}</span>
                               </div>
                               <div className="dropdown-body dropdown-body-rg" style={{height: "250px"}}>
                                 <Row className="gx-6 gy-4" >
                                   <Col size="6">
                                     <FormGroup>
-                                      <label className="overline-title overline-title-alt">Type</label>
+                                      <label className="overline-title overline-title-alt">{t('type')}</label>
                                       <RSelect options={cryptoActivityOptions} onChange={(e) => setDisplaySetting({...displaySetting, type: e.value})} placeholder="Any Activity" />
                                     </FormGroup>
                                   </Col>
                                   <Col size="6">
                                     <FormGroup className="form-group">
-                                      <label className="overline-title overline-title-alt">Currency</label>
+                                      <label className="overline-title overline-title-alt">{t('currency')}</label>
                                       <RSelect options={filterCoin} placeholder="Any coin" onChange={(e) => setDisplaySetting({...displaySetting, currency: e.value})} />
                                     </FormGroup>
                                   </Col> 
@@ -712,8 +712,8 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen}
                             showCaption
                             headerFormat="DD/MM/YYYY"
-                            confirmText="Set"
-                            cancelText="Cancel"
+                            confirmText={t('set')}
+                            cancelText={t('cancel')}
                             dateConfig={{
                               'date': {
                                 format: 'D',
@@ -763,8 +763,8 @@ const TransactionHistory = () => {
                             isOpen={state.isOpen1}
                             showCaption
                             headerFormat="DD/MM/YYYY"
-                            confirmText="Set"
-                            cancelText="Cancel"
+                            confirmText={t('set')}
+                            cancelText={t('cancel')}
                             dateConfig={{
                               'date': {
                                 format: 'D',

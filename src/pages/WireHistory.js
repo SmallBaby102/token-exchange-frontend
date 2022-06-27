@@ -316,7 +316,7 @@ const WireHistory = () => {
                             </DropdownToggle>
                             <DropdownMenu right className="filter-wg dropdown-menu-xl">
                               <div className="dropdown-head">
-                                <span className="sub-title dropdown-title">Advanced Filter</span>
+                                <span className="sub-title dropdown-title">{t('advanced_filter')}</span>
                                 {/* <div className="dropdown">
                                   <Button size="sm" className="btn-icon">
                                     <Icon name="more-h"></Icon>
@@ -327,7 +327,7 @@ const WireHistory = () => {
                                 <Row className="gx-6 gy-4" >
                                   <Col size="6">
                                     <FormGroup>
-                                      <label className="overline-title overline-title-alt">Status</label>
+                                      <label className="overline-title overline-title-alt">{t('status')}</label>
                                       <RSelect options={filterStatusOptions} defaultValue={{value: displaySetting.status, label: displaySetting.status === "0" ? "Pending" : (displaySetting.status === "1" ? "Approved": displaySetting.status === "2" ? "Processing" : displaySetting.status === "3" ? "Completed" : displaySetting.status === "All" ? "All" : "Decline")}} onChange={(e) => setDisplaySetting({...displaySetting, status: e.value})} placeholder="Any Status" />
                                     </FormGroup>
                                   </Col>
@@ -350,7 +350,7 @@ const WireHistory = () => {
                             <DropdownMenu right className="dropdown-menu-xs">
                               <ul className="link-check">
                                 <li>
-                                  <span>Show</span>
+                                  <span>{t('show')}</span>
                                 </li>
                                 <li className={itemPerPage === 10 ? "active" : ""}>
                                   <DropdownItem
@@ -387,22 +387,22 @@ const WireHistory = () => {
                 <DataTableBody bodyclass="nk-tb-tnx">
                   <DataTableHead>
                     <DataTableRow>
-                      <span>Date</span>
+                      <span>{t('date')}</span>
                     </DataTableRow>
                     <DataTableRow size="sm">
-                      <span>Bank name</span>
+                      <span>{t('bank_name')}</span>
                     </DataTableRow>
                     <DataTableRow >
-                      <span>Wire Id</span>
+                      <span>{t('wire_id')}</span>
                     </DataTableRow>
                     <DataTableRow className="text-right" >
-                      <span>Amount</span>
+                      <span>{t('amount')}</span>
                     </DataTableRow>
                     <DataTableRow className="text-right" >
-                      <span>Reveived Amount</span>
+                      <span>{t('received_amount')}</span>
                     </DataTableRow>
                     <DataTableRow className="">
-                      <span>Status</span>
+                      <span>{t('status')}</span>
                     </DataTableRow>
                   </DataTableHead>
 
