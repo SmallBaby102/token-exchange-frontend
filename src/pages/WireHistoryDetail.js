@@ -196,6 +196,14 @@ return (
                   <span className="h6 fw-light">{-wireHistory.amount}USD</span>
                 </Col>
               </Row>
+              <Row className="mt-1">
+                <Col size={6}>
+                  <span className="h6 fw-light">RECEIVE AMOUNT</span>
+                </Col>
+                <Col size={6}>
+                  <span className="h6 fw-light">{Number(wireHistory.receive_amount)}USD</span>
+                </Col>
+              </Row>
             </Col>
             <Col md="7" className='mt-2' style={{marginLeft: "-30px"}}>
             {

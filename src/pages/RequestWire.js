@@ -145,6 +145,8 @@ const RequestWire = () => {
   });
   const [secret_val, setSecret_val] = useState("")
   const [authCode, setAuthCode] = useState("")
+  const [wire_count, setWire_count] = useState(null)
+  const [special_rate, setSpecial_rate] = useState(null)
   // const profileOptions = {
   //   title       : [{value: "Mr.", label: "Mr."},{value: "Ms.", label: "Ms."}],
   //   marriage    : [{value: "Single", label: "Single"}, {value: "Married", label: "Married"}],
@@ -484,7 +486,10 @@ const RequestWire = () => {
             company_postal_code: user.company_postal_code,
             company_country_code: user.company_country_code,
             company_cellphone_number: user.company_cellphone_number,
+           
           };
+          setWire_count(user.wire_count);
+          setSpecial_rate(user.special_rate);
           dispatch(setCurrentUser(userdata));
           if (user.verification_status !== "2" || user === null) {
             if (user.verification_status === "1") {
@@ -543,7 +548,14 @@ const RequestWire = () => {
         setFees("0");
       }
     else{
-
+      if(special_rate){
+        setFees(parseFloat(formData.amount * special_rate / 100));
+        return;
+      }
+      if(wire_count > 0){
+        setFees(parseFloat(formData.amount * 0.06));
+        return;
+      }
       if (formData.amount <= 50000) {
         setFees(parseFloat(formData.amount * 0.08));
         

@@ -171,6 +171,7 @@ const Login = () => {
       Http.login(email, formData.passcode)
         .then( async (res) => {
           if (res.result === "success") {
+            localStorage.setItem("registerData", null)
             setTempForLogin(res);
             const myApi = myServerApi();
             let security = await myApi.get(`security/${email}`)
