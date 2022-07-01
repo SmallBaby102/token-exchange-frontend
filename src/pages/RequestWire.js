@@ -1916,9 +1916,10 @@ const RequestWire = () => {
                             <UncontrolledPopover target="PopoverDismisable" trigger="focus">
                               <PopoverHeader>{t('fee_desc')}</PopoverHeader>
                               <PopoverBody>
-                                  {t('from')} 10,000 USD {t('to')} 50,000 USD &nbsp;&nbsp;           : 8%<br/>
+                                  {t('first_time_wire_fee')} &nbsp;&nbsp;&emsp;&emsp;&emsp;&emsp;&nbsp; : 6%<br/>
+                                  {t('from')} 10,000 USD {t('to')} 50,000 USD &nbsp;&nbsp;          : 8%<br/>
                                   {t('from')} 50,001 USD {t('to')} 150,000 USD                      : 7%<br/>
-                                  {t('from')} 150,001 USD &emsp;&emsp;&emsp;&emsp;&nbsp; : 6%<br/>
+                                  {t('from')} 150,001 USD &emsp;&emsp;&emsp;&emsp;&nbsp;             : 6%<br/>
                               </PopoverBody>
                             </UncontrolledPopover>
                           </span>
