@@ -552,7 +552,7 @@ const RequestWire = () => {
         setFees(parseFloat(formData.amount * special_rate / 100));
         return;
       }
-      if(wire_count > 0){
+      if(wire_count < 1){
         setFees(parseFloat(formData.amount * 0.06));
         return;
       }

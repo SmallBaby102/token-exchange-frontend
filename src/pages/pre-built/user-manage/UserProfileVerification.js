@@ -105,7 +105,7 @@ const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress,
             {
               if (user.department === "Individual") {
                 for (const key in user) {
-                  if (key === "verification_status" || key === "deposit_address" || key === "company_name" || key === "company_address"
+                  if (key === "wire_count" || key === "special_rate" || key === "verification_status" || key === "deposit_address" || key === "company_name" || key === "company_address"
                   || key === "company_country" ||  key === "company_country_code"|| key === "company_postal_code"|| key === "company_cellphone_number"|| key === "director_name" )
                     continue;
                     if (key === "country" || key === "issue_country") {
@@ -128,7 +128,7 @@ const UserProfileVerificationPage = ({profileProgressStatus, setProfileProgress,
   
               } else {
                 for (const key in user) {
-                  if (key === "verification_status" || key === "deposit_address")
+                  if (key === "wire_count" || key === "special_rate" || key === "verification_status" || key === "deposit_address")
                     continue;
                   if (key === "country" || key === "issue_country" || key === "company_country") {
                     if (user[key] === "noselect") {

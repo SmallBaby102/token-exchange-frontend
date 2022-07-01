@@ -196,7 +196,7 @@ const WireHistory = () => {
                                     label={`${t('date')}(${t('from')})`}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.from}
-                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); }}
+                                    onChange={(date) => {if(!date || date == "Invalid Date") return; setDisplaySetting({ ...displaySetting, from: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
@@ -247,7 +247,7 @@ const WireHistory = () => {
                                     minDate={displaySetting.from}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.end}
-                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    onChange={(date) => {if(!date || date == "Invalid Date") return; setDisplaySetting({ ...displaySetting, end: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>

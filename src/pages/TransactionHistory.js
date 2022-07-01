@@ -401,7 +401,7 @@ const TransactionHistory = () => {
                                     label={`${t('date')}(${t('from')})`}
                                     inputFormat="dd/MM/yyyy"
                                     value={displaySetting.from}
-                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); }}
+                                    onChange={(date) => {if(!date || date == "Invalid Date") return; setDisplaySetting({ ...displaySetting, from: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
@@ -454,7 +454,7 @@ const TransactionHistory = () => {
                                     inputFormat="dd/MM/yyyy"
                                     minDate={displaySetting.from}
                                     value={displaySetting.end}
-                                    onChange={(date) => {if(!date) return; setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    onChange={(date) => {if(!date || date == "Invalid Date") return; setDisplaySetting({ ...displaySetting, end: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>
@@ -688,7 +688,7 @@ const TransactionHistory = () => {
                                     label={`${t('date')}(${t('from')})`}
                                   inputFormat="dd/MM/yyyy"
                                   value={displaySetting.from}
-                                  onChange={(date) => { if(!date) return; setDisplaySetting({ ...displaySetting, from: date }); 
+                                  onChange={(date) => { if(!date || date == "Invalid Date") return;   setDisplaySetting({ ...displaySetting, from: date }); 
                                   }}
                                   renderInput={(params) => <TextField {...params} />}
                                 />
@@ -742,7 +742,7 @@ const TransactionHistory = () => {
                                     inputFormat="dd/MM/yyyy"
                                     minDate={displaySetting.from}
                                     value={displaySetting.end}
-                                    onChange={(date) => { if(!date) return; setDisplaySetting({ ...displaySetting, end: date }); }}
+                                    onChange={(date) => { if(!date || date == "Invalid Date") return; setDisplaySetting({ ...displaySetting, end: date }); }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>

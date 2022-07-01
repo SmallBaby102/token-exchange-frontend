@@ -167,7 +167,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
           {
             if (resUser.department === "Individual") {
               for (const key in resUser) {
-                if (key === "verification_status" || key === "deposit_address" || key === "company_name" || key === "company_address" 
+                if (key === "wire_count" || key === "special_rate" || key === "verification_status" || key === "deposit_address" || key === "company_name" || key === "company_address" 
                 || key === "company_country" ||  key === "company_country_code"|| key === "company_postal_code"|| key === "company_cellphone_number"|| key === "director_name" )
                   continue;
                   if (key === "country" || key === "issue_country") {
@@ -187,7 +187,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
 
             } else {
               for (const key in resUser) {
-                if (key === "verification_status" || key === "deposit_address")
+                if (key === "wire_count" || key === "special_rate" || key === "verification_status" || key === "deposit_address")
                   continue;
                 if (key === "country" || key === "issue_country" || key === "company_country") {
                   if (resUser[key] === "noselect") {
@@ -272,7 +272,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
           {
             if (user.department === "Individual") {
               for (const key in user) {
-                if (key === "verification_status" || key === "deposit_address" || key === "company_name" || key === "company_address" 
+                if (key === "wire_count" || key === "special_rate" || key === "verification_status" || key === "deposit_address" || key === "company_name" || key === "company_address" 
                 || key === "company_country" ||  key === "company_country_code"|| key === "company_postal_code"|| key === "company_cellphone_number"|| key === "director_name" )
                   continue;
                   if (key === "country" || key === "issue_country") {
@@ -293,7 +293,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
 
             } else {
               for (const key in user) {
-                if (key === "verification_status" || key === "deposit_address")
+                if (key === "wire_count" || key === "special_rate" || key === "verification_status" || key === "deposit_address")
                   continue;
                 if (key === "country" || key === "issue_country" || key === "company_country") {
                   if (user[key] === "noselect") {
@@ -489,7 +489,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                             label={t('birthday')}
                             inputFormat="dd/MM/yyyy"
                             value={formData.birthday}
-                            onChange={(date) => {if(!date) return; setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
+                            onChange={(date) => {if(!date || date == "Invalid Date") return; setFormData({ ...formData, birthday:  date.toISOString().slice(0,10) }) }}
                             renderInput={(params) => <TextField {...params} />}
                           />
                           </Stack>
@@ -552,7 +552,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                   label= {t('issue_date')}
                                   inputFormat="dd/MM/yyyy"
                                   value={formData.issue_date}
-                                  onChange={(date) => {if(!date) return; setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
+                                  onChange={(date) => {if(!date  || date == "Invalid Date") return; setFormData({ ...formData, issue_date: date.toISOString().slice(0,10)}) }}
                                   renderInput={(params) => <TextField {...params} />}
                                 />
                                 </Stack>
@@ -593,7 +593,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                       step: 1,
                                     },
                                 }}
-                              onSelect={(date) => {if(!date) return; setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
+                              onSelect={(date) => {console.log("mobile picker"); if(!date) return; setFormData({ ...formData, issue_date: date.toISOString().slice(0,10) }); setState({isOpen1:false})}}
                               onCancel={handleToggle1(false)} />
                           </FormGroup>
                         </Col>
@@ -606,7 +606,7 @@ const UserProfileRegularPage = ({setProfileProgress, sm, updateSm, setProfileNam
                                     label={t('exp_date')}
                                     inputFormat="dd/MM/yyyy"
                                     value={formData.exp_date}
-                                    onChange={(date) => {if(!date) return; setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
+                                    onChange={(date) => {if(!date  || date == "Invalid Date") return; setFormData({ ...formData, exp_date: date.toISOString().slice(0,10) }) }}
                                     renderInput={(params) => <TextField {...params} />}
                                   />
                                   </Stack>

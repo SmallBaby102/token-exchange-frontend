@@ -103,6 +103,7 @@ export const dateFormatterAlt = (date, reverse) => {
 };
 export const dateFormatterWithdoutTime = (date, reverse) => {
   if (date === null || date === undefined) return "";
+  // date = new Date(date.replace(" ", "T"));
   let d = date.getDate();
   d = d < 10 ? "0" + d : d;
   let m = date.getMonth() + 1;
@@ -148,7 +149,6 @@ export const dateFormatter = (date, reverse, string) => {
 };
 export const fromStringTodateFormatter = (date, reverse, string) => {
   if (date === undefined || date === null) return "";
-  console.log(date);
   date = date.split(" ");
   date = date[0].split("T");
 
