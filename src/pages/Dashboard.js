@@ -1303,7 +1303,7 @@ const Dashboard = () => {
                       <div className="nk-iv-wg2-title">
                         <h3 className="title" style={{display: "flex",justifyContent: "space-between"}}>
                           <div className='' style={{width: "9%", display: "flex", alignItems:"center",  whiteSpace: "nowrap", fontSize:"1.3rem"}}>
-                            <img name="usdt" alt="USDT" style={{ marginRight: "10px"}} className='' src={USDTIcon}></img>Tether USD
+                            <img name="usdt" alt="USDT" style={{ marginRight: "10px"}} className='' src={USDTIcon}></img>Tether USD(ERC 20)
                           </div>
                           <UncontrolledDropdown className='float-right'>
                             <DropdownToggle

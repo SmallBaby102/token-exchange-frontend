@@ -1266,7 +1266,7 @@ const MyWallet = () => {
                         >
                           <img name="usdt" alt="USDT" style={{width: "13%"}} className='' src={USDTIcon}></img> 
                           <div className="project-info ml-3">
-                            <h4 className="title"><h4 className="title" style={{fontSize: "1.2rem"}}>Tether USD</h4></h4>
+                            <h4 className="title"><h4 className="title" style={{fontSize: "1.2rem"}}>Tether USD(ERC 20)</h4></h4>
                               <h4 className="">{Helper.limitDecimal(usdtBalance, 2)}  <label style={{fontSize: "1rem"}}>USDT</label></h4>
                           </div>
                         </a>
