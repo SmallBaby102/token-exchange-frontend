@@ -46,6 +46,7 @@ import {
 } from '../components/Component';
 import BTCIcon from '../images/coins/bitcoin01.png';
 import USDTIcon from '../images/coins/USDT.png';
+import USDCIcon from '../images/coins/USDC.png';
 import ETHIcon from '../images/coins/ETH.png';
 import USDIcon from '../images/coins/USD02.png';
 import Content from '../layout/content/Content';
@@ -78,13 +79,16 @@ const MyWallet = () => {
     const [btcBalance, setBtcBalance] = useState(-1)
     const [usdBalance, setUsdBalance] = useState(-1)
     const [usdtBalance, setUsdtBalance] = useState(-1)
+    const [usdcBalance, setUsdcBalance] = useState(-1)
     const [ethBalance, setEthBalance] = useState(-1)
     const [btcPrice, setBtcPrice] = useState(0)
     const [usdtPrice, setUsdtPrice] = useState(0)
+    const [usdcPrice, setUsdcPrice] = useState(0)
     const [ethPrice, setEthPrice] = useState(0)
     const [btcitem, setBtcitem] = useState({})
     const [usditem, setUsditem] = useState({})
     const [usdtitem, setUsdtitem] = useState({})
+    const [usdcitem, setUsdcitem] = useState({})
     const [ethitem, setEthitem] = useState({})
     const [correctFlag, setCorrectFlag] = useState(false)
 
@@ -106,6 +110,7 @@ const MyWallet = () => {
   const { errors, register, handleSubmit } = useForm();
   const btc_address = useSelector(state => state.user.btc_address);
   const usdt_address = useSelector(state => state.user.usdt_address);
+  const usdc_address = useSelector(state => state.user.usdc_address);
   const eth_address = useSelector(state => state.user.eth_address);
   const [deposit_address, setDeposit_address] = useState("")
   const [hideWallet, setHideWallet] = useState(false);
@@ -144,22 +149,26 @@ const MyWallet = () => {
     BTC: 0.001,
     ETH: 0.005,
     USDT: 20,
+    USDC: 20,
   })
   const [sellId, setSellId] = useState("")
   const [minimumWithdrawAmount, setMinimumWithdrawAmount] = useState({
     btc: 0.0025,
     eth: 0.03,
     usdt: 70,
+    usdc: 70,
   })
   const [minimumSellAmount, setMinimumSellAmount] = useState({
     btc: 0.0001,
     eth: 0.01,
     usdt: 1,
+    usdc: 1,
   })
   const [maximumSellAmount, setMaximumSellAmount] = useState({
     btc: 3,
     eth: 5,
     usdt: null,
+    usdc: null,
   })
   const [secret_val, setSecret_val] = useState("")
   const [authCode, setAuthCode] = useState("")
@@ -389,7 +398,7 @@ const MyWallet = () => {
         })
         return;
     } 
-    if (formData.product !== "USDT")
+    if (formData.product !== "USDT" && formData.product !== "USDC")
       if (formData.amount_sell > maximumSellAmount[formData.product.toLowerCase()]) {
         setErrorsSell({
           status: true,
@@ -424,7 +433,7 @@ const MyWallet = () => {
         submission_time: "0",
         price: "0.00",
       };
-    if (formData.product === "USDT"){
+    if (formData.product === "USDT" || formData.product === "USDC"){
       let configdata = {
         exchange: "CONFIGURATOR_PLUSQO",
         username: CONFIGURATOR_USERNAME,
@@ -445,7 +454,7 @@ const MyWallet = () => {
             accountId: usditem.id, 
             type:5, 
             amount: data.quantity, 
-            comment:"USDT Sell", 
+            comment:`${formData.product} Sell`, 
             currency:"USD"
           }
           let url = `https://config.plusqo.shiftmarketsdev.com/api/users/${bodyData.userId}/accounts/${usditem.id}/balancecorrection`;
@@ -455,26 +464,26 @@ const MyWallet = () => {
               bodyData: bodyData,
               amount1: data.quantity,
               amount2: data.quantity,
-              balance1: usdtBalance,
+              balance1: formData.product === "USDT" ? usdtBalance : usdcBalance,
               balance2: usdBalance,
               url: url,
               headers: headers
             }
             myApi.put("sell", sellData)
             .then(result => {
-              let usdtData = {
+              let subData = {
                 userId: user_id, 
-                accountId: usdtitem.id, 
+                accountId: sellId, 
                 type:5, 
                 amount: -(data.quantity), 
-                comment: "USDT Sell", 
-                currency: "USDT"
+                comment:`${formData.product} Sell`, 
+                currency: formData.product
               }
-              url = `https://config.plusqo.shiftmarketsdev.com/api/users/${usdtData.userId}/accounts/${usdtitem.id}/balancecorrection`;
+              url = `https://config.plusqo.shiftmarketsdev.com/api/users/${subData.userId}/accounts/${sellId}/balancecorrection`;
               sellData = {
                   papFlag: false,
                   email: email,
-                  bodyData: usdtData,
+                  bodyData: subData,
                   amount1: data.quantity,
                   amount2: data.quantity,
                   balance1: usdBalance,
@@ -686,6 +695,8 @@ const MyWallet = () => {
 
                   } else if (item.product === "USDT") {
                     data = { usdt_address: response.data.address };
+                  } else if (item.product === "USDC") {
+                    data = { usdc_address: response.data.address };
                   }
                   dispatch(setDepositAddress(data));    
                   data = { ...data, email: email, product: item.product }
@@ -721,9 +732,14 @@ const MyWallet = () => {
         setDeposit_address(usdt_address);
         tempAddr = usdt_address;
         data = { usdt_address: usdt_address };
+      } else if (item.product === "USDC") {
+        setDeposit_address(usdc_address);
+        tempAddr = usdc_address;
+        data = { usdc_address: usdc_address };
       }
 
       if (tempAddr !== "" && tempAddr !== null ) {
+        console.log("tt",tempAddr)
         setModal({ deposit: true }, { withdraw: false });
         data = { ...data, email: email, product: item.product }
         myApi.post("/depositAddress", data)
@@ -741,9 +757,10 @@ const MyWallet = () => {
             const data = {
               btc_address : res.data.data.btc_address,
               usdt_address : res.data.data.usdt_address,
+              usdc_address : res.data.data.usdc_address,
               eth_address : res.data.data.eth_address,
             }
-            if ((item.product === "BTC" && (data.btc_address === null || data.btc_address === "")) || (item.product === "ETH" && (data.eth_address === null ||data.eth_address === "")) || (item.product === "USDT" && (data.usdt_address === null||data.usdt_address === ""))) {
+            if ((item.product === "BTC" && (data.btc_address === null || data.btc_address === "")) || (item.product === "ETH" && (data.eth_address === null ||data.eth_address === "")) || (item.product === "USDT" && (data.usdt_address === null||data.usdt_address === ""))|| (item.product === "USDC" && (data.usdc_address === null||data.usdc_address === ""))) {
               throw ("deposit address not found");
             }
             dispatch(setDepositAddress(data));    
@@ -785,6 +802,8 @@ const MyWallet = () => {
 
                     } else if (item.product === "USDT") {
                       data = { usdt_address: response.data.address };
+                    } else if (item.product === "USDC") {
+                      data = { usdc_address: response.data.address };
                     }
                     setLoading(false);
                     dispatch(setDepositAddress(data));    
@@ -857,6 +876,9 @@ const MyWallet = () => {
           if (item.product === "USDT") {
             availableAmount = (item.balance.active_balance - 20)/1.001;
           }
+          if (item.product === "USDC") {
+            availableAmount = (item.balance.active_balance - 20)/1.001;
+          }
         if(availableAmount < 0)
             availableAmount = 0;
           setAvailableWithdrawAmount(availableAmount);
@@ -882,6 +904,9 @@ const MyWallet = () => {
             setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance.toFixed(2), 2));
           }
           if (item.product === "USDT") {
+            setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance.toFixed(2), 2));
+          }
+          if (item.product === "USDC") {
             setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance.toFixed(2), 2));
           }
           setFormData({
@@ -935,6 +960,9 @@ const MyWallet = () => {
             if (item.product === "USDT") {
               setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
             }
+            if (item.product === "USDC") {
+              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
+            }
           }
           if (item.product === "BTC") {
             setBtcBalance(item.balance.active_balance.toFixed(8));
@@ -947,6 +975,10 @@ const MyWallet = () => {
           if (item.product === "USDT") {
               setUsdtBalance(item.balance.active_balance.toFixed(8));
               setUsdtitem(item);
+            } 
+          if (item.product === "USDC") {
+              setUsdcBalance(item.balance.active_balance.toFixed(8));
+              setUsdcitem(item);
             } 
           if (item.product === "ETH") {
               setEthBalance(item.balance.active_balance.toFixed(8));
@@ -988,6 +1020,10 @@ const MyWallet = () => {
             let buyUsdtPrice = element.bid;
             setUsdtPrice(1);
           }
+          if (element.pair === "USDCUSD"){
+            let buyUsdcPrice = element.bid;
+            setUsdcPrice(1);
+          }
           if (element.pair === "ETHUSD"){
             let buyEthPrice = element.bid;
             setEthPrice(buyEthPrice);
@@ -1006,11 +1042,15 @@ const MyWallet = () => {
       let real_receive = formData.amount_sell * usdtPrice;
       setAmount_receive(real_receive)
     }
+    if (formData.product === "USDC") {
+      let real_receive = formData.amount_sell * usdcPrice;
+      setAmount_receive(real_receive)
+    }
     if (formData.product === "ETH") {
       let real_receive = formData.amount_sell * ethPrice;
       setAmount_receive(real_receive)
     }
-  }, [amount_sell, btcPrice, btcBalance, usdBalance, usdtBalance, ethBalance, formData.product])
+  }, [amount_sell, btcPrice, btcBalance, usdBalance, usdtBalance, usdcBalance, ethBalance, formData.product])
   useEffect(() => {
     let withdraw_fee = "";
       if (formData.amount_withdraw !== "") {
@@ -1020,6 +1060,8 @@ const MyWallet = () => {
           withdraw_fee = 0.005 + formData.amount_withdraw /1000;         
 
         } else if (formData.product === "USDT"){
+          withdraw_fee = 20 + formData.amount_withdraw /1000;         
+        } else if (formData.product === "USDC"){
           withdraw_fee = 20 + formData.amount_withdraw /1000;         
 
         } 
@@ -1283,6 +1325,76 @@ const MyWallet = () => {
                   </Col>
               }
                 {
+                (Number(usdcBalance) !== 0 || !hideWallet) && (usdcBalance !== -1) && <Col sm="6" lg="4" xxl="3" >
+                    <ProjectCard>
+                      <div className="project-head">
+                        <a
+                          href="#title"
+                          onClick={(ev) => {
+                            ev.preventDefault();
+                          }}
+                          className="project-title"
+                        >
+                          <img name="usdc" alt="USDC" style={{width: "13%"}} className='' src={USDCIcon}></img> 
+                          <div className="project-info ml-3">
+                            <h4 className="title"><h4 className="title" style={{fontSize: "1.2rem"}}>USD Coin</h4></h4>
+                              <h4 className="">{Helper.limitDecimal(usdcBalance, 2)}  <label style={{fontSize: "1rem"}}>USDC</label></h4>
+                          </div>
+                        </a>
+                        <UncontrolledDropdown>
+                          <DropdownToggle
+                            tag="a"
+                            className="dropdown-toggle btn btn-sm btn-icon btn-trigger mt-n1 mr-n1"
+                          >
+                          <Icon name="more-h"></Icon>
+                          </DropdownToggle>
+                          <DropdownMenu right>
+                            <ul className="link-list-opt no-bdr">
+                              <li onClick={() => onDepositClick(usdcitem.id, false)}>
+                                <DropdownItem
+                                  tag="a"
+                                  href="#deposit"
+                                  onClick={(ev) => {
+                                    ev.preventDefault();
+                                  }}
+                                >
+                                  <Icon name="edit"></Icon>
+                                  <span>{t('deposit')}</span>
+                                </DropdownItem>
+                              </li>
+                                <li onClick={() => withdrawClick(usdcitem.id)}>
+                                  <DropdownItem
+                                    tag="a"
+                                    href="#markasdone"
+                                    onClick={(ev) => {
+                                      ev.preventDefault();
+                                    }}
+                                  >
+                                    <Icon name="check-round-cut"></Icon>
+                                    <span>{t('withdraw')}</span>
+                                  </DropdownItem>
+                                </li>
+                                <li onClick={() => sellClick(usdcitem.id)}>
+                                  <DropdownItem
+                                    tag="a"
+                                    href="#markasdone"
+                                    onClick={(ev) => {
+                                      ev.preventDefault();
+                                    }}
+                                  >
+                                    <Icon name="check-round-cut"></Icon>
+                                    <span>{t('sell')}</span>
+                                  </DropdownItem>
+                                </li>
+                             
+                            </ul>
+                          </DropdownMenu>
+                        </UncontrolledDropdown>
+                      </div>
+                    </ProjectCard>
+                  </Col>
+              }
+                {
                 (Number(usdBalance) !== 0 || !hideWallet) && (usdBalance !== -1) && <Col sm="6" lg="4" xxl="3" >
                     <ProjectCard>
                       <div className="project-head">
@@ -1359,12 +1471,12 @@ const MyWallet = () => {
 
                           </p>
                           <p>
-                          {t('withdraw_fee')}:  {formData.amount_withdraw === 0 ? ("0.1% + " + withdrawFeeRule[formData.product]) : (formData.product === "USDT" && Number(withdrawFee).toFixed(6) || Number(withdrawFee).toFixed(8))} {formData.product}
+                          {t('withdraw_fee')}:  {formData.amount_withdraw === 0 ? ("0.1% + " + withdrawFeeRule[formData.product]) : (((formData.product === "USDT" || formData.product === "USDC") && Number(withdrawFee).toFixed(6)) || Number(withdrawFee).toFixed(8))} {formData.product}
                           {/* 0.001 BTC + 0.1% of withdraw amount */}
 
                           </p>
                           <p>
-                          {t('available_amount_withdraw')}:   { formData.product === "USDT" && Helper.limitDecimal(availableWithdrawAmount, 6) || Helper.limitDecimal(availableWithdrawAmount, 8)} {formData.product}
+                          {t('available_amount_withdraw')}:   { ((formData.product === "USDT" || formData.product === "USDC") && Helper.limitDecimal(availableWithdrawAmount, 6)) || Helper.limitDecimal(availableWithdrawAmount, 8)} {formData.product}
 
                           </p>
                       </div>
@@ -1381,13 +1493,13 @@ const MyWallet = () => {
                           className="form-control"
                           placeholder= {`0.00 ${formData.product}`}
                           onChange={(e) =>{ 
-                              if(e.target.value == "") 
+                              if(e.target.value === "") 
                                 setFormData({ ...formData, amount_withdraw: e.target.value }); 
                               if (/^\d+\.?\d{0,8}$/.test(e.target.value) && formData.product === "BTC")
                                 setFormData({ ...formData, amount_withdraw: e.target.value }); 
                               if (/^\d+\.?\d{0,8}$/.test(e.target.value) && formData.product === "ETH")
                                 setFormData({ ...formData, amount_withdraw: e.target.value }); 
-                              if (/^\d+\.?\d{0,6}$/.test(e.target.value) && formData.product === "USDT")
+                              if (/^\d+\.?\d{0,6}$/.test(e.target.value) && (formData.product === "USDT" || formData.product === "USDC"))
                                 setFormData({ ...formData, amount_withdraw: e.target.value }); 
                               if (e.target.value <= availableWithdrawAmount && e.target.value > 0)
                                 setErrorsWithdraw({...errorsSell, status: false});
@@ -1528,7 +1640,7 @@ const MyWallet = () => {
                           }}
                           className="link link-light"
                         >
-                          {t('cancel')}
+                          {t('close')}
                         </Button>
                       </li>
                     </ul>
@@ -1556,7 +1668,7 @@ const MyWallet = () => {
                 <Form className="gy-4" onSubmit={handleSubmit(onSellSubmit)}>
                 {
                 sellFinish === 0 ?<Col  size="12"><Col md="12">
-                {formData.product !== "USDT" && <FormGroup>
+                { (formData.product !== "USDT" && formData.product === "USDC") && <FormGroup>
                       <label className="form-label">{t('important_notice')}</label>
                       <div>
                       {t('important_notice_desc')}
@@ -1581,13 +1693,13 @@ const MyWallet = () => {
                             setFormData({ ...formData, amount_sell: e.target.value }); 
                           if (/^\d+\.?\d{0,2}$/.test(e.target.value) && formData.product === "ETH")
                             setFormData({ ...formData, amount_sell: e.target.value }); 
-                          if (/^\d+\.?\d{0,2}$/.test(e.target.value) && formData.product === "USDT")
+                          if (/^\d+\.?\d{0,2}$/.test(e.target.value) && (formData.product === "USDT" || formData.product === "USDC"))
                             setFormData({ ...formData, amount_sell: e.target.value }); 
                             if (e.target.value <= parseFloat(availableSellAmount) && e.target.value > 0)
                               {
                                 setErrorsSell({...errorsSell, status: false});
                               }
-                            else if (e.target.value > maximumSellAmount[[formData.product.toLowerCase()]] && formData.product!=="USDT")
+                            else if ( formData.product!=="USDT" &&  formData.product!=="USDC" && e.target.value > maximumSellAmount[[formData.product.toLowerCase()]])
                               setErrorsSell({...errorsSell, status: true, message: t('amount_under_max_error')});
                             else if (e.target.value > parseFloat(availableSellAmount) ){
                               setErrorsSell({...errorsSell, status: true, message: t('amount_under_available_error')});

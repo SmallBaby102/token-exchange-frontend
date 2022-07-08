@@ -11,9 +11,10 @@ const initialState = {
     quoteIntervalId: null,
     btc_address: null,
     usdt_address: null,
+    usdc_address: null,
     eth_address: null,
     currentPath: null,
-    prrofileProgressState: false,
+    profileProgressState: false,
 }
 const user = (state = initialState, action) => {
     switch (action.type) {
