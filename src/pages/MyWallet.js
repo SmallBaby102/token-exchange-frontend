@@ -950,20 +950,6 @@ const MyWallet = () => {
       for (const key in accouts_arr) {
         let item = accouts_arr[key];
           item = item[1]
-          if (sellId === item.id){
-            if (item.product === "BTC") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 5));
-            }
-            if (item.product === "ETH") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
-            }
-            if (item.product === "USDT") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
-            }
-            if (item.product === "USDC") {
-              setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
-            }
-          }
           if (item.product === "BTC") {
             setBtcBalance(item.balance.active_balance.toFixed(8));
             setBtcitem(item);

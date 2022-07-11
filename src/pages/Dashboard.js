@@ -729,6 +729,7 @@ const Dashboard = () => {
               setDeposit_address(usdc_address);
               tempAddr = usdc_address;
               data = { usdc_address: usdc_address };
+              console.log("ddd", data)
             }
 
             if (tempAddr !== "" && tempAddr !== null ) {
@@ -796,7 +797,7 @@ const Dashboard = () => {
                           } else if (item.product === "USDT") {
                             data = { usdt_address: response.data.address };
                           } else if (item.product === "USDC") {
-                            data = { usdt_address: response.data.address };
+                            data = { usdc_address: response.data.address };
                           }
                           setLoading(false);
                           dispatch(setDepositAddress(data));    
@@ -943,20 +944,6 @@ const Dashboard = () => {
     for (const key in accouts_arr) {
       let item = accouts_arr[key];
         item = item[1];
-        if (sellId === item.id){
-          if (item.product === "BTC") {
-            setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 5));
-          }
-          if (item.product === "ETH") {
-            setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
-          }
-          if (item.product === "USDT") {
-            setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
-          }
-          if (item.product === "USDC") {
-            setAvailableSellAmount(Helper.limitDecimal(item.balance.active_balance, 2));
-          }
-        }
         if (item.product === "BTC") {
           setBtcBalance(item.balance.active_balance.toFixed(8));
           setBtcitem(item);
