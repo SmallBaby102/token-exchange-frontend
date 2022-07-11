@@ -1654,7 +1654,7 @@ const MyWallet = () => {
                 <Form className="gy-4" onSubmit={handleSubmit(onSellSubmit)}>
                 {
                 sellFinish === 0 ?<Col  size="12"><Col md="12">
-                { (formData.product !== "USDT" && formData.product === "USDC") && <FormGroup>
+                { (formData.product !== "USDT" && formData.product !== "USDC") && <FormGroup>
                       <label className="form-label">{t('important_notice')}</label>
                       <div>
                       {t('important_notice_desc')}

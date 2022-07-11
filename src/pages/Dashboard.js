@@ -1774,7 +1774,7 @@ const Dashboard = () => {
                             setFormData({ ...formData, amount_sell: e.target.value }); 
                           if (/^\d+\.?\d{0,2}$/.test(e.target.value) && formData.product === "ETH")
                             setFormData({ ...formData, amount_sell: e.target.value }); 
-                          if (/^\d+\.?\d{0,2}$/.test(e.target.value) && (formData.product === "USDT" || formData.product !== "USDC"))
+                          if (/^\d+\.?\d{0,2}$/.test(e.target.value) && (formData.product === "USDT" || formData.product === "USDC"))
                             setFormData({ ...formData, amount_sell: e.target.value }); 
                           if (e.target.value <= parseFloat(availableSellAmount) && e.target.value > 0)
                             setErrorsSell({...errorsSell, status: false});
