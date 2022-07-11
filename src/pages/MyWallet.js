@@ -398,6 +398,13 @@ const MyWallet = () => {
         })
         return;
     } 
+    if (formData.amount_sell < minimumSellAmount[formData.product.toLowerCase()]) {
+      setErrorsSell({
+        status: true,
+        message: "Amount must be over the minimum one"
+      })
+      return;
+    } 
     if (formData.product !== "USDT" && formData.product !== "USDC")
       if (formData.amount_sell > maximumSellAmount[formData.product.toLowerCase()]) {
         setErrorsSell({
