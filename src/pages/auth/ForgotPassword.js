@@ -42,7 +42,7 @@ const ForgotPassword = () => {
   const handleSubmit = e => {
     if (loading) return;
     e.preventDefault()
-    if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
+    if (email.match(/[a-zA-Z\d-!$`=~{}@#"$'%^&+|*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
       setErrorsf({
         ...errorsf, emailfield: {status: true}
       });
@@ -85,7 +85,7 @@ const ForgotPassword = () => {
                     value={email}
                     onChange={ e => {
                       // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                    if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#/$'"%^&+|-*:_.,]+$/) != null || e.target.value === "" ) {
+                    if (e.target.value.match(/^[a-zA-Z\d-!$`=~{}@#/$'"%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
                       setEmail(e.target.value); 
                       if (e.target.value === "")  
                       setErrorsf({

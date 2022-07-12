@@ -376,7 +376,7 @@ const Login = () => {
                     onKeyDown={(e) => handleKeyPress(e)}
                     onChange={ e => {
                       // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                    if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+$/) != null || e.target.value === "" ) {
+                    if (e.target.value.match(/^[a-zA-Z\d-!$`=~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
                       setEmail(e.target.value); 
                       if (e.target.value === "")  
                       setErrorsf({
@@ -478,7 +478,7 @@ const Login = () => {
                             className="form-control-lg form-control"
                             onChange={ e => {
                               // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+$/) != null || e.target.value === "" ) {
+                            if (e.target.value.match(/^[a-zA-Z\d-!$`=~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
                               setAuthCode(e.target.value); 
                               if (e.target.value === "")  
                               setErrorsf({
