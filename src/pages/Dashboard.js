@@ -327,6 +327,9 @@ const Dashboard = () => {
           // code: '',
           // network: "Stellar"
         }
+        if(formData.product === "USDC"){
+          data ={...data, network: "Ethereum" }
+        }
         // dispatch(setChecking(true));
         setLoading(true)
         secureApi.post(`/wallet/withdraw/create`, data).then(res => {
@@ -1286,7 +1289,7 @@ const Dashboard = () => {
                       <div className="nk-iv-wg2-title">
                         <h3 className="title" style={{display: "flex",justifyContent: "space-between"}}>
                           <div className='' style={{width: "9%", display: "flex", alignItems:"center",  whiteSpace: "nowrap", fontSize:"1.3rem"}}>
-                            <img name="usdt" alt="USDT" style={{ marginRight: "10px"}} className='' src={USDTIcon}></img>Tether USD (ERC 20)
+                            <img name="usdt" alt="USDT" style={{ marginRight: "10px"}} className='' src={USDTIcon}></img>Tether USD (ERC20)
                           </div>
                           <UncontrolledDropdown className='float-right'>
                             <DropdownToggle
