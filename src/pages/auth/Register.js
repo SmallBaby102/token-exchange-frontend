@@ -78,7 +78,7 @@ const Register = () => {
         });
         return;
       }
-      if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
+      if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
         console.log("test");
         setErrorsf({
             ...errorsf, emailfield: {status: true}
@@ -342,7 +342,7 @@ const Register = () => {
                     onKeyDown={(e) => handleKeyPress(e)}
                     onChange={ e => {
                       // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                    if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                    if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+$/) != null || e.target.value === "" ) {
                       setEmail(e.target.value); 
                       if (e.target.value === "")  
                       setErrorsf({

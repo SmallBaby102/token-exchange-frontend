@@ -15,8 +15,10 @@ import { bgcolor, Box } from '@mui/system';
 import { Col, Row } from 'reactstrap';
 import Content from '../layout/content/Content';
 import { fromStringTodateFormatter, fromStringTodatetimeFormatter } from '../utils/Utils';
+import { useTranslation } from 'react-i18next'
 
 export default function CustomizedTimeline() {
+  const { t } = useTranslation(); 
   const { wireid } =  useParams();
   const dispatch = useDispatch();
   const email = localStorage.getItem("username");
@@ -54,7 +56,7 @@ return (
             <Col md="5" className='pl-4' style={{overflowWrap: "anywhere"}}>
               <Row className="">
                 <Col size={6}>
-                  <span className="h6">Wire ID</span>
+                  <span className="h6">{t('wire_id')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6">{wireHistory.wireid}</span>
@@ -62,7 +64,7 @@ return (
               </Row>
               <Row className="mt-3">
                 <Col size={6}>
-                  <span className="h6 fw-light">BENEFICIARY NAME</span>
+                  <span className="h6 fw-light">{t('beneficiary_name')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.beneficiary_name}</span>
@@ -94,7 +96,7 @@ return (
               </Row> */}
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">BANK NAME</span>
+                  <span className="h6 fw-light">{t('bank_name')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.bank_name}</span>
@@ -102,7 +104,7 @@ return (
               </Row>
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">BANK ACCOUNT NUMBER</span>
+                  <span className="h6 fw-light">{t('bank_number')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.bankaccount_number}</span>
@@ -110,7 +112,7 @@ return (
               </Row>
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">BANK COUNTRY</span>
+                  <span className="h6 fw-light">{t('bank_country')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.bank_country}</span>
@@ -134,7 +136,7 @@ return (
               </Row> */}
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">SWIFT/BIC CODE</span>
+                  <span className="h6 fw-light">{t('swift_code')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.swift_code}</span>
@@ -142,7 +144,7 @@ return (
               </Row>
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">REFERENCE CODE</span>
+                  <span className="h6 fw-light">{t('reference_code')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{wireHistory.reference_code}</span>
@@ -190,7 +192,7 @@ return (
               </Row> */}
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">AMOUNT</span>
+                  <span className="h6 fw-light">{t('amount')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{-wireHistory.amount}USD</span>
@@ -198,7 +200,7 @@ return (
               </Row>
               <Row className="mt-1">
                 <Col size={6}>
-                  <span className="h6 fw-light">RECEIVE AMOUNT</span>
+                  <span className="h6 fw-light">{t('received_amount')}</span>
                 </Col>
                 <Col size={6}>
                   <span className="h6 fw-light">{Number(wireHistory.receive_amount)}USD</span>
@@ -223,13 +225,13 @@ return (
                 </TimelineSeparator>
                 <TimelineContent sx={{ my: '-12px', px: 2 }}>
                 {wireHistory.status === "0" ? <Typography variant="h6" component="span" style={color}>
-                    Pending
+                    {t('pending')}
                   </Typography>:
                   <Typography variant="h6" component="span">
-                  Pending
+                    {t('pending')}
                 </Typography>}
-                  {wireHistory.status === "0" ? <Typography style={color}> You set up your transfer</Typography>:
-                  <Typography > You set up your transfer</Typography>}
+                  {wireHistory.status === "0" ? <Typography style={color}> {t('pending_desc')}</Typography>:
+                  <Typography > {t('pending_desc')}</Typography>}
                 </TimelineContent>
               </TimelineItem>
               { wireHistory.status !== "0" && wireHistory.approved_date !== "Null" &&
@@ -256,12 +258,12 @@ return (
                 </TimelineSeparator>
                 <TimelineContent sx={{ py: '12px', px: 2 }}>
                 {wireHistory.status === "1" ? <Typography variant="h6" component="span" style={color}>
-                    Approved
+                {t('approved')}
                   </Typography>:<Typography variant="h6" component="span">
-                    Approved
+                  {t('approved')}
                   </Typography>}
-                  {wireHistory.status === "1" ? <Typography style={color}>Your transfer was approved</Typography>:
-                  <Typography>Your transfer was approved</Typography>}
+                  {wireHistory.status === "1" ? <Typography style={color}>{t('approve_desc')}</Typography>:
+                  <Typography>{t('approve_desc')}</Typography>}
                 </TimelineContent>
               </TimelineItem>
               }
@@ -281,9 +283,9 @@ return (
                   </TimelineSeparator>
                   <TimelineContent sx={{  px: 2 }}>
                     <Typography variant="h6" component="span" sx={{ color: 'primary.main' }}>
-                      Processing
+                      {t('processing')}
                     </Typography>
-                    <Typography sx={{ color: 'primary.main' }}>Our bank is processing your transfer</Typography>
+                    <Typography sx={{ color: 'primary.main' }}>{t('processing_desc')}</Typography>
                   </TimelineContent>
                 </TimelineItem>:
                 <TimelineItem>
@@ -303,9 +305,9 @@ return (
                 </TimelineSeparator>
                 <TimelineContent sx={{ py: '12px', px: 2 }}>
                   <Typography variant="h6" component="span">
-                    Processing
+                  {t('processing')}
                   </Typography>
-                  <Typography>Our bank is processing your transfer</Typography>
+                  <Typography>{t('processing_desc')}</Typography>
                 </TimelineContent>
               </TimelineItem>)
               }
@@ -327,9 +329,9 @@ return (
                 </TimelineSeparator>
                 <TimelineContent>
                   <Typography variant="h6" component="span"  sx={{ color: 'primary.main' }}>
-                    Complete
+                    {t('complete')}
                   </Typography>
-                  <Typography  sx={{ color: 'primary.main' }}>Your transfer went out of our bank</Typography>
+                  <Typography  sx={{ color: 'primary.main' }}>{t('complete_desc')}</Typography>
                 </TimelineContent>
               </TimelineItem>
               }
@@ -350,9 +352,9 @@ return (
                 </TimelineSeparator>
                 <TimelineContent >
                   <Typography variant="h6" component="span" style={{color:"red"}}>
-                    Decline
+                  {t('decline')}
                   </Typography>
-                  <Typography style={{color:"red"}}>Your transaction was declined</Typography>
+                  <Typography style={{color:"red"}}> {t('decline_desc')}</Typography>
                 </TimelineContent>
               </TimelineItem>
               }

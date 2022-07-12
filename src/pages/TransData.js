@@ -609,6 +609,7 @@ export const filterCoin = [
   { value: "BTC", label: "Bitcoin" },
   { value: "ETH", label: "Etherium" },
   { value: "USDT", label: "Tether USD" },
+  { value: "USDC", label: "USD Coin" },
 ];
 
 export const filterPaymentmethod = [

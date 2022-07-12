@@ -69,20 +69,11 @@ const TransactionHistory = () => {
   });
   const [modalDetail, setModalDetail] = useState(false);
   const [data, setData] = useState("");
-  const [detail, setDetail] = useState({});
   const [orderData, setOrderData] = useState("");
   const [orderDataUsd, setOrderDataUsd] = useState("");
-  const [formData, setFormData] = useState({
-    orderType: "Deposit",
-    amountBTC: "",
-    amountUSD: "",
-    balanceBTC: "",
-    balanceUSD: "",
-    status: "PENDING",
-  });
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemPerPage, setItemPerPage] = useState(10);
-  const [sort, setSortState] = useState("");
   const [displaySetting, setDisplaySetting] = useState({
     from: null,
     end: null,
@@ -132,7 +123,7 @@ const TransactionHistory = () => {
 
                 }  
               });
-              temp = transactions.filter(obj =>  obj.entity_type === "SELL" && obj.status === "COMPLETED" && (obj.product_id === "BTC" || obj.product_id === "USDT" || obj.product_id === "ETH"))
+              temp = transactions.filter(obj =>  obj.entity_type === "SELL" && obj.status === "COMPLETED" && (obj.product_id === "BTC" || obj.product_id === "USDT"|| obj.product_id === "USDC" || obj.product_id === "ETH"))
             }
         })
         let dataForUsd = temp;
@@ -529,13 +520,13 @@ const TransactionHistory = () => {
                                   <Col size="6">
                                     <FormGroup>
                                       <label className="overline-title overline-title-alt">{t('type')}</label>
-                                      <RSelect options={cryptoActivityOptions} onChange={(e) => setDisplaySetting({...displaySetting, type: e.value})} placeholder="Any Activity" />
+                                      <RSelect options={cryptoActivityOptions} onChange={(e) => setDisplaySetting({...displaySetting, type: e.value})} placeholder={t('any')+ " " +t('activity')} />
                                     </FormGroup>
                                   </Col>
                                   <Col size="6">
                                     <FormGroup className="form-group">
                                       <label className="overline-title overline-title-alt">{t('currency')}</label>
-                                      <RSelect options={filterCoin} placeholder="Any coin" onChange={(e) => setDisplaySetting({...displaySetting, currency: e.value})} />
+                                      <RSelect options={filterCoin} placeholder={t('any')+ " " +t('coin')} onChange={(e) => setDisplaySetting({...displaySetting, currency: e.value})} />
                                     </FormGroup>
                                   </Col> 
                                 </Row>

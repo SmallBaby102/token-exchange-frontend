@@ -28,8 +28,10 @@ import Head from '../../layout/head/Head';
 import PageContainer from '../../layout/page-container/PageContainer';
 import AuthFooter from './AuthFooter';
 import LogoComp from './Logo';
+import { useTranslation } from 'react-i18next'
 
 const ResetPassword = () => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const history = useHistory();
   const loading = useSelector(state => state.user.loading);
@@ -37,9 +39,9 @@ const ResetPassword = () => {
   const [ password, setPassword ] = useState('');
   const [ verificationCode, setVerificationCode ] = useState('');
   const [errorsf, setErrorsf] = useState({
-    emailfield: { status: false, message : "Please input correct email address",},
-    password: { status: false, message : "Must be only alphabetic characters",},
-    password_confirm: { status: false, message : "Must be only alphabetic characters",},
+    emailfield: { status: false, message : t('email_error')},
+    password: { status: false, message : t('must_alpha')},
+    password_confirm: { status: false, message : t('must_alpha')},
   });
   const handleSubmit = e => {
     e.preventDefault()
@@ -51,10 +53,8 @@ const ResetPassword = () => {
       return false;
       
     }
-    console.log("asdf")
-
     if (password === '' || verificationCode === "") {
-      toast.error('Please fill the form with valid values.');
+      toast.error(t('reset_error'));
     } else {
       dispatch(resetPassword(password, verificationCode, history));
     }
@@ -69,9 +69,9 @@ const ResetPassword = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h5">Reset password</BlockTitle>
+                <BlockTitle tag="h5">{t('reset_password')}</BlockTitle>
                 <BlockDes>
-                  <p>Please input the new password.</p>
+                  <p>{t('placeholder_new_password')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -79,14 +79,14 @@ const ResetPassword = () => {
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">
-                    Password
+                    {t('password')}
                   </label>
                 </div>
                 <input
                   type="password"
                   className="form-control form-control-lg"
                   id="default-01"
-                  placeholder="Password"
+                  // placeholder="Password"
                   value={password}
                   onChange={ e => {
                     // (e.target.value.match(/^[a-zA-Z\d-+_!@#$%^&*.,?]+$/)|| " " ) && setPassword(e.target.value)
@@ -106,33 +106,33 @@ const ResetPassword = () => {
                   }
                   }
                 />
-                  {errorsf.password.status && <span className="invalid">A combination of numbers, lowercase letters, uppercase letters, and symbols with 6 or more characters</span>}
+                  {errorsf.password.status && <span className="invalid">{t('combination')}</span>}
 
               </FormGroup>
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">
-                    Verification Code
+                    {t('verification_code')}
                   </label>
                 </div>
                 <input
                   type="text"
                   className="form-control form-control-lg"
                   id="default-02"
-                  placeholder="Verification Code"
+                  placeholder= {t('verification_code')}
                   value={verificationCode}
                   onChange={e => setVerificationCode(e.target.value)}
                 />
               </FormGroup>
               <FormGroup>
                 <Button color="primary" size="lg" className="btn-block" onClick={handleSubmit}>
-                {loading ? <Spinner size="sm" color="light" /> : "Reset Password"}
+                {loading ? <Spinner size="sm" color="light" /> :  t('reset_password')}
                 </Button>
               </FormGroup>
             </form>
             <div className="form-note-s2 text-center pt-4">
               <Link to={`${process.env.PUBLIC_URL}/auth-login`}>
-                <strong>Return to login</strong>
+                <strong>{t('return_to_login')}</strong>
               </Link>
             </div>
           </PreviewCard>

@@ -106,7 +106,7 @@ export const forgotPassword = ( email, history) => dispatch => {
     dispatch(setLoading(true)); 
     api.post('/authentication/user_authentication/startForgotPassword', {  exchange: "PLUSQO", username: email }).then(res => {
         if (res.data.result) {
-            toast.success('Verification code was sent to your mail box.');
+            // toast.success('Verification code was sent to your mail box.');
             localStorage.setItem("username", email)
             history.push('resetpassword');
             dispatch(setLoading(false));
@@ -132,7 +132,7 @@ export const resetPassword = (password, verificationCode, history) => dispatch =
     };
     api.post(`/authentication/user_authentication/completeForgotPassword/`, data).then(res => {
         if (res.data.result) {
-            toast.success('Your password has been successfully reset.');
+            // toast.success('Your password has been successfully reset.');
             const myApi = myServerApi();
             myApi.post(`change_pap_password`, data).then(res => {
             })

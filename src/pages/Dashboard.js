@@ -336,7 +336,7 @@ const Dashboard = () => {
                 if (response.data.success) {
                   setWithdrawFinish(1);
 
-                  toast.success("Successfully Withdrawed");
+                  // toast.success("Successfully Withdrawed");
                   // setModal({ withdraw: false });
                   dispatch(setChecking(false))
                   let exchange_access_token =localStorage.getItem("exchange_access_token")
@@ -366,7 +366,7 @@ const Dashboard = () => {
                   .catch()
                 } else {
                   setWithdrawFinish(2);
-                  toast.error("Server not response");
+                  // toast.error("Server not response");
                 }
                 dispatch(setChecking(false))
 
@@ -374,9 +374,8 @@ const Dashboard = () => {
             }
         }).catch(err => {
           setWithdrawFinish(2);
-          toast.error(err.response.data.message);
+          // toast.error(err.response.data.message);
           setLoading(false)
-          console.log('error: ', err);
         });
     };
     const onSellSubmit = () => {
@@ -490,30 +489,29 @@ const Dashboard = () => {
                   setLoading(false);
                   if(result.data.success){
                     setSellFinish(1);
-                    toast.success("Successfully sold");
+                    // toast.success("Successfully sold");
                   }
                   else {
                     setSellFinish(2);
-                    toast.error("Failed sell");
+                    // toast.error("Failed sell");
                   }
                   
                   
                 }).catch( e => {
                   setSellFinish(2);
-                  toast.error("Failed sell");
+                  // toast.error("Failed sell");
                   setLoading(false);
-                    console.log("sell error")
                 })
             }).catch( e => {
               setSellFinish(2);
-              toast.error("Failed sell");
+              // toast.error("Failed sell");
               setLoading(false);
             })
             
         })
         .catch( e => {
           setSellFinish(2);
-          toast.error("Failed sell");
+          // toast.error("Failed sell");
           setLoading(false);
         })
       } else{
@@ -589,22 +587,21 @@ const Dashboard = () => {
                           .then(result => {
                             if(result.data.success){
                               setSellFinish(1);
-                              toast.success("Successfully sold");
+                              // toast.success("Successfully sold");
                             }
                             else {
                               setSellFinish(2);
-                              toast.error("Failed sell");
+                              // toast.error("Failed sell");
                             }
                             setLoading(false);
                           }).catch( e => {
-                            console.log("sell error")
                             setLoading(false);
                             setSellFinish(2);
 
                           })
                         }
                         else {
-                          toast.error("Failed sell operation");
+                          // toast.error("Failed sell operation");
                           setSellFinish(2);
 
                         }
@@ -612,13 +609,13 @@ const Dashboard = () => {
                     })
                     .catch( e => {
                         setSellFinish(2);
-                        toast.error("Failed sell operation");
+                        // toast.error("Failed sell operation");
                         setLoading(false);
                     })
                     
                   })
                   .catch(e => {
-                      toast.error("Failed sell operation");
+                      // toast.error("Failed sell operation");
                       setLoading(false);
                       setSellFinish(2);
                     
@@ -627,20 +624,19 @@ const Dashboard = () => {
               else{
                   setSellFinish(2);
                   // history.push("auth-login")
-                  toast.error("Failed sell operation");
+                  // toast.error("Failed sell operation");
                   setLoading(false);
               }
             }else{
               setSellFinish(2);
-              toast.error("Failed sell operation");
+              // toast.error("Failed sell operation");
               setLoading(false);
             }
             // dispatch(setChecking(false));
           
         }).catch(err => {
           setSellFinish(2);
-          console.log('error: ', err);
-            toast.error("Failed sell");
+            // toast.error("Failed sell");
             setLoading(false);
             // dispatch(setChecking(false));
         });
@@ -852,7 +848,7 @@ const Dashboard = () => {
           item = item[1]
           if (item.id === id) {
             if (item.product === "USD" && verification_status !== "2") {
-                toast.warn("Please complete your verification");
+                toast.warn(t('complete_profile_desc'));
                 history.push("/user-profile-regular");
             }
             setFormData({
@@ -1290,7 +1286,7 @@ const Dashboard = () => {
                       <div className="nk-iv-wg2-title">
                         <h3 className="title" style={{display: "flex",justifyContent: "space-between"}}>
                           <div className='' style={{width: "9%", display: "flex", alignItems:"center",  whiteSpace: "nowrap", fontSize:"1.3rem"}}>
-                            <img name="usdt" alt="USDT" style={{ marginRight: "10px"}} className='' src={USDTIcon}></img>Tether USD(ERC 20)
+                            <img name="usdt" alt="USDT" style={{ marginRight: "10px"}} className='' src={USDTIcon}></img>Tether USD (ERC 20)
                           </div>
                           <UncontrolledDropdown className='float-right'>
                             <DropdownToggle
@@ -1548,7 +1544,7 @@ const Dashboard = () => {
               <Icon name="cross-sm"></Icon>
             </a>
             <div className="p-2">
-              <h5 className="title">WITHDRAW {formData.product}</h5>
+              <h5 className="title">{t('withdraw')} {formData.product}</h5>
               <div className="mt-4">
                 <Form className="gy-4" onSubmit={handleSubmit(onWithdrawSubmit)}>
                   <Row>
@@ -1615,7 +1611,7 @@ const Dashboard = () => {
                         <input  
                           className="form-control" 
                           value={formData.address_withdraw}
-                          placeholder = {`Enter the ${formData.product} address`}
+                          placeholder = {t('enter_address', {product: formData.product})}
                           onChange={(e) =>{ 
                             if (/^[A-Za-z0-9]*$/.test(e.target.value)) 
                               setFormData({ ...formData, address_withdraw: e.target.value });
@@ -1967,7 +1963,7 @@ const Dashboard = () => {
                             className="form-control-lg form-control"
                             onChange={ e => {
                               // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+$/) != null || e.target.value === "" ) {
                               setAuthCode(e.target.value); 
                               if (e.target.value === "")  
                               setErrorsf({

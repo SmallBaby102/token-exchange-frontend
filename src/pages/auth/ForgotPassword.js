@@ -26,21 +26,23 @@ import Head from '../../layout/head/Head';
 import PageContainer from '../../layout/page-container/PageContainer';
 import AuthFooter from './AuthFooter';
 import LogoComp from './Logo';
+import { useTranslation } from 'react-i18next'
 
 const ForgotPassword = () => {
+  const { t } = useTranslation(); 
   const dispatch = useDispatch();
   const loading = useSelector(state => state.user.loading);
   const history = useHistory();
   const [ email, setEmail ] = useState('');
   const [errorsf, setErrorsf] = useState({
-    emailfield: { status: false, message : "Please input correct email address",},
-    password: { status: false, message : "Must be only alphabetic characters",},
-    password_confirm: { status: false, message : "Must be only alphabetic characters",},
+    emailfield: { status: false, message : t('email_error')},
+    password: { status: false, message : t('must_alpha')},
+    password_confirm: { status: false, message : t('must_alpha')},
   });
   const handleSubmit = e => {
     if (loading) return;
     e.preventDefault()
-    if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
+    if (email.match(/[a-zA-Z\d-!$`=-~{}@#"$'%^&+|-*:_.,]+@[a-z\d]+\.[a-z]{2,3}/) == null || email === ""){
       setErrorsf({
         ...errorsf, emailfield: {status: true}
       });
@@ -49,7 +51,7 @@ const ForgotPassword = () => {
     if (email !== '') {
       dispatch(forgotPassword(email, history));
     } else {
-      toast.error('please input your email.');
+      toast.error(t('placeholder_email'));
     }
   }
 
@@ -62,9 +64,9 @@ const ForgotPassword = () => {
           <PreviewCard className="card-bordered" bodyClass="card-inner-lg">
             <BlockHead>
               <BlockContent>
-                <BlockTitle tag="h5">Forgot password</BlockTitle>
+                <BlockTitle tag="h5">{t('forgot_password')}</BlockTitle>
                 <BlockDes>
-                  <p>If you forgot your password, then we’ll email you instructions to reset your password.</p>
+                  <p>{t('forgot_password_desc')}</p>
                 </BlockDes>
               </BlockContent>
             </BlockHead>
@@ -72,7 +74,7 @@ const ForgotPassword = () => {
               <FormGroup>
                 <div className="form-label-group">
                   <label className="form-label" htmlFor="default-01">
-                    Email
+                    {t('email')}
                   </label>
                 </div>
                 <input
@@ -83,7 +85,7 @@ const ForgotPassword = () => {
                     value={email}
                     onChange={ e => {
                       // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                    if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#/$'"%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                    if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#/$'"%^&+|-*:_.,]+$/) != null || e.target.value === "" ) {
                       setEmail(e.target.value); 
                       if (e.target.value === "")  
                       setErrorsf({
@@ -106,20 +108,20 @@ const ForgotPassword = () => {
                     //   })
                     // }  
                     className="form-control-lg form-control"
-                    placeholder="Enter your email address"
+                    placeholder={t('placeholder_email')}
                   />
-                  {errorsf.emailfield.status && <p className="invalid">Please input correct email address</p>}
+                  {errorsf.emailfield.status && <p className="invalid">{t('email_error')}</p>}
               
               </FormGroup>
               <FormGroup>
                 <Button color="primary" size="lg" className="btn-block" onClick={handleSubmit}>
-                {loading ? <Spinner size="sm" color="light" /> : "Reset Password"}
+                {loading ? <Spinner size="sm" color="light" /> : t('reset_password')}
                 </Button>
               </FormGroup>
             </form>
             <div className="form-note-s2 text-center pt-4">
               <Link to={`${process.env.PUBLIC_URL}/auth-login`}>
-                <strong>Return to login</strong>
+                <strong>{t('return_to_login')}</strong>
               </Link>
             </div>
           </PreviewCard>

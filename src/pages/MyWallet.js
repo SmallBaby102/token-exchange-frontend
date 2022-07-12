@@ -345,7 +345,7 @@ const MyWallet = () => {
               if (response.data.success) {
                 setWithdrawFinish(1);
 
-                toast.success("Successfully Withdrawed");
+                // toast.success("Successfully Withdrawed");
                 // setModal({ withdraw: false });
                 dispatch(setChecking(false))
                 let exchange_access_token =localStorage.getItem("exchange_access_token")
@@ -502,7 +502,7 @@ const MyWallet = () => {
                 .then(result => {
                   if(result.data.success){
                     setSellFinish(1);
-                    toast.success("Successfully sold");
+                    // toast.success("Successfully sold");
                     Http.getAccounts(localStorage.getItem("exchange_access_token"))
                     .then((response) => {
                       if (response.message === "Unauthorized"){
@@ -618,32 +618,31 @@ const MyWallet = () => {
                           setLoading(false);
                           if(result.data.success){
                             setSellFinish(1);
-                            toast.success("Successfully sold");
+                            // toast.success("Successfully sold");
                           }
                           else {
                             setSellFinish(2);
-                            toast.error("Failed sell");
+                            // toast.error("Failed sell");
                           }
                         }).catch( e => {
                             setSellFinish(2);
-                            console.log("sell error")
+                            // console.log("sell error")
                           setLoading(false);
                         })
                       }
                       else {
                           setSellFinish(2);
-                          toast.error("Failed balance correction");
+                          // toast.error("Failed balance correction");
                       }
                     })
                 .catch( e => {
-                  console.log("sell error")
                   setSellFinish(2);
                   setLoading(false);
-                  toast.error("Failed sell");
+                  // toast.error("Failed sell");
                 })
           }
           else{
-            toast.error("Failed balance correction");
+            // toast.error("Failed balance correction");
             setSellFinish(2);
             setLoading(false);
           }
@@ -654,7 +653,7 @@ const MyWallet = () => {
           // dispatch(setChecking(false));
           setLoading(false);
           setSellFinish(2);
-          toast.error("Failed sell");
+          // toast.error("Failed sell");
           
       });
     }
@@ -867,7 +866,7 @@ const MyWallet = () => {
         item = item[1]
         if (item.id === id) {
           if (item.product === "USD" && verification_status !== "2") {
-              toast.warn("Please complete your verification");
+              toast.warn(t('complete_profile_desc'));
               history.push("/user-profile-regular");
           }
           setFormData({
@@ -1259,7 +1258,7 @@ const MyWallet = () => {
                         >
                           <img name="usdt" alt="USDT" style={{width: "13%"}} className='' src={USDTIcon}></img> 
                           <div className="project-info ml-3">
-                            <h4 className="title"><h4 className="title" style={{fontSize: "1.2rem"}}>Tether USD(ERC 20)</h4></h4>
+                            <h4 className="title"><h4 className="title" style={{fontSize: "1.2rem"}}>Tether USD (ERC 20)</h4></h4>
                               <h4 className="">{Helper.limitDecimal(usdtBalance, 2)}  <label style={{fontSize: "1rem"}}>USDT</label></h4>
                           </div>
                         </a>
@@ -1881,7 +1880,7 @@ const MyWallet = () => {
                             className="form-control-lg form-control"
                             onChange={ e => {
                               // (e.target.value.match(/^[a-zA-Z\d-@#$%^&*.,]+$/) || " " )&& setEmail(e.target.value)
-                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*:_.,]+$/) != null || e.target.value === "" ) {
+                            if (e.target.value.match(/^[a-zA-Z\d-!$`=-~{}@#"$'%^&+|*-:_.,]+$/) != null || e.target.value === "" ) {
                               setAuthCode(e.target.value); 
                               if (e.target.value === "")  
                               setErrorsf({
