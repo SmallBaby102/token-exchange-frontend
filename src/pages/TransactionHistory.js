@@ -157,7 +157,7 @@ const TransactionHistory = () => {
               obj.date.setTime(obj.date.getTime() - 9 * 60 * 60 * 1000)
     
             })
-            temp = [...temp, ...transactions.filter(obj =>  obj.status === "COMPLETED" && (obj.product_id === "BTC" || obj.product_id === "USDT" || obj.product_id === "ETH"))]
+            temp = [...temp, ...transactions.filter(obj =>  obj.status === "COMPLETED" && (obj.product_id === "BTC" || obj.product_id === "USDT" || obj.product_id === "USDC" || obj.product_id === "ETH"))]
             
 
           }

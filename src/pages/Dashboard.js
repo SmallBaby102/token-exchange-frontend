@@ -318,6 +318,7 @@ const Dashboard = () => {
       }
         setModal({...modal, ...{auth : false}});
         setLoadingConfirm(false);
+        setLoading(true)
         const secureApi = getAuthenticatedApi();
         let data = {
           exchange: "PLUSQO",
@@ -331,7 +332,6 @@ const Dashboard = () => {
           data ={...data, network: "Ethereum" }
         }
         // dispatch(setChecking(true));
-        setLoading(true)
         secureApi.post(`/wallet/withdraw/create`, data).then(res => {
             if (res && res.data && res.data.success) {
               secureApi.get(`/wallet/transaction/status?txid=${res.data.txid}&state_hash=${res.data.state_hash}&timeout=10000`).then(response => {
