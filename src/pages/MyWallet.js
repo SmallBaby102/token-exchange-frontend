@@ -306,6 +306,7 @@ const MyWallet = () => {
   const confirmWithdraw = async () => {
     if(loadingConfirm)
     return;
+    setLoadingConfirm(true);
     let flag = "False";
     const options = {
       method: 'GET',
@@ -853,7 +854,7 @@ const MyWallet = () => {
     }
     setSecret_val(twoFactor.code_from_app);
 
-    if (twoFactor.status !== 1){
+    if (twoFactor.status !== 1 || twoFactor.withdraw !== 1){
       toast.warn(t('must_2fa'));
       // history.push("/security");
       return;
@@ -1849,7 +1850,7 @@ const MyWallet = () => {
           </ModalBody>
         </Modal>
       </Content>
-      <Modal isOpen={modal.auth} toggle={() => setModal({ auth: false })} className="modal-dialog-centered" backdrop="static" size="lg">
+      <Modal isOpen={modal.auth} toggle={() => setModal({...modal, auth: false })} className="modal-dialog-centered" backdrop="static" size="lg">
           <ModalBody>
             <a
               href="#cancel"
@@ -1912,7 +1913,7 @@ const MyWallet = () => {
                         <Button
                           onClick={(ev) => {
                             ev.preventDefault();
-                            setModal({ auth: false })
+                            setModal({...modal, auth: false })
                           }}
                           className="link link-light"
                         >

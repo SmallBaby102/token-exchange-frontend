@@ -549,22 +549,22 @@ const RequestWire = () => {
       }
     else{
       if(special_rate){
-        setFees(parseFloat(formData.amount * special_rate / 100));
+        setFees(Helper.limitDecimal(parseFloat(formData.amount * special_rate / 100), 2));
         return;
       }
       if(wire_count < 1){
-        setFees(parseFloat(formData.amount * 0.06));
+        setFees(Helper.limitDecimal(parseFloat(formData.amount * 0.06),2));
         return;
       }
       if (formData.amount <= 50000) {
-        setFees(parseFloat(formData.amount * 0.08));
+        setFees(Helper.limitDecimal(parseFloat(formData.amount * 0.08),2));
         
       } else {
         if (formData.amount <= 150000) {
-            setFees(parseFloat(formData.amount * 0.07));
+            setFees(Helper.limitDecimal(parseFloat(formData.amount * 0.07),2));
           
         } else {
-            setFees(parseFloat(formData.amount * 0.06));
+            setFees(Helper.limitDecimal(parseFloat(formData.amount * 0.06),2));
         }
       }
     }
